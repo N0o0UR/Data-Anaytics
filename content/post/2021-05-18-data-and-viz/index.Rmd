@@ -13,8 +13,21 @@ starwars
 ```
 ### Mass Vs Weight
 we will study mass vs weight relationship through scatter plot
-```{r}
+```{r warning=FALSE}
 library(ggplot2)
 ggplot(starwars, aes(x=height,y=mass))+ geom_point()+ labs(title="Mass Vs Height of Starwars Characers ",x="Height",y="Mass")
+```
+
+### Anscombe's 
+```{r}
+library(Tmisc)
+quartet %>%
+  group_by (set)
+
+```
+
+we visualize all four sets
+```{r}
+ggplot(quartet,aes(x=x,y=y))+geom_point()+facet_wrap(~ set,ncol=4)
 ```
 

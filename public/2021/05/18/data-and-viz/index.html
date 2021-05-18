@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Data and viz</h1>
@@ -95,6 +95,37 @@ starwars</code></pre>
 ## 10 Obi-Wa~    182    77 auburn, wh~ fair       blue-gray       57   male  mascu~
 ## # ... with 77 more rows, and 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;,
 ## #   films &lt;list&gt;, vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
+<div id="mass-vs-weight" class="section level3">
+<h3>Mass Vs Weight</h3>
+<p>we will study mass vs weight relationship through scatter plot</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(starwars, aes(x=height,y=mass))+ geom_point()+ labs(title=&quot;Mass Vs Height of Starwars Characers &quot;,x=&quot;Height&quot;,y=&quot;Mass&quot;)</code></pre>
+<p><img src="/2021/05/18/data-and-viz/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="anscombes" class="section level3">
+<h3>Anscombe’s</h3>
+<pre class="r"><code>library(Tmisc)
+quartet %&gt;%
+  group_by (set)</code></pre>
+<pre><code>## # A tibble: 44 x 3
+## # Groups:   set [4]
+##    set       x     y
+##    &lt;fct&gt; &lt;int&gt; &lt;dbl&gt;
+##  1 I        10  8.04
+##  2 I         8  6.95
+##  3 I        13  7.58
+##  4 I         9  8.81
+##  5 I        11  8.33
+##  6 I        14  9.96
+##  7 I         6  7.24
+##  8 I         4  4.26
+##  9 I        12 10.8 
+## 10 I         7  4.82
+## # ... with 34 more rows</code></pre>
+<p>we visualize all four sets</p>
+<pre class="r"><code>ggplot(quartet,aes(x=x,y=y))+geom_point()+facet_wrap(~ set,ncol=4)</code></pre>
+<p><img src="/2021/05/18/data-and-viz/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
 </div>
 
     </div>
