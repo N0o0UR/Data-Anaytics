@@ -8,20 +8,11 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 18 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Data and viz</title>
-      <link>/2021/05/18/data-and-viz/</link>
+      <title>Data and Visualization </title>
+      <link>/2021/05/18/data-and-visualization/</link>
       <pubDate>Tue, 18 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>/2021/05/18/data-and-viz/</guid>
-      <description>data visualization Exerciselibrary (dplyr)starwars## # A tibble: 87 x 14## name height mass hair_color skin_color eye_color birth_year sex gender## &amp;lt;chr&amp;gt; &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; ## 1 Luke S~ 172 77 blond fair blue 19 male mascu~## 2 C-3PO 167 75 &amp;lt;NA&amp;gt; gold yellow 112 none mascu~## 3 R2-D2 96 32 &amp;lt;NA&amp;gt; white, bl~ red 33 none mascu~## 4 Darth ~ 202 136 none white yellow 41.</description>
-    </item>
-    
-    <item>
-      <title>Data visualization using ggplot2 </title>
-      <link>/2021/05/18/data-visualization-using-ggplot2/</link>
-      <pubDate>Tue, 18 May 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/2021/05/18/data-visualization-using-ggplot2/</guid>
+      <guid>/2021/05/18/data-and-visualization/</guid>
       <description></description>
     </item>
     
@@ -31,7 +22,7 @@
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
       <guid>/about/</guid>
-      <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
+      <description>Dedicated, Motivated Biomedical Engineer with around 6 years of extensive experience in Hospital fields, as well as in laboratory equipment. Extensive experience in equipment installation, troubleshooting, general maintenance of different makes/models, safety testing, and performance testing of some medical equipment. In addition to, proven expertise in providing quality and timely support by planning, organizing, controlling and coordinating the activities of the Biomedical Engineering Department within the framework of existing policies, procedures and regulatory requirements.</description>
     </item>
     
   </channel>

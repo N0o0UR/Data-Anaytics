@@ -1,0 +1,27 @@
+---
+title: 'Data and Visualization '
+author: 'Nouran '
+date: '2021-05-18'
+slug: data-and-visualization
+categories:
+  - ggplot2
+tags: []
+---
+## Data visualization Exercise
+```{r}
+library(dplyr)
+starwars 
+```
+### Mass Vs Weight 
+We will study the mass vs weight relationship through a scatter plot
+```{r warning=False}
+library (ggplot2)
+ggplot(starwars,aes(x = height, y = mass)) +
+  geom_point() +
+  labs(title = "                               Mass vs. height of Starwars characters",
+       x = "Height (cm)", y = "Weight (kg)")
+  
+```
+
+
+
