@@ -21,6 +21,7 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   labs(title = "                                Mass vs. height of Starwars characters",
        x = "Height (cm)", y = "Weight (kg)")
 ```
+
 ### Anscombe's Quartet 
 We summarize the quartet information by each set of data 
 ```{r message=FALSE}

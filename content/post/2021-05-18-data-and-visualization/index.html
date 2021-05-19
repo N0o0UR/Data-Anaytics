@@ -38,9 +38,11 @@ ggplot(data = starwars, mapping = aes(x = height, y = mass)) +
   geom_point() +
   labs(title = &quot;                                Mass vs. height of Starwars characters&quot;,
        x = &quot;Height (cm)&quot;, y = &quot;Weight (kg)&quot;)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
-### Anscombe’s Quartet
-We summarize the quartet information by each set of data</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="anscombes-quartet" class="section level3">
+<h3>Anscombe’s Quartet</h3>
+<p>We summarize the quartet information by each set of data</p>
 <pre class="r"><code>library(Tmisc)
 quartet %&gt;%
   group_by(set) %&gt;%
