@@ -10,12 +10,12 @@ tags: []
 ```{r warning =FALSE, echo=FALSE, message=FALSE}
 library(palmerpenguins)
 library(tidyverse)
-ggplot(penguins,aes(x = bill_depth_mm, y = bill_length_mm,colour = species)) +
-  geom_point() +
+ggplot(penguins,aes(x = bill_depth_mm, y = bill_length_mm,colour = species, shape  = island)) +
+  geom_point() +scale_colour_viridis_d()+
   labs(title = "Bill depth and length",
        subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
        x = "Bill depth (mm)",
        y = "Bill length (mm)",
-       colour = "Species")
+       colour = "Species" )+facet_grid(species ~ sex)
 ```
 
