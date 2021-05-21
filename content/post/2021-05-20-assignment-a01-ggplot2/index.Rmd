@@ -1,0 +1,19 @@
+---
+title: 'Assignment A01: GGPLOT2 '
+author: Nouran
+date: '2021-05-20'
+slug: assignment-a01-ggplot2
+categories:
+  - ggplot2
+tags: []
+---
+# Assignment A01: GGPLOT2
+
+## The Effect of Vitamin C on Tooth Growth in Guinea Pigs
+
+In this blog we are going to show the effect of providing vitamin C on the growth of the odontoblasts of 60 guinea pigs.
+
+* Glossary:
+
+
+
