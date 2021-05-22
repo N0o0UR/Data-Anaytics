@@ -35,11 +35,6 @@ c. 2   mg/day
 The collected data is composed of 60 observations one for each pig where the tooth length, taken dose and the delivery method are recorded.
 
 
-## Data and Visualisation 
-
-In this section we are going to analyze and visualize the relationship between the variables in our data set through using the data visualization package ggplot2.
-
-
 ### The number of participant in each dose level providing the dose delivery method
 
 ```{r,message=FALSE,echo=FALSE,warning=FALSE}
