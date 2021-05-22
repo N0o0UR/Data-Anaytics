@@ -42,6 +42,7 @@ In this section we are going to analyze and visualize the relationship between t
 ### The number of participant in each dose level providing the dose delivery method
 
 ```{r}
+library(ggplot2)
 ggplot(ToothGrowth,aes(x=dose,fill=supp))+
   theme(axis.ticks.x=element_blank(), axis.text.x =element_blank() )+
   geom_bar(position = "dodge")+
@@ -57,7 +58,6 @@ from the above Fig (1), we can see that for every dose level there are 20 partic
 
 
 ```{r}
-library(ggplot2)
 ggplot(ToothGrowth, aes(len,dose,shape=supp,color=supp)) + 
   geom_point(shape=1) +
   labs(title="           Tooth Growth Vs Dose Level for each Delivery Method",x="Tooth Length",y="Dose",
