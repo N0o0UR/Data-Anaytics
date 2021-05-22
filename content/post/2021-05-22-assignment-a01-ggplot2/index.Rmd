@@ -10,7 +10,7 @@ tags: []
 
 
 
-## The Effect of Vitamin C on Tooth Growth in Guinea Pigs
+## First, The Effect of Vitamin C on Tooth Growth in Guinea Pigs
 
 In this blog we are going to show the effect of providing vitamin C on the growth of the odontoblasts of 60 guinea pigs.
 
@@ -42,7 +42,7 @@ In this section we are going to analyze and visualize the relationship between t
 
 ### The number of participant in each dose level providing the dose delivery method
 
-```{r}
+```{r,message=FALSE,echo=FALSE,warning=FALSE}
 library(ggplot2)
 ggplot(ToothGrowth,aes(x=dose,fill=supp))+
   theme(axis.ticks.x=element_blank(), axis.text.x =element_blank() )+
@@ -58,7 +58,7 @@ from the above Fig (1), we can see that for every dose level there are 20 partic
 
 
 
-```{r}
+```{r,message=FALSE,echo=FALSE,warning=FALSE}
 ggplot(ToothGrowth, aes(len,dose,shape=supp,color=supp)) + 
   geom_point(shape=1) +
   labs(title="           Tooth Growth Vs Dose Level for each Delivery Method",x="Tooth Length",y="Dose",
@@ -69,7 +69,7 @@ From Fig(2) we can see that the tooth growth that is determined by measuring the
 
 
 ### Grouping the data based on both the dose and the delivery method
-```{r}
+```{r,message=FALSE,echo=FALSE,warning=FALSE}
 ggplot(ToothGrowth,aes(x=dose,y=len,color=supp))+
   geom_point(shape=1,position="jitter")+
   labs(title="                               Tooth growth under each group",x="Dose Level",y="Tooth Length", caption="Fig(3)                                                                                               ")+
@@ -93,7 +93,7 @@ From Fig(4), we can see that the peak of the histogram occurs at length around 2
 
 
 ### Density of the tooth growth based on the dose delivery method
-```{r}
+```{r,message=FALSE,echo=FALSE,warning=FALSE}
 library(ggridges)
 ggplot(ToothGrowth,aes(x=len,fill=supp))+
 geom_density(alpha=0.5)+
@@ -106,7 +106,7 @@ Fig (5), shows the distribution of tooth length for each dose delivery method.
 
 ### Boxplot for the tooth length distribution based on the delivery method
 
-```{r}
+```{r,message=FALSE,echo=FALSE,warning=FALSE}
 ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = supp))+
   labs(title="           Tooth growth based on the dose delivery method",x="Delivery Method",y="Length",fill="Delivery Method", caption = "Fig(6)                                                                                    ")
 ```
@@ -115,18 +115,19 @@ Fig(6) shows the distribution of the tooth growth data based on each dose delive
 
 
 ### Density of the tooth growth based on the dose level
-```{r}
+```{r,message=FALSE,echo=FALSE,warning=FALSE}
 library(ggridges)
 ToothGrowth$dose <- as.factor(ToothGrowth$dose)
 ggplot(ToothGrowth,aes(x=len, fill=dose)) + geom_density(alpha=0.3)+
   labs(title="                Tooth growth based on the Dose level",x="Tooth Length",y="Density",fill="Dose  Level ",caption = "Fig(7)                                                                                      ")
  
 ```
+
 Fig (7), shows the distribution of tooth length for each dose level.
 
 ### Boxplot for the tooth length distribution based on the dose level
 
-```{r}
+```{r,message=FALSE,echo=FALSE,warning=FALSE}
 ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = dose))+
   labs(title="                        Tooth growth based on the dose level",x="Dose Level",y="Length",fill="Dose Level", caption = "Fig(8)                                                                                    ")
 ```
@@ -134,5 +135,15 @@ ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = dose))+
 
 Fig (8), shows the distribution of the tooth growth data based on each dose level. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.
 
+## Second, Average Heights and Weights for American Women
 
+
+This data set provides the average heights and weights for American women of age ranges from 30 to 39
+
+```{r}
+ggplot(women,aes(height,weight))+geom_point()+labs(title="                                                  Height vs weight",x="Height in In ",y="Weight in Ibs", caption = "Fig(9)                                                                                                       ")
+
+```
+
+Fig (9), shows us that the relationship between the height and the weight for the American women is linearly.
 

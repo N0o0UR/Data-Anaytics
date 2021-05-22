@@ -43,32 +43,16 @@ tags: []
 <p>In this section we are going to analyze and visualize the relationship between the variables in our data set through using the data visualization package ggplot2.</p>
 <div id="the-number-of-participant-in-each-dose-level-providing-the-dose-delivery-method" class="section level3">
 <h3>The number of participant in each dose level providing the dose delivery method</h3>
-<pre class="r"><code>library(ggplot2)
-ggplot(ToothGrowth,aes(x=dose,fill=supp))+
-  theme(axis.ticks.x=element_blank(), axis.text.x =element_blank() )+
-  geom_bar(position = &quot;dodge&quot;)+
-  labs(title=&quot;Number of participants in each dose level for each delivery method &quot;,x=&quot;Dose Level&quot;, fill=&quot;Delivery Method&quot;, subtitle = &quot;&quot;, 
-        caption = &quot;Fig (1)                                                                               &quot;)+
-  facet_wrap(~ dose)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 from the above Fig (1), we can see that for every dose level there are 20 participants and from which 10 participants received the dose through orange juice (OJ) and the other 10 participants received the dose through ascorbic acid (VC).</p>
 </div>
 <div id="the-relationship-between-the-tooth-growth-and-the-dose-level" class="section level3">
 <h3>The relationship between the tooth growth and the dose level</h3>
-<pre class="r"><code>ggplot(ToothGrowth, aes(len,dose,shape=supp,color=supp)) + 
-  geom_point(shape=1) +
-  labs(title=&quot;           Tooth Growth Vs Dose Level for each Delivery Method&quot;,x=&quot;Tooth Length&quot;,y=&quot;Dose&quot;,
-       caption = &quot;Fig(2)                                                                                       &quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 From Fig(2) we can see that the tooth growth that is determined by measuring the tooth length vs the dose level given to each pig providing the delivery method of the dose.</p>
 </div>
 <div id="grouping-the-data-based-on-both-the-dose-and-the-delivery-method" class="section level3">
 <h3>Grouping the data based on both the dose and the delivery method</h3>
-<pre class="r"><code>ggplot(ToothGrowth,aes(x=dose,y=len,color=supp))+
-  geom_point(shape=1,position=&quot;jitter&quot;)+
-  labs(title=&quot;                               Tooth growth under each group&quot;,x=&quot;Dose Level&quot;,y=&quot;Tooth Length&quot;, caption=&quot;Fig(3)                                                                                               &quot;)+
-  facet_wrap(supp~dose)+
-    theme(axis.ticks.x=element_blank(), axis.text.x =element_blank() )</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 From Fig(3), we can have a more detailed information about each group, where the grouping is done based on the dose level and the dose delivery method. in fig (3), we can see that the group with dose level equal 2 mg/day and deliver the dose through ascorbic acid (VC/2) achieved the largest tooth growth but when the dose was 0.5 mg/day and the delivery method was VC, it achieved the lowest tooth growth.</p>
 </div>
@@ -83,33 +67,21 @@ From Fig(4), we can see that the peak of the histogram occurs at length around 2
 </div>
 <div id="density-of-the-tooth-growth-based-on-the-dose-delivery-method" class="section level3">
 <h3>Density of the tooth growth based on the dose delivery method</h3>
-<pre class="r"><code>library(ggridges)
-ggplot(ToothGrowth,aes(x=len,fill=supp))+
-geom_density(alpha=0.5)+
-  labs(title=&quot;                Tooth growth based on the Delivery method&quot;,x=&quot;Tooth Length&quot;,y=&quot;Density&quot;,fill=&quot;Delivery Method&quot;, caption = &quot;Fig(5)                                                                                    &quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 Fig (5), shows the distribution of tooth length for each dose delivery method.</p>
 </div>
 <div id="boxplot-for-the-tooth-length-distribution-based-on-the-delivery-method" class="section level3">
 <h3>Boxplot for the tooth length distribution based on the delivery method</h3>
-<pre class="r"><code>ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = supp))+
-  labs(title=&quot;           Tooth growth based on the dose delivery method&quot;,x=&quot;Delivery Method&quot;,y=&quot;Length&quot;,fill=&quot;Delivery Method&quot;, caption = &quot;Fig(6)                                                                                    &quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Fig(6) shows the distribution of the tooth growth data based on each dose delivery method. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.</p>
 </div>
 <div id="density-of-the-tooth-growth-based-on-the-dose-level" class="section level3">
 <h3>Density of the tooth growth based on the dose level</h3>
-<pre class="r"><code>library(ggridges)
-ToothGrowth$dose &lt;- as.factor(ToothGrowth$dose)
-ggplot(ToothGrowth,aes(x=len, fill=dose)) + geom_density(alpha=0.3)+
-  labs(title=&quot;                Tooth growth based on the Dose level&quot;,x=&quot;Tooth Length&quot;,y=&quot;Density&quot;,fill=&quot;Dose  Level &quot;,caption = &quot;Fig(7)                                                                                      &quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 Fig (7), shows the distribution of tooth length for each dose level.</p>
 </div>
 <div id="boxplot-for-the-tooth-length-distribution-based-on-the-dose-level" class="section level3">
 <h3>Boxplot for the tooth length distribution based on the dose level</h3>
-<pre class="r"><code>ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = dose))+
-  labs(title=&quot;                        Tooth growth based on the dose level&quot;,x=&quot;Dose Level&quot;,y=&quot;Length&quot;,fill=&quot;Dose Level&quot;, caption = &quot;Fig(8)                                                                                    &quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Fig (8), shows the distribution of the tooth growth data based on each dose level. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.</p>
 </div>
