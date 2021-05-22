@@ -118,8 +118,8 @@ Fig(6) shows the distribution of the tooth growth data based on each dose delive
 ```{r}
 library(ggridges)
 ToothGrowth$dose <- as.factor(ToothGrowth$dose)
-ggplot(ToothGrowth,aes(x=len, fill=dose)) + geom_density(alpha=0.3)
-  labs(title="                Tooth growth based on the Dose level",x="Tooth Length",y="Density",fill="Dose  Level ",caption = "Fig(7)")
+ggplot(ToothGrowth,aes(x=len, fill=dose)) + geom_density(alpha=0.3)+
+  labs(title="                Tooth growth based on the Dose level",x="Tooth Length",y="Density",fill="Dose  Level ",caption = "Fig(7)                                                                                      ")
  
 ```
 Fig (7), shows the distribution of tooth length for each dose level.
@@ -132,7 +132,7 @@ ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = dose))+
 ```
 
 
-
+Fig (8), shows the distribution of the tooth growth data based on each dose level. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.
 
 
 

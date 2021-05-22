@@ -101,32 +101,16 @@ Fig (5), shows the distribution of tooth length for each dose delivery method.</
 <h3>Density of the tooth growth based on the dose level</h3>
 <pre class="r"><code>library(ggridges)
 ToothGrowth$dose &lt;- as.factor(ToothGrowth$dose)
-ggplot(ToothGrowth,aes(x=len, fill=dose)) + geom_density(alpha=0.3)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>  labs(title=&quot;                Tooth growth based on the Dose level&quot;,x=&quot;Tooth Length&quot;,y=&quot;Density&quot;,fill=&quot;Dose  Level &quot;,caption = &quot;Fig(7)&quot;)</code></pre>
-<pre><code>## $x
-## [1] &quot;Tooth Length&quot;
-## 
-## $y
-## [1] &quot;Density&quot;
-## 
-## $fill
-## [1] &quot;Dose  Level &quot;
-## 
-## $title
-## [1] &quot;                Tooth growth based on the Dose level&quot;
-## 
-## $caption
-## [1] &quot;Fig(7)&quot;
-## 
-## attr(,&quot;class&quot;)
-## [1] &quot;labels&quot;</code></pre>
-<p>Fig (7), shows the distribution of tooth length for each dose level.</p>
+ggplot(ToothGrowth,aes(x=len, fill=dose)) + geom_density(alpha=0.3)+
+  labs(title=&quot;                Tooth growth based on the Dose level&quot;,x=&quot;Tooth Length&quot;,y=&quot;Density&quot;,fill=&quot;Dose  Level &quot;,caption = &quot;Fig(7)                                                                                      &quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+Fig (7), shows the distribution of tooth length for each dose level.</p>
 </div>
 <div id="boxplot-for-the-tooth-length-distribution-based-on-the-dose-level" class="section level3">
 <h3>Boxplot for the tooth length distribution based on the dose level</h3>
 <pre class="r"><code>ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = dose))+
   labs(title=&quot;                        Tooth growth based on the dose level&quot;,x=&quot;Dose Level&quot;,y=&quot;Length&quot;,fill=&quot;Dose Level&quot;, caption = &quot;Fig(8)                                                                                    &quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Fig (8), shows the distribution of the tooth growth data based on each dose level. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.</p>
 </div>
 </div>
