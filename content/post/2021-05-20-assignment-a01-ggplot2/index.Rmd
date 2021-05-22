@@ -107,7 +107,7 @@ Fig (5), shows the distribution of tooth length for each dose delivery method.
 
 ```{r}
 ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = supp))+
-  labs(title="           Tooth growth based on the dose delivery method",x="Tooth Length",y="Density",fill="Delivery Method", caption = "Fig(6)                                                                                    ")
+  labs(title="           Tooth growth based on the dose delivery method",x="Delivery Method",y="Length",fill="Delivery Method", caption = "Fig(6)                                                                                    ")
 ```
 
 Fig(6) shows the distribution of the tooth growth data based on each dose delivery method. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.
@@ -121,11 +121,15 @@ ggplot(ToothGrowth,aes(x=len, fill=dose)) + geom_density(alpha=0.3)
   labs(title="                Tooth growth based on the Dose level",x="Tooth Length",y="Density",fill="Dose  Level ",caption = "Fig(7)")
  
 ```
-Fig (6), shows the distribution of tooth length for each dose level.
+Fig (7), shows the distribution of tooth length for each dose level.
 
+### Boxplot for the tooth length distribution based on the dose level
 
+```{r}
+ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = dose))+
+  labs(title="                        Tooth growth based on the dose level",x="Dose Level",y="Length",fill="Dose Level", caption = "Fig(6)                                                                                    ")
+```
 
-orange juice delivery method results in better tooth growth with the 0.5 and 1 mg/day doses while ascorbic acid delivery method results in better tooth growth with 2 mg/day dose.
 
 
 
