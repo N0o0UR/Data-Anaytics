@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Nouran -Fundamentals of Analytics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 20 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Assignment A01: GGPLOT2 </title>
+      <link>/2021/05/20/assignment-a01-ggplot2/</link>
+      <pubDate>Thu, 20 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/20/assignment-a01-ggplot2/</guid>
+      <description>The Effect of Vitamin C on Tooth Growth in Guinea PigsIn this blog we are going to show the effect of providing vitamin C on the growth of the odontoblasts of 60 guinea pigs.
+Keywords:Odontoblasts: cells responsible for tooth growthAscorbic acid: a form of vitamin C and coded as VC.Each pig received one of three dose levels of vitamin C which are:0.</description>
+    </item>
+    
     <item>
       <title>Data and Visualization</title>
       <link>/2021/05/18/data-and-visualization/</link>

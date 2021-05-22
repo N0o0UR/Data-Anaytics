@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<title>Assignment A01: GGPLOT2  - Nouran -Fundamentals of Analytics</title>
+<meta property="og:title" content="Assignment A01: GGPLOT2  - Nouran -Fundamentals of Analytics">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/N0o0UR">GitHub</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/nouran-mostafa/">linkedin</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Assignment A01: GGPLOT2 </h1>
+
+    
+    <span class="article-date">2021-05-20</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/05/20/assignment-a01-ggplot2/index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="the-effect-of-vitamin-c-on-tooth-growth-in-guinea-pigs" class="section level2">
+<h2>The Effect of Vitamin C on Tooth Growth in Guinea Pigs</h2>
+<p>In this blog we are going to show the effect of providing vitamin C on the growth of the odontoblasts of 60 guinea pigs.</p>
+<div id="keywords" class="section level4">
+<h4>Keywords:</h4>
+<ul>
+<li>Odontoblasts: cells responsible for tooth growth</li>
+<li>Ascorbic acid: a form of vitamin C and coded as VC.</li>
+</ul>
+</div>
+<div id="each-pig-received-one-of-three-dose-levels-of-vitamin-c-which-are" class="section level4">
+<h4>Each pig received one of three dose levels of vitamin C which are:</h4>
+<ol style="list-style-type: lower-alpha">
+<li>0.5 mg/day</li>
+<li>1 mg/day</li>
+<li>2 mg/day</li>
+</ol>
+</div>
+<div id="the-vitamin-c-dose-is-provided-by-one-of-the-two-following-delivery-methods" class="section level4">
+<h4>The Vitamin C dose is provided by one of the two following delivery methods:</h4>
+<ol style="list-style-type: decimal">
+<li>Through orange juice.</li>
+<li>Through ascorbic acid.</li>
+</ol>
+<p>The collected data is composed of 60 observations one for each pig where the tooth length, taken dose and the delivery method are recorded.</p>
+</div>
+</div>
+<div id="data-and-visualisation" class="section level2">
+<h2>Data and Visualisation</h2>
+<p>In this section we are going to analyse and visualize the relationship between the variables in our data set through using the data visualization package ggplot2</p>
+<div id="plotting-the-relationship-between-the-tooth-length-and-the-given-dose" class="section level3">
+<h3>plotting the relationship between the tooth length and the given dose:</h3>
+<pre class="r"><code>library(ggplot2)
+ggplot(ToothGrowth, aes(len,dose,shape=supp,color=supp)) + 
+  geom_point() +
+  labs(title=&quot;                Tooth Length Vs Dose for each Delivery Method&quot;,x=&quot;Tooth Length&quot;,y=&quot;Dose&quot;)</code></pre>
+<p><img src="/2021/05/20/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+From the above graph we can see that the orange juice delivery method results in better tooth growth with the 0.5 and 1 mg/day doses while ascorbic acid delivery method results in better tooth growth with 2 mg/day dose.</p>
+</div>
+<div id="plotting-the-dose-histogram-along-with-the-supplement-type" class="section level3">
+<h3>plotting the dose histogram along with the supplement type:</h3>
+<pre class="r"><code>ggplot(ToothGrowth,aes(x=dose,fill=supp))+
+  theme(axis.ticks.x=element_blank(), axis.text.x =element_blank() )+
+  geom_bar()+
+  labs(title=&quot;                Dose Histogram providing  the Delivery method&quot;,x=&quot;Dose&quot;)+
+  facet_wrap(~ dose)</code></pre>
+<p><img src="/2021/05/20/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>library(ggridges)
+ggplot(ToothGrowth,aes(x=len,fill=supp))+
+geom_density(alpha=0.5)+
+  labs(title=&quot;                Tooth growth based on the Delivery method&quot;,x=&quot;Tooth Length&quot;,y=&quot;Density&quot;,fill=&quot;Delivery Method&quot;)</code></pre>
+<p><img src="/2021/05/20/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = supp))</code></pre>
+<p><img src="/2021/05/20/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(ToothGrowth,aes(x=dose,y=len,color=supp))+
+  geom_point(shape=1,position=&quot;jitter&quot;)+
+  labs(title=&quot;                Dose Histogram providing  the Delivery method&quot;,x=&quot;Dose&quot;)+
+  facet_wrap(supp~dose)+
+    theme(axis.ticks.x=element_blank(), axis.text.x =element_blank() )</code></pre>
+<p><img src="/2021/05/20/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(ToothGrowth,aes(x=len))+
+geom_histogram()+
+labs(title=&quot;                Dose Histogram providing  the Delivery method&quot;,x=&quot;Tooth Length&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="/2021/05/20/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
