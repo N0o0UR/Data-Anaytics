@@ -102,10 +102,6 @@
 </ol>
 <p>The collected data is composed of 60 observations one for each pig where the tooth length, taken dose and the delivery method are recorded.</p>
 </div>
-</div>
-<div id="data-and-visualisation" class="section level2">
-<h2>Data and Visualisation</h2>
-<p>In this section we are going to analyze and visualize the relationship between the variables in our data set through using the data visualization package ggplot2.</p>
 <div id="the-number-of-participant-in-each-dose-level-providing-the-dose-delivery-method" class="section level3">
 <h3>The number of participant in each dose level providing the dose delivery method</h3>
 <p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
@@ -121,42 +117,47 @@ From Fig(2) we can see that the tooth growth that is determined by measuring the
 <p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 From Fig(3), we can have a more detailed information about each group, where the grouping is done based on the dose level and the dose delivery method. in fig (3), we can see that the group with dose level equal 2 mg/day and deliver the dose through ascorbic acid (VC/2) achieved the largest tooth growth but when the dose was 0.5 mg/day and the delivery method was VC, it achieved the lowest tooth growth.</p>
 </div>
+<div id="distribution-of-tooth-growth-at-each-dose-level-for-each-delivery-method" class="section level3">
+<h3>Distribution of Tooth growth at each dose level for each delivery method</h3>
+<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+From Fig (4), we can see that at dose level 0.5 and 1 mg/day the tooth growth is better when the delivery method is the orange juice and at dose level of 2mg/day the tooth growth is better when the dose is delivered by ascorbic acid.</p>
+</div>
 <div id="tooth-length-histogram" class="section level3">
 <h3>Tooth length histogram</h3>
 <pre class="r"><code>ggplot(ToothGrowth,aes(x=len))+
 geom_histogram(binwidth = 1)+
 labs(title=&quot;                                Counts for Tooth length measurements &quot;,x=&quot;Tooth Length&quot;,
- caption = &quot;Fig(4)                                                                                                       &quot;)</code></pre>
-<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-From Fig(4), we can see that the peak of the histogram occurs at length around 26 with 5 teeth occurred at the bin.</p>
+ caption = &quot;Fig(5)                                                                                                       &quot;)</code></pre>
+<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+From Fig(5), we can see that the peak of the histogram occurs at length around 26 with 5 teeth occurred at the bin.</p>
 </div>
 <div id="density-of-the-tooth-growth-based-on-the-dose-delivery-method" class="section level3">
 <h3>Density of the tooth growth based on the dose delivery method</h3>
-<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
-Fig (5), shows the distribution of tooth length for each dose delivery method.</p>
+<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+Fig (6), shows the distribution of tooth length for each dose delivery method.</p>
 </div>
 <div id="boxplot-for-the-tooth-length-distribution-based-on-the-delivery-method" class="section level3">
 <h3>Boxplot for the tooth length distribution based on the delivery method</h3>
-<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Fig(6) shows the distribution of the tooth growth data based on each dose delivery method. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.</p>
+<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Fig(7) shows the distribution of the tooth growth data based on each dose delivery method. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.</p>
 </div>
 <div id="density-of-the-tooth-growth-based-on-the-dose-level" class="section level3">
 <h3>Density of the tooth growth based on the dose level</h3>
-<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>Fig (7), shows the distribution of tooth length for each dose level.</p>
+<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Fig (8), shows the distribution of tooth length for each dose level.</p>
 </div>
 <div id="boxplot-for-the-tooth-length-distribution-based-on-the-dose-level" class="section level3">
 <h3>Boxplot for the tooth length distribution based on the dose level</h3>
-<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>Fig (8), shows the distribution of the tooth growth data based on each dose level. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.</p>
+<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Fig (9), shows the distribution of the tooth growth data based on each dose level. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.</p>
 </div>
 </div>
 <div id="second-average-heights-and-weights-for-american-women" class="section level2">
 <h2>Second, Average Heights and Weights for American Women</h2>
 <p>This data set provides the average heights and weights for American women of age ranges from 30 to 39</p>
-<pre class="r"><code>ggplot(women,aes(height,weight))+geom_point()+labs(title=&quot;                                                  Height vs weight&quot;,x=&quot;Height in In &quot;,y=&quot;Weight in Ibs&quot;, caption = &quot;Fig(9)                                                                                                       &quot;)</code></pre>
-<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>Fig (9), shows us that the relationship between the height and the weight for the American women is linearly.</p>
+<pre class="r"><code>ggplot(women,aes(height,weight))+geom_point()+labs(title=&quot;                                                  Height vs weight&quot;,x=&quot;Height in In &quot;,y=&quot;Weight in Ibs&quot;, caption = &quot;Fig(10)                                                                                                       &quot;)</code></pre>
+<p><img src="/2021/05/22/assignment-a01-ggplot2/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Fig (10), shows us that the relationship between the height and the weight for the American women is linearly.</p>
 </div>
 
     </div>

@@ -74,17 +74,27 @@ ggplot(ToothGrowth,aes(x=dose,y=len,color=supp))+
 ```
 From Fig(3), we can have a more detailed information about each group, where the grouping is done based on the dose level and the dose delivery method. in fig (3), we can see that the group with dose level equal 2 mg/day and deliver the dose through ascorbic acid (VC/2) achieved the largest tooth growth but when the dose was 0.5 mg/day and the delivery method was VC, it achieved the lowest tooth growth.
 
+### Distribution of Tooth growth at each dose level for each delivery method
 
-
+```{r,message=FALSE,echo=FALSE,warning=FALSE}
+library(ggridges)
+ggplot(ToothGrowth, aes(x = len, y = as.factor(dose), fill = supp)) + 
+  geom_density_ridges(alpha = 0.5)+
+labs(title="Distribution of Tooth growth at each dose level for each delivery method ",x="Tooth Length",
+ y="Dose level",caption = "Fig(4)                                                                                                ")
+```
+From Fig (4), we can see that at dose level 0.5 and 1 mg/day the tooth growth is better when the delivery method is the orange juice and at dose level of 2mg/day the tooth growth is better when the dose is delivered by ascorbic acid.
+ 
+ 
 ### Tooth length histogram
 
 ```{r}
 ggplot(ToothGrowth,aes(x=len))+
 geom_histogram(binwidth = 1)+
 labs(title="                                Counts for Tooth length measurements ",x="Tooth Length",
- caption = "Fig(4)                                                                                                       ")
+ caption = "Fig(5)                                                                                                       ")
 ```
-From Fig(4), we can see that the peak of the histogram occurs at length around 26 with 5 teeth occurred at the bin.
+From Fig(5), we can see that the peak of the histogram occurs at length around 26 with 5 teeth occurred at the bin.
 
 
 ### Density of the tooth growth based on the dose delivery method
@@ -92,21 +102,21 @@ From Fig(4), we can see that the peak of the histogram occurs at length around 2
 library(ggridges)
 ggplot(ToothGrowth,aes(x=len,fill=supp))+
 geom_density(alpha=0.5)+
-  labs(title="                Tooth growth based on the Delivery method",x="Tooth Length",y="Density",fill="Delivery Method", caption = "Fig(5)                                                                                    ")
+  labs(title="                Tooth growth based on the Delivery method",x="Tooth Length",y="Density",fill="Delivery Method", caption = "Fig(6)                                                                                    ")
  
 
 
 ```
-Fig (5), shows the distribution of tooth length for each dose delivery method.
+Fig (6), shows the distribution of tooth length for each dose delivery method.
 
 ### Boxplot for the tooth length distribution based on the delivery method
 
 ```{r,message=FALSE,echo=FALSE,warning=FALSE}
 ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = supp))+
-  labs(title="           Tooth growth based on the dose delivery method",x="Delivery Method",y="Length",fill="Delivery Method", caption = "Fig(6)                                                                                    ")
+  labs(title="           Tooth growth based on the dose delivery method",x="Delivery Method",y="Length",fill="Delivery Method", caption = "Fig(7)                                                                                    ")
 ```
 
-Fig(6) shows the distribution of the tooth growth data based on each dose delivery method. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.
+Fig(7) shows the distribution of the tooth growth data based on each dose delivery method. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.
 
 
 ### Density of the tooth growth based on the dose level
@@ -114,21 +124,21 @@ Fig(6) shows the distribution of the tooth growth data based on each dose delive
 library(ggridges)
 ToothGrowth$dose <- as.factor(ToothGrowth$dose)
 ggplot(ToothGrowth,aes(x=len, fill=dose)) + geom_density(alpha=0.3)+
-  labs(title="                Tooth growth based on the Dose level",x="Tooth Length",y="Density",fill="Dose  Level ",caption = "Fig(7)                                                                                      ")
+  labs(title="                Tooth growth based on the Dose level",x="Tooth Length",y="Density",fill="Dose  Level ",caption = "Fig(8)                                                                                      ")
  
 ```
 
-Fig (7), shows the distribution of tooth length for each dose level.
+Fig (8), shows the distribution of tooth length for each dose level.
 
 ### Boxplot for the tooth length distribution based on the dose level
 
 ```{r,message=FALSE,echo=FALSE,warning=FALSE}
 ggplot(ToothGrowth, aes(x = supp, y = len)) + geom_boxplot(aes(fill = dose))+
-  labs(title="                        Tooth growth based on the dose level",x="Dose Level",y="Length",fill="Dose Level", caption = "Fig(8)                                                                                    ")
+  labs(title="                        Tooth growth based on the dose level",x="Dose Level",y="Length",fill="Dose Level", caption = "Fig(9)                                                                                    ")
 ```
 
 
-Fig (8), shows the distribution of the tooth growth data based on each dose level. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.
+Fig (9), shows the distribution of the tooth growth data based on each dose level. This boxplot shows the minimum, maximum, median, first quartile and third quartile in the data set.
 
 ## Second, Average Heights and Weights for American Women
 
@@ -136,9 +146,11 @@ Fig (8), shows the distribution of the tooth growth data based on each dose leve
 This data set provides the average heights and weights for American women of age ranges from 30 to 39
 
 ```{r}
-ggplot(women,aes(height,weight))+geom_point()+labs(title="                                                  Height vs weight",x="Height in In ",y="Weight in Ibs", caption = "Fig(9)                                                                                                       ")
+ggplot(women,aes(height,weight))+geom_point()+labs(title="                                                  Height vs weight",x="Height in In ",y="Weight in Ibs", caption = "Fig(10)                                                                                                       ")
 
 ```
 
-Fig (9), shows us that the relationship between the height and the weight for the American women is linearly.
+Fig (10), shows us that the relationship between the height and the weight for the American women is linearly.
+
+
 
