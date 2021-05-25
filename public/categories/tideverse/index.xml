@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tideverse on Nouran -Fundamentals of Analytics</title>
+    <link>/categories/tideverse/</link>
+    <description>Recent content in Tideverse on Nouran -Fundamentals of Analytics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 25 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/tideverse/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Data Wrangling using Tidyverse</title>
+      <link>/2021/05/25/data-wrangling-using-tidyverse/</link>
+      <pubDate>Tue, 25 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/25/data-wrangling-using-tidyverse/</guid>
+      <description>Import the Hotels.cvs filelibrary(tidyverse)## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --## v ggplot2 3.3.3 v purrr 0.3.4## v tibble 3.1.1 v dplyr 1.0.6## v tidyr 1.1.3 v stringr 1.4.0## v readr 1.4.0 v forcats 0.5.1## -- Conflicts ------------------------------------------ tidyverse_conflicts() --## x dplyr::filter() masks stats::filter()## x dplyr::lag() masks stats::lag()hotels &amp;lt;- read_csv(&amp;quot;hotels.csv&amp;quot;)## ## -- Column specification --------------------------------------------------------## cols(## .</description>
+    </item>
+    
+  </channel>
+</rss>
