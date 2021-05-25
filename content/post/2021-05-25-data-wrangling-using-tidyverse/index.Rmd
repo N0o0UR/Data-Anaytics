@@ -1,0 +1,89 @@
+---
+title: Data Wrangling using Tidyverse
+author: Nouran
+date: '2021-05-25'
+slug: data-wrangling-using-tidyverse
+categories:
+  - Tideverse
+tags: []
+---
+
+## Import the Hotels.cvs file
+
+
+```{r ,warning=FALSE}
+library(tidyverse)
+hotels <- read_csv("hotels.csv")
+head(hotels)
+names(hotels)
+
+```
+
+## Select a variable 
+```{r}
+# select(hotels, lead_time)
+# select(hotels, hotel,lead_time)
+hotels %>%
+  select(hotel, lead_time) %>%
+  arrange(desc(lead_time))
+```
+
+## Select a range of variable 
+```{r}
+hotels %>%
+  select(hotel, lead_time)
+
+hotels %>%
+  select(starts_with("arrival"))
+```
+
+## select a range of rows /cases
+
+```{r}
+hotels %>%
+  # we will select 1st, 5th, 8th and 10th rows
+  slice(c(1,5,8, 10))
+hotels %>%
+  filter(hotel == "City Hotel")
+
+hotels %>%
+  filter( 
+    adults == 0,
+    children >= 1
+    ) %>% 
+  select(adults, babies, children)
+
+hotels %>%
+  filter( 
+    adults == 0,     
+    children >= 1 & babies >= 1     # & means and
+    ) %>%
+  select(adults, babies, children)
+```
+
+
+## summarizing 
+```{r}
+hotels %>%
+  count(hotel,market_segment)
+```
+
+## mutation
+```{r}
+little_ones<- hotels
+little_ones %<>%
+  mutate(little_ones = children + babies) %>%
+  select(children, babies, little_ones) %>%
+  arrange(desc(little_ones))
+
+```
+
+## Summary 
+
+```{r}
+summary<- hotels %>%
+  group_by(hotel) %>%
+  summarise(mean_adr = mean(adr))
+summary
+```
+
