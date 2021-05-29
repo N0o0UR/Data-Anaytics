@@ -26,6 +26,7 @@ names(hotels)
 hotels %>%
   select(hotel, lead_time) %>%
   arrange(desc(lead_time))
+
 ```
 
 ## Select a range of variable 
@@ -60,6 +61,8 @@ hotels %>%
     ) %>%
   select(adults, babies, children)
 ```
+
+
 
 
 ## summarizing 
