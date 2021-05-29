@@ -1,0 +1,129 @@
+---
+title: 'Assignment A02: TIDYVERSE'
+author: Nouran
+date: '2021-05-27'
+slug: assignment-a02-tidyverse
+categories:
+  - Tideverse
+tags: []
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="covid-19-world-vaccination-progress" class="section level2">
+<h2>COVID-19 World Vaccination Progress</h2>
+<p>Daily and Total Vaccination for COVID-19 in the World from Our World in Data, Data is collected daily from Our World in Data GitHub repository for covid-19, merged and uploaded.
+the used data set in this blog is updated version (119) and it was released in may 26th,2021.</p>
+<pre class="r"><code>library(tidyverse)
+library(dplyr)
+
+
+# reading the CSV file after placing it in the same directory where getdw() was used to determine the current directory
+country_vacc &lt;- read_csv(&quot;country_vaccinations.csv&quot;) </code></pre>
+</div>
+<div id="creating-two-tables-from-the-country_vaccinations-dataset" class="section level2">
+<h2>Creating two tables from the country_vaccinations dataset</h2>
+<p>table_1 includes the following variables:</p>
+<ul>
+<li>country: this is the country for which the vaccination information is provided</li>
+<li>iso_code: ISO code for the country</li>
+<li>date: Date of observation</li>
+<li>people_vaccinated: Total number of people who received at least one vaccine dose</li>
+<li>daily_vaccinations:for a certain data entry, the number of vaccination for that date/country</li>
+</ul>
+<p>table_2 includes the following variables:</p>
+<ul>
+<li>country: this is the country for which the vaccination information is provided</li>
+<li>iso_code: ISO code for the country</li>
+<li>date: Date of observation</li>
+<li>people_fully_vaccinated: this is the number of people that received the entire set of immunization according to the immunization scheme (typically 2)</li>
+</ul>
+<pre class="r"><code># Creating the first table (table_1)
+table_1 &lt;- country_vacc %&gt;%
+select (country,iso_code,date,people_vaccinated,daily_vaccinations)
+
+
+# Creating the second table (table_2)
+table_2 &lt;- country_vacc %&gt;%
+select (country,iso_code,date, people_fully_vaccinated) </code></pre>
+</div>
+<div id="calculating-the-percentage-of-people-who-are-fully-vaccinated-in-canada" class="section level2">
+<h2>Calculating the percentage of people who are fully vaccinated in Canada</h2>
+<p>to calculate the percentage of people who are fully vaccinated we need first to join table_1 and table_2, then applying filter to pick only the Canada data set thenWe can calculate the percentage of people who are fully vaccinated by dividing the number of fully vaccinated people by the total number of vaccinations per day and multiply the result by 100.</p>
+<pre class="r"><code>percent_of_fully_vacc &lt;- table_1 %&gt;%
+  left_join(table_2)%&gt;%
+  filter(country==&quot;Canada&quot;) %&gt;%
+  mutate(percent_of_fully_vaccinated_people=people_fully_vaccinated/daily_vaccinations*100)</code></pre>
+<pre><code>## Joining, by = c(&quot;country&quot;, &quot;iso_code&quot;, &quot;date&quot;)</code></pre>
+<pre class="r"><code>ggplot(percent_of_fully_vacc,aes(date,percent_of_fully_vaccinated_people))+
+  geom_col()+
+  labs(title=&quot;              Percetage of fully vaccinated people from the daily vaccination&quot;,x=&quot;Date&quot;,y=&quot;percentage of fully vaccinated&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="creating-a-summary-table-for-canada-vaccination-records" class="section level2">
+<h2>Creating a summary table for Canada vaccination records</h2>
+<p>The Can_vacc table will be created after fully joining the two tables which are table country_vacc and percent_of_fully_vacc, then filter Canada data and from the filtered data select and rearrange the date, daily_vaccinations, vaccines, percent_of_fully_vaccinated_people variables</p>
+<pre class="r"><code>Can_vacc &lt;- country_vacc  %&gt;%
+full_join(percent_of_fully_vacc)  %&gt;%
+filter(country==&quot;Canada&quot;) %&gt;%
+select(date,daily_vaccinations,vaccines,percent_of_fully_vaccinated_people)%&gt;%
+relocate(percent_of_fully_vaccinated_people, .after =daily_vaccinations )</code></pre>
+</div>
+<div id="grouping-the-data-by-the-vaccine-scheme" class="section level2">
+<h2>grouping the data by the vaccine scheme</h2>
+<p>we will group our data based on the Vaccines scheme and calculate the mean of the daily_vaccinations and arrange the result in descending order to know the most used vaccine scheme</p>
+<pre class="r"><code>country_vacc %&gt;% group_by(vaccines) %&gt;% 
+  drop_na() %&gt;% 
+  summarise(mean_daily_vacc=mean(daily_vaccinations))%&gt;%
+  arrange(desc(mean_daily_vacc))</code></pre>
+<pre><code>## # A tibble: 35 x 2
+##    vaccines                                                      mean_daily_vacc
+##    &lt;chr&gt;                                                                   &lt;dbl&gt;
+##  1 Johnson&amp;Johnson, Moderna, Pfizer/BioNTech                            2129707.
+##  2 Covaxin, Oxford/AstraZeneca                                          1825083.
+##  3 EpiVacCorona, Sputnik V                                               260009.
+##  4 CanSino, Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac, Sputn~         200752.
+##  5 Pfizer/BioNTech, Sinovac                                              144037.
+##  6 CanSino, Oxford/AstraZeneca, Sinopharm/Beijing, Sinovac, Spu~         141494 
+##  7 Oxford/AstraZeneca, Pfizer/BioNTech, Sinovac                          140997.
+##  8 Moderna, Oxford/AstraZeneca, Pfizer/BioNTech                          134150.
+##  9 Oxford/AstraZeneca, Sinovac                                           129134.
+## 10 Johnson&amp;Johnson, Moderna, Oxford/AstraZeneca, Pfizer/BioNTech          80371.
+## # ... with 25 more rows</code></pre>
+</div>
+<div id="grouping-the-data-by-the-source-of-that-data" class="section level2">
+<h2>grouping the data by the source of that data</h2>
+<p>we will group our data based on the source of the data and showing the number of data obtained from each source and then ranking the sources to determine the most source used to collect the data</p>
+<pre class="r"><code>Source&lt;-country_vacc %&gt;% 
+  group_by(source_name)  %&gt;% 
+  summarize(n=n())  %&gt;% 
+  arrange(desc(n))</code></pre>
+</div>
+<div id="creating-a-monthly-vaccination-records" class="section level2">
+<h2>Creating a monthly vaccination records</h2>
+<p>monthly_vacc table includes the vaccination records at the end of Jan., Feb., Mach , April and May for each of Australia, Bahamas, Canada and United Kingdom.</p>
+<p>In monthly_vacc_wider table we dropped any NA data and rearranged the variables to have a wider table</p>
+<pre class="r"><code>monthly_vacc &lt;- country_vacc   %&gt;%
+filter(date==&quot;2021-01-31&quot;| date==&quot;2021-02-28&quot;|date==&quot;2021-03-31&quot;|date==&quot;2021-04-30&quot;|date==&quot;2021-05-20&quot;) %&gt;%
+  select(country,date,total_vaccinations)%&gt;%
+  filter(country==&quot;Canada&quot;|country==&quot;Australia&quot; |country==&quot;United Kingdom&quot;|country==&quot;Bahamas&quot;)
+
+monthly_vacc_wider &lt;- monthly_vacc %&gt;% drop_na()  %&gt;% 
+  pivot_wider(names_from = date,values_from = total_vaccinations)</code></pre>
+</div>
+<div id="creating-april-vaccination-records" class="section level2">
+<h2>Creating April vaccination records</h2>
+<p>April_vacc table includes the vaccination records of April for each of Australia, Bahamas, Canada, United Kingdom, Hong Kong, Luxembourg, Russia, Scotland, Switzerland, United States and Turkey</p>
+<p>In April_vacc_longer table the variables were rearranged to have a longer table and any NA values have been replaced by 0.</p>
+<pre class="r"><code>April_vacc &lt;- country_vacc   %&gt;%
+filter(date==&quot;2021-04-30&quot;) %&gt;%
+  select(country,date,total_vaccinations)%&gt;%
+  filter(country==&quot;Canada&quot;|country==&quot;Australia&quot; |country==&quot;United Kingdom&quot;|country==&quot;Bahamas&quot;|country==&quot;Hong Kong&quot;|country==&quot;Luxembourg&quot;|country==&quot;Russia&quot;|country==&quot;Scotland&quot;|country==&quot;Switzerland&quot;|country==&quot;United States&quot;|country==&quot;Turkey&quot;) %&gt;%
+  pivot_wider(names_from = country,values_from = total_vaccinations)
+
+
+April_vacc_longer &lt;- April_vacc %&gt;%
+  pivot_longer(cols=&quot;Australia&quot;:&quot;United States&quot;,names_to = &quot;Country&quot;,values_to = &quot;Total_vaccinations&quot;) %&gt;%
+  replace_na(list(Total_vaccinations=0))</code></pre>
+</div>

@@ -70,7 +70,7 @@ percent_of_fully_vacc <- table_1 %>%
   filter(country=="Canada") %>%
   mutate(percent_of_fully_vaccinated_people=people_fully_vaccinated/daily_vaccinations*100)
 
-ggplot(Table_4,aes(date,percent_of_fully_vaccinated_people))+
+ggplot(percent_of_fully_vacc,aes(date,percent_of_fully_vaccinated_people))+
   geom_col()+
   labs(title="              Percetage of fully vaccinated people from the daily vaccination",x="Date",y="percentage of fully vaccinated")
  
