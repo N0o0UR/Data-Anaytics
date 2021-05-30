@@ -1,0 +1,170 @@
+---
+title: 'Assignment A02: TIDYVERSE'
+author: Nouran
+date: '2021-05-29'
+slug: assignment-a02-tidyverse
+categories:
+  - Tideverse
+tags: []
+---
+
+ 
+
+
+
+## COVID-19 World Vaccination Progress
+
+Daily and Total Vaccination for COVID-19 in the World from Our World in Data, Data is collected daily from Our World in Data GitHub repository for covid-19, merged and uploaded.
+the used data set in this blog is updated version (119) and it was released in may 26th,2021.
+
+```{r}
+library(tidyverse)
+library(dplyr)
+
+
+# reading the CSV file after placing it in the same directory where getdw() was used to determine the current directory
+country_vacc <- read_csv("country_vaccinations.csv") 
+
+
+```
+
+## Creating two tables from the country_vaccinations dataset
+
+table_1 includes the following variables:
+
+* country: this is the country for which the vaccination information is provided
+* iso_code: ISO code for the country
+* date: Date of observation
+* people_vaccinated: Total number of people who received at least one vaccine dose
+* daily_vaccinations:for a certain data entry, the number of vaccination for that date/country
+
+table_2 includes the following variables:
+
+* country: this is the country for which the vaccination information is provided
+* iso_code: ISO code for the country
+* date: Date of observation
+* people_fully_vaccinated:  this is the number of people that received the entire set of immunization according to the immunization scheme (typically 2)
+
+
+
+```{r}
+
+# Creating the first table (table_1)
+table_1 <- country_vacc %>%
+select (country,iso_code,date,people_vaccinated,daily_vaccinations)
+
+table_1
+
+# Creating the second table (table_2)
+table_2 <- country_vacc %>%
+select (country,iso_code,date, people_fully_vaccinated) 
+table_2
+```
+
+
+## Calculating the percentage of people who are fully vaccinated in Canada
+
+to calculate the percentage of people who are fully vaccinated we need first to join table_1 and table_2, then applying filter to pick only the Canada data set thenWe can calculate the percentage of people who are fully vaccinated by dividing the number of fully vaccinated people by the total number of vaccinations per day and multiply the result by 100.
+
+
+
+```{r}
+percent_of_fully_vacc <- table_1 %>%
+  left_join(table_2)%>%
+  filter(country=="Canada") %>%
+  mutate(percent_of_fully_vaccinated_people=people_fully_vaccinated/daily_vaccinations*100)
+
+ggplot(percent_of_fully_vacc,aes(date,percent_of_fully_vaccinated_people))+
+  geom_col()+
+  labs(title="              Percetage of fully vaccinated people from the daily vaccination",x="Date",y="percentage of fully vaccinated")
+ 
+
+percent_of_fully_vacc
+```
+
+
+## Creating a summary table for Canada vaccination records
+
+The Can_vacc table will be created after fully joining the two tables which are table country_vacc and percent_of_fully_vacc, then filter Canada data and from the filtered data select and rearrange the date, daily_vaccinations, vaccines, percent_of_fully_vaccinated_people variables 
+
+```{r}
+Can_vacc <- country_vacc  %>%
+full_join(percent_of_fully_vacc)  %>%
+filter(country=="Canada") %>%
+select(date,daily_vaccinations,vaccines,percent_of_fully_vaccinated_people)%>%
+relocate(percent_of_fully_vaccinated_people, .after =daily_vaccinations )
+ Can_vacc
+```
+
+
+
+## grouping the data by the vaccine scheme
+
+we will group our data based on  the Vaccines scheme and calculate the mean of the daily_vaccinations and arrange the result in descending order to know the most used vaccine scheme
+
+```{r}
+Vaccine_scheme<- country_vacc %>% group_by(vaccines) %>% 
+  drop_na() %>% 
+  summarise(mean_daily_vacc=mean(daily_vaccinations))%>%
+  arrange(desc(mean_daily_vacc))
+
+Vaccine_scheme
+```
+
+
+## grouping the data by the source of that data 
+
+we will group our data based on the source of the data and showing the number of data obtained from each source and then ranking the sources to determine the most source used to collect the data 
+
+```{r}
+Source<-country_vacc %>% 
+  group_by(source_name)  %>% 
+  summarize(n=n())  %>% 
+  arrange(desc(n))
+Source
+```
+
+## Creating a monthly vaccination records
+
+monthly_vacc table includes the vaccination records at the end of Jan., Feb., Mach , April and May for each of Australia, Bahamas, Canada and United Kingdom.
+
+In monthly_vacc_wider table we dropped any NA data and rearranged the variables to have a wider table 
+
+
+```{r}
+monthly_vacc <- country_vacc   %>%
+filter(date=="2021-01-31"| date=="2021-02-28"|date=="2021-03-31"|date=="2021-04-30"|date=="2021-05-20") %>%
+  select(country,date,total_vaccinations)%>%
+  filter(country=="Canada"|country=="Australia" |country=="United Kingdom"|country=="Bahamas")
+
+monthly_vacc_wider <- monthly_vacc %>% drop_na()  %>% 
+  pivot_wider(names_from = date,values_from = total_vaccinations)
+
+monthly_vacc
+monthly_vacc_wider
+
+```
+
+
+## Creating April vaccination records
+
+April_vacc table includes the vaccination records of April for each of Australia, Bahamas, Canada, United Kingdom, Hong Kong, Luxembourg, Russia, Scotland, Switzerland, United States and Turkey
+
+In April_vacc_longer table the variables  were rearranged to have a longer table and any NA values have been replaced by 0.
+
+```{r}
+April_vacc <- country_vacc   %>%
+filter(date=="2021-04-30") %>%
+  select(country,date,total_vaccinations)%>%
+  filter(country=="Canada"|country=="Australia" |country=="United Kingdom"|country=="Bahamas"|country=="Hong Kong"|country=="Luxembourg"|country=="Russia"|country=="Scotland"|country=="Switzerland"|country=="United States"|country=="Turkey") %>%
+  pivot_wider(names_from = country,values_from = total_vaccinations)
+
+
+April_vacc_longer <- April_vacc %>%
+  pivot_longer(cols="Australia":"United States",names_to = "Country",values_to = "Total_vaccinations") %>%
+  replace_na(list(Total_vaccinations=0))
+
+April_vacc
+April_vacc_longer
+```
+
