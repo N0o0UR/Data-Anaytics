@@ -92,6 +92,7 @@ glimpse(fav_food)
 ## ETL of SES varaible 
 
 ```{r}
+
 fav_food %>%
   count(ses)
 
@@ -100,8 +101,6 @@ fav_food <- fav_food %>%
 fav_food %>%
   count(ses)
 fav_food
-
-
 
 ```
 
