@@ -8,6 +8,7 @@ tags: []
 ---
 
 ## Import and tranform relig_income.csv file 
+
 ```{r}
 library(readxl)
 rel_inc <- read_excel("relig-income.xlsx")
