@@ -7,14 +7,14 @@ categories:
   - Tideverse
 tags: []
 ---
-
+ 
 
 ## COVID-19 World Vaccination Progress
 
 Daily and Total Vaccination for COVID-19 in the World from Our World in Data, Data is collected daily from Our World in Data GitHub repository for covid-19, merged and uploaded.
 the used data set in this blog is updated version (119) and it was released in may 26th,2021.
 
-```{r, message=FALSE}
+```{r}
 library(tidyverse)
 library(dplyr)
 
@@ -44,17 +44,18 @@ table_2 includes the following variables:
 
 
 
-```{r, message=FALSE}
+```{r}
 
 # Creating the first table (table_1)
 table_1 <- country_vacc %>%
 select (country,iso_code,date,people_vaccinated,daily_vaccinations)
 
+table_1
 
 # Creating the second table (table_2)
 table_2 <- country_vacc %>%
 select (country,iso_code,date, people_fully_vaccinated) 
-
+table_2
 ```
 
 
@@ -64,7 +65,7 @@ to calculate the percentage of people who are fully vaccinated we need first to 
 
 
 
-```{r,warning=FALSE}
+```{r}
 percent_of_fully_vacc <- table_1 %>%
   left_join(table_2)%>%
   filter(country=="Canada") %>%
@@ -75,7 +76,7 @@ ggplot(percent_of_fully_vacc,aes(date,percent_of_fully_vaccinated_people))+
   labs(title="              Percetage of fully vaccinated people from the daily vaccination",x="Date",y="percentage of fully vaccinated")
  
 
-
+percent_of_fully_vacc
 ```
 
 
@@ -83,13 +84,13 @@ ggplot(percent_of_fully_vacc,aes(date,percent_of_fully_vaccinated_people))+
 
 The Can_vacc table will be created after fully joining the two tables which are table country_vacc and percent_of_fully_vacc, then filter Canada data and from the filtered data select and rearrange the date, daily_vaccinations, vaccines, percent_of_fully_vaccinated_people variables 
 
-```{r,warning=FALSE,message=FALSE}
+```{r}
 Can_vacc <- country_vacc  %>%
 full_join(percent_of_fully_vacc)  %>%
 filter(country=="Canada") %>%
 select(date,daily_vaccinations,vaccines,percent_of_fully_vaccinated_people)%>%
 relocate(percent_of_fully_vaccinated_people, .after =daily_vaccinations )
- 
+ Can_vacc
 ```
 
 
@@ -99,12 +100,12 @@ relocate(percent_of_fully_vaccinated_people, .after =daily_vaccinations )
 we will group our data based on  the Vaccines scheme and calculate the mean of the daily_vaccinations and arrange the result in descending order to know the most used vaccine scheme
 
 ```{r}
-country_vacc %>% group_by(vaccines) %>% 
+Vaccine_scheme<- country_vacc %>% group_by(vaccines) %>% 
   drop_na() %>% 
   summarise(mean_daily_vacc=mean(daily_vaccinations))%>%
   arrange(desc(mean_daily_vacc))
 
-
+Vaccine_scheme
 ```
 
 
@@ -117,7 +118,7 @@ Source<-country_vacc %>%
   group_by(source_name)  %>% 
   summarize(n=n())  %>% 
   arrange(desc(n))
-
+Source
 ```
 
 ## Creating a monthly vaccination records
@@ -136,7 +137,8 @@ filter(date=="2021-01-31"| date=="2021-02-28"|date=="2021-03-31"|date=="2021-04-
 monthly_vacc_wider <- monthly_vacc %>% drop_na()  %>% 
   pivot_wider(names_from = date,values_from = total_vaccinations)
 
-
+monthly_vacc
+monthly_vacc_wider
 ```
 
 
@@ -158,7 +160,7 @@ April_vacc_longer <- April_vacc %>%
   pivot_longer(cols="Australia":"United States",names_to = "Country",values_to = "Total_vaccinations") %>%
   replace_na(list(Total_vaccinations=0))
 
-
-
+April_vacc
+April_vacc_longer
 ```
 

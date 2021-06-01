@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Nouran -Fundamentals of Analytics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Assignment A02: TIDYVERSE</title>
+      <link>/2021/05/27/assignment-a02-tidyverse/</link>
+      <pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/27/assignment-a02-tidyverse/</guid>
+      <description>COVID-19 World Vaccination ProgressDaily and Total Vaccination for COVID-19 in the World from Our World in Data, Data is collected daily from Our World in Data GitHub repository for covid-19, merged and uploaded.the used data set in this blog is updated version (119) and it was released in may 26th,2021.
+library(tidyverse)## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --## v ggplot2 3.3.3 v purrr 0.3.4## v tibble 3.</description>
+    </item>
+    
     <item>
       <title>Data Wrangling using Tidyverse</title>
       <link>/2021/05/25/data-wrangling-using-tidyverse/</link>

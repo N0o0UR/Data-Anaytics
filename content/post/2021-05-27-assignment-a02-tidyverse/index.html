@@ -15,12 +15,39 @@ tags: []
 <h2>COVID-19 World Vaccination Progress</h2>
 <p>Daily and Total Vaccination for COVID-19 in the World from Our World in Data, Data is collected daily from Our World in Data GitHub repository for covid-19, merged and uploaded.
 the used data set in this blog is updated version (119) and it was released in may 26th,2021.</p>
-<pre class="r"><code>library(tidyverse)
-library(dplyr)
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>## v ggplot2 3.3.3     v purrr   0.3.4
+## v tibble  3.1.1     v dplyr   1.0.6
+## v tidyr   1.1.3     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
 
 
 # reading the CSV file after placing it in the same directory where getdw() was used to determine the current directory
 country_vacc &lt;- read_csv(&quot;country_vaccinations.csv&quot;) </code></pre>
+<pre><code>## 
+## -- Column specification --------------------------------------------------------
+## cols(
+##   country = col_character(),
+##   iso_code = col_character(),
+##   date = col_date(format = &quot;&quot;),
+##   total_vaccinations = col_double(),
+##   people_vaccinated = col_double(),
+##   people_fully_vaccinated = col_double(),
+##   daily_vaccinations_raw = col_double(),
+##   daily_vaccinations = col_double(),
+##   total_vaccinations_per_hundred = col_double(),
+##   people_vaccinated_per_hundred = col_double(),
+##   people_fully_vaccinated_per_hundred = col_double(),
+##   daily_vaccinations_per_million = col_double(),
+##   vaccines = col_character(),
+##   source_name = col_character(),
+##   source_website = col_character()
+## )</code></pre>
 </div>
 <div id="creating-two-tables-from-the-country_vaccinations-dataset" class="section level2">
 <h2>Creating two tables from the country_vaccinations dataset</h2>
@@ -43,10 +70,39 @@ country_vacc &lt;- read_csv(&quot;country_vaccinations.csv&quot;) </code></pre>
 table_1 &lt;- country_vacc %&gt;%
 select (country,iso_code,date,people_vaccinated,daily_vaccinations)
 
-
-# Creating the second table (table_2)
+table_1</code></pre>
+<pre><code>## # A tibble: 20,390 x 5
+##    country     iso_code date       people_vaccinated daily_vaccinations
+##    &lt;chr&gt;       &lt;chr&gt;    &lt;date&gt;                 &lt;dbl&gt;              &lt;dbl&gt;
+##  1 Afghanistan AFG      2021-02-22                 0                 NA
+##  2 Afghanistan AFG      2021-02-23                NA               1367
+##  3 Afghanistan AFG      2021-02-24                NA               1367
+##  4 Afghanistan AFG      2021-02-25                NA               1367
+##  5 Afghanistan AFG      2021-02-26                NA               1367
+##  6 Afghanistan AFG      2021-02-27                NA               1367
+##  7 Afghanistan AFG      2021-02-28              8200               1367
+##  8 Afghanistan AFG      2021-03-01                NA               1580
+##  9 Afghanistan AFG      2021-03-02                NA               1794
+## 10 Afghanistan AFG      2021-03-03                NA               2008
+## # ... with 20,380 more rows</code></pre>
+<pre class="r"><code># Creating the second table (table_2)
 table_2 &lt;- country_vacc %&gt;%
-select (country,iso_code,date, people_fully_vaccinated) </code></pre>
+select (country,iso_code,date, people_fully_vaccinated) 
+table_2</code></pre>
+<pre><code>## # A tibble: 20,390 x 4
+##    country     iso_code date       people_fully_vaccinated
+##    &lt;chr&gt;       &lt;chr&gt;    &lt;date&gt;                       &lt;dbl&gt;
+##  1 Afghanistan AFG      2021-02-22                      NA
+##  2 Afghanistan AFG      2021-02-23                      NA
+##  3 Afghanistan AFG      2021-02-24                      NA
+##  4 Afghanistan AFG      2021-02-25                      NA
+##  5 Afghanistan AFG      2021-02-26                      NA
+##  6 Afghanistan AFG      2021-02-27                      NA
+##  7 Afghanistan AFG      2021-02-28                      NA
+##  8 Afghanistan AFG      2021-03-01                      NA
+##  9 Afghanistan AFG      2021-03-02                      NA
+## 10 Afghanistan AFG      2021-03-03                      NA
+## # ... with 20,380 more rows</code></pre>
 </div>
 <div id="calculating-the-percentage-of-people-who-are-fully-vaccinated-in-canada" class="section level2">
 <h2>Calculating the percentage of people who are fully vaccinated in Canada</h2>
@@ -59,7 +115,24 @@ select (country,iso_code,date, people_fully_vaccinated) </code></pre>
 <pre class="r"><code>ggplot(percent_of_fully_vacc,aes(date,percent_of_fully_vaccinated_people))+
   geom_col()+
   labs(title=&quot;              Percetage of fully vaccinated people from the daily vaccination&quot;,x=&quot;Date&quot;,y=&quot;percentage of fully vaccinated&quot;)</code></pre>
+<pre><code>## Warning: Removed 23 rows containing missing values (position_stack).</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>percent_of_fully_vacc</code></pre>
+<pre><code>## # A tibble: 163 x 7
+##    country iso_code date       people_vaccinated daily_vaccinations
+##    &lt;chr&gt;   &lt;chr&gt;    &lt;date&gt;                 &lt;dbl&gt;              &lt;dbl&gt;
+##  1 Canada  CAN      2020-12-14                NA                 NA
+##  2 Canada  CAN      2020-12-15                NA                718
+##  3 Canada  CAN      2020-12-16                NA               1509
+##  4 Canada  CAN      2020-12-17                NA               2399
+##  5 Canada  CAN      2020-12-18                NA               2792
+##  6 Canada  CAN      2020-12-19                NA               2378
+##  7 Canada  CAN      2020-12-20                NA               2122
+##  8 Canada  CAN      2020-12-21                NA               2980
+##  9 Canada  CAN      2020-12-22                NA               3697
+## 10 Canada  CAN      2020-12-23                NA               4581
+## # ... with 153 more rows, and 2 more variables: people_fully_vaccinated &lt;dbl&gt;,
+## #   percent_of_fully_vaccinated_people &lt;dbl&gt;</code></pre>
 </div>
 <div id="creating-a-summary-table-for-canada-vaccination-records" class="section level2">
 <h2>Creating a summary table for Canada vaccination records</h2>
@@ -69,14 +142,32 @@ full_join(percent_of_fully_vacc)  %&gt;%
 filter(country==&quot;Canada&quot;) %&gt;%
 select(date,daily_vaccinations,vaccines,percent_of_fully_vaccinated_people)%&gt;%
 relocate(percent_of_fully_vaccinated_people, .after =daily_vaccinations )</code></pre>
+<pre><code>## Joining, by = c(&quot;country&quot;, &quot;iso_code&quot;, &quot;date&quot;, &quot;people_vaccinated&quot;, &quot;people_fully_vaccinated&quot;, &quot;daily_vaccinations&quot;)</code></pre>
+<pre class="r"><code> Can_vacc</code></pre>
+<pre><code>## # A tibble: 163 x 4
+##    date       daily_vaccinatio~ percent_of_fully_vaccin~ vaccines               
+##    &lt;date&gt;                 &lt;dbl&gt;                    &lt;dbl&gt; &lt;chr&gt;                  
+##  1 2020-12-14                NA                       NA Moderna, Oxford/AstraZ~
+##  2 2020-12-15               718                       NA Moderna, Oxford/AstraZ~
+##  3 2020-12-16              1509                       NA Moderna, Oxford/AstraZ~
+##  4 2020-12-17              2399                       NA Moderna, Oxford/AstraZ~
+##  5 2020-12-18              2792                       NA Moderna, Oxford/AstraZ~
+##  6 2020-12-19              2378                       NA Moderna, Oxford/AstraZ~
+##  7 2020-12-20              2122                       NA Moderna, Oxford/AstraZ~
+##  8 2020-12-21              2980                       NA Moderna, Oxford/AstraZ~
+##  9 2020-12-22              3697                       NA Moderna, Oxford/AstraZ~
+## 10 2020-12-23              4581                       NA Moderna, Oxford/AstraZ~
+## # ... with 153 more rows</code></pre>
 </div>
 <div id="grouping-the-data-by-the-vaccine-scheme" class="section level2">
 <h2>grouping the data by the vaccine scheme</h2>
 <p>we will group our data based on the Vaccines scheme and calculate the mean of the daily_vaccinations and arrange the result in descending order to know the most used vaccine scheme</p>
-<pre class="r"><code>country_vacc %&gt;% group_by(vaccines) %&gt;% 
+<pre class="r"><code>Vaccine_scheme&lt;- country_vacc %&gt;% group_by(vaccines) %&gt;% 
   drop_na() %&gt;% 
   summarise(mean_daily_vacc=mean(daily_vaccinations))%&gt;%
-  arrange(desc(mean_daily_vacc))</code></pre>
+  arrange(desc(mean_daily_vacc))
+
+Vaccine_scheme</code></pre>
 <pre><code>## # A tibble: 35 x 2
 ##    vaccines                                                      mean_daily_vacc
 ##    &lt;chr&gt;                                                                   &lt;dbl&gt;
@@ -98,7 +189,22 @@ relocate(percent_of_fully_vaccinated_people, .after =daily_vaccinations )</code>
 <pre class="r"><code>Source&lt;-country_vacc %&gt;% 
   group_by(source_name)  %&gt;% 
   summarize(n=n())  %&gt;% 
-  arrange(desc(n))</code></pre>
+  arrange(desc(n))
+Source</code></pre>
+<pre><code>## # A tibble: 98 x 2
+##    source_name                                            n
+##    &lt;chr&gt;                                              &lt;int&gt;
+##  1 Ministry of Health                                  5984
+##  2 World Health Organization                           2248
+##  3 Government of the United Kingdom                     725
+##  4 SPC Public Health Division                           510
+##  5 Federal Office of Public Health                      273
+##  6 Ministry of Public Health                            255
+##  7 Norwegian Institute of Public Health                 175
+##  8 Official data from provinces via covid19tracker.ca   163
+##  9 National Health Commission                           162
+## 10 Official data from local governments via gogov.ru    162
+## # ... with 88 more rows</code></pre>
 </div>
 <div id="creating-a-monthly-vaccination-records" class="section level2">
 <h2>Creating a monthly vaccination records</h2>
@@ -110,7 +216,36 @@ filter(date==&quot;2021-01-31&quot;| date==&quot;2021-02-28&quot;|date==&quot;20
   filter(country==&quot;Canada&quot;|country==&quot;Australia&quot; |country==&quot;United Kingdom&quot;|country==&quot;Bahamas&quot;)
 
 monthly_vacc_wider &lt;- monthly_vacc %&gt;% drop_na()  %&gt;% 
-  pivot_wider(names_from = date,values_from = total_vaccinations)</code></pre>
+  pivot_wider(names_from = date,values_from = total_vaccinations)
+
+monthly_vacc</code></pre>
+<pre><code>## # A tibble: 17 x 3
+##    country        date       total_vaccinations
+##    &lt;chr&gt;          &lt;date&gt;                  &lt;dbl&gt;
+##  1 Australia      2021-02-28              31894
+##  2 Australia      2021-03-31             670349
+##  3 Australia      2021-04-30            2179544
+##  4 Australia      2021-05-20            3371728
+##  5 Bahamas        2021-03-31                 NA
+##  6 Bahamas        2021-04-30                 NA
+##  7 Bahamas        2021-05-20                 NA
+##  8 Canada         2021-01-31             957229
+##  9 Canada         2021-02-28            1887059
+## 10 Canada         2021-03-31            5690380
+## 11 Canada         2021-04-30           13420198
+## 12 Canada         2021-05-20           19841562
+## 13 United Kingdom 2021-01-31            9790576
+## 14 United Kingdom 2021-02-28           21091267
+## 15 United Kingdom 2021-03-31           35660902
+## 16 United Kingdom 2021-04-30           49319518
+## 17 United Kingdom 2021-05-20           59178397</code></pre>
+<pre class="r"><code>monthly_vacc_wider</code></pre>
+<pre><code>## # A tibble: 3 x 6
+##   country       `2021-02-28` `2021-03-31` `2021-04-30` `2021-05-20` `2021-01-31`
+##   &lt;chr&gt;                &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1 Australia            31894       670349      2179544      3371728           NA
+## 2 Canada             1887059      5690380     13420198     19841562       957229
+## 3 United Kingd~     21091267     35660902     49319518     59178397      9790576</code></pre>
 </div>
 <div id="creating-april-vaccination-records" class="section level2">
 <h2>Creating April vaccination records</h2>
@@ -125,5 +260,28 @@ filter(date==&quot;2021-04-30&quot;) %&gt;%
 
 April_vacc_longer &lt;- April_vacc %&gt;%
   pivot_longer(cols=&quot;Australia&quot;:&quot;United States&quot;,names_to = &quot;Country&quot;,values_to = &quot;Total_vaccinations&quot;) %&gt;%
-  replace_na(list(Total_vaccinations=0))</code></pre>
+  replace_na(list(Total_vaccinations=0))
+
+April_vacc</code></pre>
+<pre><code>## # A tibble: 1 x 12
+##   date       Australia Bahamas   Canada `Hong Kong` Luxembourg   Russia Scotland
+##   &lt;date&gt;         &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 2021-04-30   2179544      NA 13420198     1413788         NA 19834392  4075205
+## # ... with 4 more variables: Switzerland &lt;dbl&gt;, Turkey &lt;dbl&gt;,
+## #   United Kingdom &lt;dbl&gt;, United States &lt;dbl&gt;</code></pre>
+<pre class="r"><code>April_vacc_longer</code></pre>
+<pre><code>## # A tibble: 11 x 3
+##    date       Country        Total_vaccinations
+##    &lt;date&gt;     &lt;chr&gt;                       &lt;dbl&gt;
+##  1 2021-04-30 Australia                 2179544
+##  2 2021-04-30 Bahamas                         0
+##  3 2021-04-30 Canada                   13420198
+##  4 2021-04-30 Hong Kong                 1413788
+##  5 2021-04-30 Luxembourg                      0
+##  6 2021-04-30 Russia                   19834392
+##  7 2021-04-30 Scotland                  4075205
+##  8 2021-04-30 Switzerland               2769526
+##  9 2021-04-30 Turkey                   22816891
+## 10 2021-04-30 United Kingdom           49319518
+## 11 2021-04-30 United States           240159677</code></pre>
 </div>
