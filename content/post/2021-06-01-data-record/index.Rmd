@@ -10,6 +10,7 @@ tags: []
 ## Import and tranform relig_income.csv file 
 
 ```{r}
+library(tidyverse)
 library(readxl)
 rel_inc <- read_excel("relig-income.xlsx")
 rel_inc_long <- rel_inc %>%
@@ -49,19 +50,10 @@ ggplot(rel_inc_long, aes(y = religion, x = frequency)) +
 ## Fill Barplot with Income
 
 ```{r}
-rel_inc_long <- rel_inc_long %>%
-  mutate(religion = case_when(
-    religion == "Evangelical Protestant"           ~ "Ev. Protestant",
-    religion == "Historically Black Protestant"    ~ "Hist. Black Protestant",
-    religion == 'Unaffiliated (religious "nones")' ~ "Unaffiliated",
-    TRUE                                           ~ religion
-  ))
-rel_inc_long <- rel_inc_long %>%
-  mutate(religion = fct_rev(religion))
+
 
 ggplot(rel_inc_long, aes(y = religion, x = frequency, fill=income )) +
   geom_col(position = "fill")
-
 
 
 ```
