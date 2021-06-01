@@ -139,6 +139,7 @@ monthly_vacc_wider <- monthly_vacc %>% drop_na()  %>%
 
 monthly_vacc
 monthly_vacc_wider
+
 ```
 
 
