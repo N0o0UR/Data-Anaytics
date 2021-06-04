@@ -1,0 +1,200 @@
+---
+title: A03
+author: ''
+date: '2021-06-03'
+slug: a03
+categories:
+  - Tideverse
+tags: []
+---
+
+## Reading the lego_sales.csv file
+
+```{r}
+library(tidyverse)
+lego_sales <- read_csv("lego_sales.csv")
+glimpse(lego_sales)
+lego_sales
+```
+
+## Q1.What are the three most common first names of customers?
+
+### The answer:
+
+```{r}
+common_first_names<- lego_sales %>%
+  count(first_name,sort = TRUE)  %>%
+  head(3)
+cat("The three most common first names of customers are ",common_first_names$first_name,sep = "\n ")
+
+```
+
+
+
+### Q2.What are the three most common themes of lego sets purchased?
+
+### The answer:
+
+```{r}
+common_themes <-lego_sales %>%
+  count(theme ,sort = TRUE)%>%
+  head(3)
+cat("The three most common themes of lego sets purchased are  ",common_themes$theme ,sep = "\n ")
+```
+
+
+### Q3.Among the most common theme of lego sets purchased, what is the most common subtheme?
+
+### The answer:
+
+
+```{r}
+  
+common_subtheme<- lego_sales %>%
+  filter (theme=="Star Wars") %>%
+  count(subtheme,sort = TRUE )%>%
+  head(1)
+cat("The most common subtheme among the most common theme of lego sets purchased is ",common_subtheme$subtheme ,sep = "\n ")
+```
+
+### Q4.Create a new variable called age_group and group the ages into the following categories: “18 and under”, “19 - 25”, “26 - 35”, “36 - 50”, “51 and over”. Be sure to save the updated data set so you can use the new variable in other questions.
+
+### The answer:
+
+
+```{r}
+
+  lego_sales_age_group <- lego_sales %>%
+  mutate (age_group=case_when(
+    between(age,min(age),18)~ "18 and under",
+    between(age,19,25)~ "19 - 25",
+    between(age,26,35)~ "26 - 35",
+    between(age,36,50)~ "36 - 50",
+    between(age,51,max(age))~ "51 and over"
+        ))
+## Displaying the new data frame with the new variable:
+
+lego_sales_age_group
+
+## Displaying selected variables from the new generated data frame so that the new variable age_group can be clearly seen:
+
+lego_sales_age_group %>% select(first_name,age,age_group)
+
+```
+
+
+### Q5.What is the probability a randomly selected customer
+
+* is in the 19 - 25 age group?
+* is in the 19 - 25 age group and purchased a Duplo theme set?
+* is in the 19 - 25 age group given they purchased a Duplo theme set?
+
+### The answer:
+
+
+```{r}
+# 1st part Calculating the probability a randomly selected customer is in the 19 - 25 age group
+from19_to25_age_group <- lego_sales_age_group %>%
+count(age_group) %>%
+  filter( age_group=="19 - 25")
+
+prob_of_19_25 <- (from19_to25_age_group$n/nrow(lego_sales))
+       
+# 2nd part Calculating the probability a randomly selected customer is in the 19 - 25 age group and purchased a Duplo theme set
+from19_25_duplo_theme  <- lego_sales_age_group %>%
+  filter( age_group=="19 - 25" & theme=="Duplo")
+
+prob_from19_25_duplo_theme <- (nrow(from19_25_duplo_theme)/nrow(lego_sales))
+
+# 3rd part Calculating the probability a randomly selected customer is in the 19 - 25 age group given they purchased a Duplo theme set
+duplo_theme_customers  <- lego_sales_age_group %>%
+  filter(theme=="Duplo")
+  
+prob_of_19_given_duplo_theme <- (nrow(from19_25_duplo_theme)/nrow(duplo_theme_customers))
+
+
+cat("The probability of a randomly selected customer is in the 19 - 25 age groupis ",prob_of_19_25 ,sep = "\n ")
+cat("The probability of a randomly selected customer is in the 19 - 25 age group and purchased a Duplo theme is ",prob_from19_25_duplo_theme ,sep = "\n ")
+cat("The probability of a randomly selected customer is in the 19 - 25 age group given they purchased a Duplo theme is ",prob_of_19_given_duplo_theme ,sep = "\n ")
+
+```
+
+### Q6.Which age group has purchased the largest number of lego sets? How many did they purchase?
+
+### The answer:
+
+```{r}
+lego_sales_by_age_group <- lego_sales_age_group %>% group_by(age_group) %>% 
+  summarise(total_quantity=sum(quantity)) %>% 
+  arrange(desc(total_quantity))%>%
+  head(1)
+  cat("The age group that has purchased the largest number of lego sets is",lego_sales_by_age_group$age_group,sep="\n")
+  
+  cat("They purchased a total number of lego sets equal to ",lego_sales_by_age_group$total_quantity,sep="\n")
+
+```
+
+
+### Q7.Which age group has spent the most money on legos? How much did they spend?
+
+### The answer:
+
+```{r}
+most_spending_by_age_group <- lego_sales_age_group %>% mutate(total_price=us_price*quantity) %>%
+  group_by(age_group) %>% 
+  summarise(total_spending=sum(total_price)) %>% 
+  arrange(desc(total_spending))%>%
+  head(1)
+cat("The age group that has spent the most money on Lego is  ",most_spending_by_age_group$age_group ,sep = "\n ")
+cat("They spend amount of US dollars equal to  ",most_spending_by_age_group$total_spending ,sep = "\n ")
+
+  
+```
+
+### Q8.Come up with a question you want to answer using this data, and write it down. Then, create a data visualization that answers the question, and briefly explain how your visualization answers the question.
+
+### The answer:
+
+* The question could be how much revenue Lego makes from each theme and the contribution of each age group in each theme revenue?
+
+
+The answer of this question can be obtained by first multiplying the quantity of sets purchased by every customer by the price per each set, then group the data frame by the theme so that the revenue from each theme can be obtained, plotting the theme on the x axis and the revenue on the y axis of the column plot would allow us easily to determine the revenue of each theme and the age groups contributed in each theme revenue.
+
+From the plot we can see that Star Wars theme makes the most revenue of more than 4000 Us dollars where 26-35 and 36-50 age groups have more contributions on this revenue than the other age groups, next is the Ninjago theme of revenue more than 2000 US dollar where we can see that 18 and under age group doesn't contribute in this revenue much and city theme of revenue more than 2000 US dollar where we can see that this theme doesn't attract the 51 and over age group and the themes that makes the little revenues are Classic, Collectable Minifigures and seasonal themes where each theme attract only a certain age group that is 36-50, 51 and over and 26-35 respectively.  
+
+The Duplo, Elvis, Friends, Gear and Minicraft themes make revenue of a little more than 1000 us dollars where the contribution of the 18 and under age group is very small, the revenue from the remaining themes is less than 1000 us dollars and the age groups contribution vary from one theme to another.   
+
+```{r}
+lego_sales_by_theme <- lego_sales_age_group %>% mutate(total_price=us_price*quantity) %>%
+  group_by(theme) 
+
+ggplot(lego_sales_by_theme,aes(x=theme,y=total_price,fill=age_group))+
+  geom_col()+
+  theme(axis.text.x=element_text(color = "black", size=9, angle=90, vjust=.5, hjust=0.7))
+```
+
+### Q9.Add one element to the plot from the previous exercise to change the look of the plot without changing the underlying data. For example, you can change the theme, background color, add annotations, etc. State the change you’re making and display the updated visualization. We encourage you to be creative!
+
+### The answer:
+
+
+* Title for the plot has been added 
+* Titles for the 2 axes of the plot have been added 
+* Black and white theme is used   
+* The background color has been changed 
+* viridis used to update the color map
+
+```{r}
+
+ggplot(lego_sales_by_theme,aes(x=theme,y=total_price,fill=age_group))+
+  geom_col() +
+  scale_fill_viridis_d() +
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, angle=90, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  labs(
+    x = "Theme", y = "The revenue in US Dollars ", 
+    title = "The revenue associated with each theme and the contribution \n                        of each age group in this revenue", 
+         fill = "Age Groups" 
+    )
+```

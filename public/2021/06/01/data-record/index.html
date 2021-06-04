@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Data Record</h1>
@@ -76,8 +76,8 @@
 <script src="/2021/06/01/data-record/index_files/header-attrs/header-attrs.js"></script>
 
 
-<div id="import-and-tranform-relig_income.csv-file" class="section level2">
-<h2>Import and tranform relig_income.csv file</h2>
+<div id="import-and-transform-relig-income.csv-file" class="section level2">
+<h2>Import and Transform Relig-income.csv file</h2>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
 <pre><code>## v ggplot2 3.3.3     v purrr   0.3.4
@@ -111,6 +111,7 @@ rel_inc_long &lt;- rel_inc %&gt;%
     religion == &#39;Unaffiliated (religious &quot;nones&quot;)&#39; ~ &quot;Unaffiliated&quot;,
     TRUE                                           ~ religion
   ))
+
 rel_inc_long &lt;- rel_inc_long %&gt;%
   mutate(religion = fct_rev(religion))
 
@@ -121,8 +122,49 @@ ggplot(rel_inc_long, aes(y = religion, x = frequency)) +
 <div id="fill-barplot-with-income" class="section level2">
 <h2>Fill Barplot with Income</h2>
 <pre class="r"><code>ggplot(rel_inc_long, aes(y = religion, x = frequency, fill=income )) +
-  geom_col(position = &quot;fill&quot;)</code></pre>
+  geom_col()</code></pre>
 <p><img src="/2021/06/01/data-record/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(rel_inc_long, aes(y = religion, x = frequency, fill=income )) +
+  geom_col(position = &quot;fill&quot;)</code></pre>
+<p><img src="/2021/06/01/data-record/index_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>ggplot(rel_inc_long, aes(y = religion, x = frequency, fill=income )) +
+  geom_col(position = &quot;fill&quot;)+
+  scale_fill_viridis_d()</code></pre>
+<p><img src="/2021/06/01/data-record/index_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+</div>
+<div id="change-the-theme-of-the-plot" class="section level2">
+<h2>Change the Theme of the plot</h2>
+<pre class="r"><code>ggplot(rel_inc_long, aes(y = religion, x = frequency, fill = income)) +
+  geom_col(position = &quot;fill&quot;) +
+  scale_fill_viridis_d() +
+  theme_minimal()</code></pre>
+<p><img src="/2021/06/01/data-record/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(rel_inc_long, aes(y = religion, x = frequency, fill = income)) +
+  geom_col(position = &quot;fill&quot;) +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/2021/06/01/data-record/index_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>ggplot(rel_inc_long, aes(y = religion, x = frequency, fill = income)) +
+  geom_col(position = &quot;fill&quot;) +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(nrow = 2, byrow = TRUE))</code></pre>
+<p><img src="/2021/06/01/data-record/index_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<pre class="r"><code>ggplot(rel_inc_long, aes(y = religion, x = frequency, fill = income)) +
+  geom_col(position = &quot;fill&quot;) +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(nrow = 2, byrow = TRUE)) +
+  labs(
+    x = &quot;Proportion&quot;, y = &quot;&quot;, 
+    title = &quot;Income distribution by religious group&quot;, 
+    subtitle = &quot;Source: Pew Research Center, Religious Landscape Study&quot;, 
+    fill = &quot;Income&quot; 
+    )</code></pre>
+<p><img src="/2021/06/01/data-record/index_files/figure-html/unnamed-chunk-4-4.png" width="672" /></p>
 </div>
 
     </div>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<title>A03 - Nouran -Fundamentals of Analytics</title>
+<meta property="og:title" content="A03 - Nouran -Fundamentals of Analytics">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/N0o0UR">GitHub</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/nouran-mostafa/">linkedin</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">10 min read</span>
+    
+
+    <h1 class="article-title">A03</h1>
+
+    
+    <span class="article-date">2021-06-03</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/06/03/a03/index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="reading-the-lego_sales.csv-file" class="section level2">
+<h2>Reading the lego_sales.csv file</h2>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>## v ggplot2 3.3.3     v purrr   0.3.4
+## v tibble  3.1.1     v dplyr   1.0.6
+## v tidyr   1.1.3     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>lego_sales &lt;- read_csv(&quot;lego_sales.csv&quot;)</code></pre>
+<pre><code>## 
+## -- Column specification --------------------------------------------------------
+## cols(
+##   first_name = col_character(),
+##   last_name = col_character(),
+##   age = col_double(),
+##   phone_number = col_character(),
+##   set_id = col_double(),
+##   number = col_character(),
+##   theme = col_character(),
+##   subtheme = col_character(),
+##   year = col_double(),
+##   name = col_character(),
+##   pieces = col_double(),
+##   us_price = col_double(),
+##   image_url = col_character(),
+##   quantity = col_double()
+## )</code></pre>
+<pre class="r"><code>glimpse(lego_sales)</code></pre>
+<pre><code>## Rows: 620
+## Columns: 14
+## $ first_name   &lt;chr&gt; &quot;Kimberly&quot;, &quot;Neel&quot;, &quot;Neel&quot;, &quot;Chelsea&quot;, &quot;Chelsea&quot;, &quot;Chelse~
+## $ last_name    &lt;chr&gt; &quot;Beckstead&quot;, &quot;Garvin&quot;, &quot;Garvin&quot;, &quot;Bouchard&quot;, &quot;Bouchard&quot;, ~
+## $ age          &lt;dbl&gt; 24, 35, 35, 41, 41, 41, 19, 19, 37, 37, 19, 19, 20, 36, 3~
+## $ phone_number &lt;chr&gt; &quot;216-555-2549&quot;, &quot;819-555-3189&quot;, &quot;819-555-3189&quot;, NA, NA, N~
+## $ set_id       &lt;dbl&gt; 24701, 25626, 24665, 24695, 25626, 24721, 24797, 24701, 2~
+## $ number       &lt;chr&gt; &quot;76062&quot;, &quot;70595&quot;, &quot;21031&quot;, &quot;31048&quot;, &quot;70595&quot;, &quot;10831&quot;, &quot;75~
+## $ theme        &lt;chr&gt; &quot;DC Comics Super Heroes&quot;, &quot;Ninjago&quot;, &quot;Architecture&quot;, &quot;Cre~
+## $ subtheme     &lt;chr&gt; &quot;Mighty Micros&quot;, &quot;Rise of the Villains&quot;, NA, NA, &quot;Rise of~
+## $ year         &lt;dbl&gt; 2018, 2018, 2018, 2018, 2018, 2018, 2018, 2018, 2018, 201~
+## $ name         &lt;chr&gt; &quot;Robin vs. Bane&quot;, &quot;Ultra Stealth Raider&quot;, &quot;Burj Khalifa&quot;,~
+## $ pieces       &lt;dbl&gt; 77, 1093, 333, 368, 1093, 19, 233, 77, 108, NA, 13, 15, 6~
+## $ us_price     &lt;dbl&gt; 9.99, 119.99, 39.99, 29.99, 119.99, 9.99, 24.99, 9.99, 9.~
+## $ image_url    &lt;chr&gt; &quot;http://images.brickset.com/sets/images/76062-1.jpg&quot;, &quot;ht~
+## $ quantity     &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 3, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, ~</code></pre>
+<pre class="r"><code>lego_sales</code></pre>
+<pre><code>## # A tibble: 620 x 14
+##    first_name last_name    age phone_number set_id number theme  subtheme   year
+##    &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;
+##  1 Kimberly   Beckstead     24 216-555-2549  24701 76062  DC Co~ Mighty M~  2018
+##  2 Neel       Garvin        35 819-555-3189  25626 70595  Ninja~ Rise of ~  2018
+##  3 Neel       Garvin        35 819-555-3189  24665 21031  Archi~ &lt;NA&gt;       2018
+##  4 Chelsea    Bouchard      41 &lt;NA&gt;          24695 31048  Creat~ &lt;NA&gt;       2018
+##  5 Chelsea    Bouchard      41 &lt;NA&gt;          25626 70595  Ninja~ Rise of ~  2018
+##  6 Chelsea    Bouchard      41 &lt;NA&gt;          24721 10831  Duplo  &lt;NA&gt;       2018
+##  7 Bryanna    Welsh         19 &lt;NA&gt;          24797 75138  Star ~ Episode V  2018
+##  8 Bryanna    Welsh         19 &lt;NA&gt;          24701 76062  DC Co~ Mighty M~  2018
+##  9 Caleb      Garcia-Wi~    37 907-555-9236  24730 41115  Frien~ &lt;NA&gt;       2018
+## 10 Caleb      Garcia-Wi~    37 907-555-9236  25611 21127  Minec~ Minifig-~  2018
+## # ... with 610 more rows, and 5 more variables: name &lt;chr&gt;, pieces &lt;dbl&gt;,
+## #   us_price &lt;dbl&gt;, image_url &lt;chr&gt;, quantity &lt;dbl&gt;</code></pre>
+</div>
+<div id="q1.what-are-the-three-most-common-first-names-of-customers" class="section level2">
+<h2>Q1.What are the three most common first names of customers?</h2>
+<div id="the-answer" class="section level3">
+<h3>The answer:</h3>
+<pre class="r"><code>common_first_names&lt;- lego_sales %&gt;%
+  count(first_name,sort = TRUE)  %&gt;%
+  head(3)
+cat(&quot;The three most common first names of customers are &quot;,common_first_names$first_name,sep = &quot;\n &quot;)</code></pre>
+<pre><code>## The three most common first names of customers are 
+##  Jackson
+##  Jacob
+##  Joseph</code></pre>
+</div>
+<div id="q2.what-are-the-three-most-common-themes-of-lego-sets-purchased" class="section level3">
+<h3>Q2.What are the three most common themes of lego sets purchased?</h3>
+</div>
+<div id="the-answer-1" class="section level3">
+<h3>The answer:</h3>
+<pre class="r"><code>common_themes &lt;-lego_sales %&gt;%
+  count(theme ,sort = TRUE)%&gt;%
+  head(3)
+cat(&quot;The three most common themes of lego sets purchased are  &quot;,common_themes$theme ,sep = &quot;\n &quot;)</code></pre>
+<pre><code>## The three most common themes of lego sets purchased are  
+##  Star Wars
+##  Nexo Knights
+##  Gear</code></pre>
+</div>
+<div id="q3.among-the-most-common-theme-of-lego-sets-purchased-what-is-the-most-common-subtheme" class="section level3">
+<h3>Q3.Among the most common theme of lego sets purchased, what is the most common subtheme?</h3>
+</div>
+<div id="the-answer-2" class="section level3">
+<h3>The answer:</h3>
+<pre class="r"><code>common_subtheme&lt;- lego_sales %&gt;%
+  filter (theme==&quot;Star Wars&quot;) %&gt;%
+  count(subtheme,sort = TRUE )%&gt;%
+  head(1)
+cat(&quot;The most common subtheme among the most common theme of lego sets purchased is &quot;,common_subtheme$subtheme ,sep = &quot;\n &quot;)</code></pre>
+<pre><code>## The most common subtheme among the most common theme of lego sets purchased is 
+##  The Force Awakens</code></pre>
+</div>
+<div id="q4.create-a-new-variable-called-age_group-and-group-the-ages-into-the-following-categories-18-and-under-19---25-26---35-36---50-51-and-over.-be-sure-to-save-the-updated-data-set-so-you-can-use-the-new-variable-in-other-questions." class="section level3">
+<h3>Q4.Create a new variable called age_group and group the ages into the following categories: “18 and under”, “19 - 25”, “26 - 35”, “36 - 50”, “51 and over”. Be sure to save the updated data set so you can use the new variable in other questions.</h3>
+</div>
+<div id="the-answer-3" class="section level3">
+<h3>The answer:</h3>
+<pre class="r"><code>  lego_sales_age_group &lt;- lego_sales %&gt;%
+  mutate (age_group=case_when(
+    between(age,min(age),18)~ &quot;18 and under&quot;,
+    between(age,19,25)~ &quot;19 - 25&quot;,
+    between(age,26,35)~ &quot;26 - 35&quot;,
+    between(age,36,50)~ &quot;36 - 50&quot;,
+    between(age,51,max(age))~ &quot;51 and over&quot;
+        ))
+## Displaying the new data frame with the new variable:
+
+lego_sales_age_group</code></pre>
+<pre><code>## # A tibble: 620 x 15
+##    first_name last_name    age phone_number set_id number theme  subtheme   year
+##    &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;
+##  1 Kimberly   Beckstead     24 216-555-2549  24701 76062  DC Co~ Mighty M~  2018
+##  2 Neel       Garvin        35 819-555-3189  25626 70595  Ninja~ Rise of ~  2018
+##  3 Neel       Garvin        35 819-555-3189  24665 21031  Archi~ &lt;NA&gt;       2018
+##  4 Chelsea    Bouchard      41 &lt;NA&gt;          24695 31048  Creat~ &lt;NA&gt;       2018
+##  5 Chelsea    Bouchard      41 &lt;NA&gt;          25626 70595  Ninja~ Rise of ~  2018
+##  6 Chelsea    Bouchard      41 &lt;NA&gt;          24721 10831  Duplo  &lt;NA&gt;       2018
+##  7 Bryanna    Welsh         19 &lt;NA&gt;          24797 75138  Star ~ Episode V  2018
+##  8 Bryanna    Welsh         19 &lt;NA&gt;          24701 76062  DC Co~ Mighty M~  2018
+##  9 Caleb      Garcia-Wi~    37 907-555-9236  24730 41115  Frien~ &lt;NA&gt;       2018
+## 10 Caleb      Garcia-Wi~    37 907-555-9236  25611 21127  Minec~ Minifig-~  2018
+## # ... with 610 more rows, and 6 more variables: name &lt;chr&gt;, pieces &lt;dbl&gt;,
+## #   us_price &lt;dbl&gt;, image_url &lt;chr&gt;, quantity &lt;dbl&gt;, age_group &lt;chr&gt;</code></pre>
+<pre class="r"><code>## Displaying selected variables from the new generated data frame so that the new variable age_group can be clearly seen:
+
+lego_sales_age_group %&gt;% select(first_name,age,age_group)</code></pre>
+<pre><code>## # A tibble: 620 x 3
+##    first_name   age age_group
+##    &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;    
+##  1 Kimberly      24 19 - 25  
+##  2 Neel          35 26 - 35  
+##  3 Neel          35 26 - 35  
+##  4 Chelsea       41 36 - 50  
+##  5 Chelsea       41 36 - 50  
+##  6 Chelsea       41 36 - 50  
+##  7 Bryanna       19 19 - 25  
+##  8 Bryanna       19 19 - 25  
+##  9 Caleb         37 36 - 50  
+## 10 Caleb         37 36 - 50  
+## # ... with 610 more rows</code></pre>
+</div>
+<div id="q5.what-is-the-probability-a-randomly-selected-customer" class="section level3">
+<h3>Q5.What is the probability a randomly selected customer</h3>
+<ul>
+<li>is in the 19 - 25 age group?</li>
+<li>is in the 19 - 25 age group and purchased a Duplo theme set?</li>
+<li>is in the 19 - 25 age group given they purchased a Duplo theme set?</li>
+</ul>
+</div>
+<div id="the-answer-4" class="section level3">
+<h3>The answer:</h3>
+<pre class="r"><code># 1st part Calculating the probability a randomly selected customer is in the 19 - 25 age group
+from19_to25_age_group &lt;- lego_sales_age_group %&gt;%
+count(age_group) %&gt;%
+  filter( age_group==&quot;19 - 25&quot;)
+
+prob_of_19_25 &lt;- (from19_to25_age_group$n/nrow(lego_sales))
+       
+# 2nd part Calculating the probability a randomly selected customer is in the 19 - 25 age group and purchased a Duplo theme set
+from19_25_duplo_theme  &lt;- lego_sales_age_group %&gt;%
+  filter( age_group==&quot;19 - 25&quot; &amp; theme==&quot;Duplo&quot;)
+
+prob_from19_25_duplo_theme &lt;- (nrow(from19_25_duplo_theme)/nrow(lego_sales))
+
+# 3rd part Calculating the probability a randomly selected customer is in the 19 - 25 age group given they purchased a Duplo theme set
+duplo_theme_customers  &lt;- lego_sales_age_group %&gt;%
+  filter(theme==&quot;Duplo&quot;)
+  
+prob_of_19_given_duplo_theme &lt;- (nrow(from19_25_duplo_theme)/nrow(duplo_theme_customers))
+
+
+cat(&quot;The probability of a randomly selected customer is in the 19 - 25 age groupis &quot;,prob_of_19_25 ,sep = &quot;\n &quot;)</code></pre>
+<pre><code>## The probability of a randomly selected customer is in the 19 - 25 age groupis 
+##  0.2080645</code></pre>
+<pre class="r"><code>cat(&quot;The probability of a randomly selected customer is in the 19 - 25 age group and purchased a Duplo theme is &quot;,prob_from19_25_duplo_theme ,sep = &quot;\n &quot;)</code></pre>
+<pre><code>## The probability of a randomly selected customer is in the 19 - 25 age group and purchased a Duplo theme is 
+##  0.01451613</code></pre>
+<pre class="r"><code>cat(&quot;The probability of a randomly selected customer is in the 19 - 25 age group given they purchased a Duplo theme is &quot;,prob_of_19_given_duplo_theme ,sep = &quot;\n &quot;)</code></pre>
+<pre><code>## The probability of a randomly selected customer is in the 19 - 25 age group given they purchased a Duplo theme is 
+##  0.2571429</code></pre>
+</div>
+<div id="q6.which-age-group-has-purchased-the-largest-number-of-lego-sets-how-many-did-they-purchase" class="section level3">
+<h3>Q6.Which age group has purchased the largest number of lego sets? How many did they purchase?</h3>
+</div>
+<div id="the-answer-5" class="section level3">
+<h3>The answer:</h3>
+<pre class="r"><code>lego_sales_by_age_group &lt;- lego_sales_age_group %&gt;% group_by(age_group) %&gt;% 
+  summarise(total_quantity=sum(quantity)) %&gt;% 
+  arrange(desc(total_quantity))%&gt;%
+  head(1)
+  cat(&quot;The age group that has purchased the largest number of lego sets is&quot;,lego_sales_by_age_group$age_group,sep=&quot;\n&quot;)</code></pre>
+<pre><code>## The age group that has purchased the largest number of lego sets is
+## 36 - 50</code></pre>
+<pre class="r"><code>  cat(&quot;They purchased a total number of lego sets equal to &quot;,lego_sales_by_age_group$total_quantity,sep=&quot;\n&quot;)</code></pre>
+<pre><code>## They purchased a total number of lego sets equal to 
+## 313</code></pre>
+</div>
+<div id="q7.which-age-group-has-spent-the-most-money-on-legos-how-much-did-they-spend" class="section level3">
+<h3>Q7.Which age group has spent the most money on legos? How much did they spend?</h3>
+</div>
+<div id="the-answer-6" class="section level3">
+<h3>The answer:</h3>
+<pre class="r"><code>most_spending_by_age_group &lt;- lego_sales_age_group %&gt;% mutate(total_price=us_price*quantity) %&gt;%
+  group_by(age_group) %&gt;% 
+  summarise(total_spending=sum(total_price)) %&gt;% 
+  arrange(desc(total_spending))%&gt;%
+  head(1)
+cat(&quot;The age group that has spent the most money on Lego is  &quot;,most_spending_by_age_group$age_group ,sep = &quot;\n &quot;)</code></pre>
+<pre><code>## The age group that has spent the most money on Lego is  
+##  36 - 50</code></pre>
+<pre class="r"><code>cat(&quot;They spend amount of US dollars equal to  &quot;,most_spending_by_age_group$total_spending ,sep = &quot;\n &quot;)</code></pre>
+<pre><code>## They spend amount of US dollars equal to  
+##  9532.87</code></pre>
+</div>
+<div id="q8.come-up-with-a-question-you-want-to-answer-using-this-data-and-write-it-down.-then-create-a-data-visualization-that-answers-the-question-and-briefly-explain-how-your-visualization-answers-the-question." class="section level3">
+<h3>Q8.Come up with a question you want to answer using this data, and write it down. Then, create a data visualization that answers the question, and briefly explain how your visualization answers the question.</h3>
+</div>
+<div id="the-answer-7" class="section level3">
+<h3>The answer:</h3>
+<ul>
+<li>The question could be how much revenue Lego makes from each theme and the contribution of each age group in each theme revenue?</li>
+</ul>
+<p>The answer of this question can be obtained by first multiplying the quantity of sets purchased by every customer by the price per each set, then group the data frame by the theme so that the revenue from each theme can be obtained, plotting the theme on the x axis and the revenue on the y axis of the column plot would allow us easily to determine the revenue of each theme and the age groups contributed in each theme revenue.</p>
+<p>From the plot we can see that Star Wars theme makes the most revenue of more than 4000 Us dollars where 26-35 and 36-50 age groups have more contributions on this revenue than the other age groups, next is the Ninjago theme of revenue more than 2000 US dollar where we can see that 18 and under age group doesn’t contribute in this revenue much and city theme of revenue more than 2000 US dollar where we can see that this theme doesn’t attract the 51 and over age group and the themes that makes the little revenues are Classic, Collectable Minifigures and seasonal themes where each theme attract only a certain age group that is 36-50, 51 and over and 26-35 respectively.</p>
+<p>The Duplo, Elvis, Friends, Gear and Minicraft themes make revenue of a little more than 1000 us dollars where the contribution of the 18 and under age group is very small, the revenue from the remaining themes is less than 1000 us dollars and the age groups contribution vary from one theme to another.</p>
+<pre class="r"><code>lego_sales_by_theme &lt;- lego_sales_age_group %&gt;% mutate(total_price=us_price*quantity) %&gt;%
+  group_by(theme) 
+
+ggplot(lego_sales_by_theme,aes(x=theme,y=total_price,fill=age_group))+
+  geom_col()+
+  theme(axis.text.x=element_text(color = &quot;black&quot;, size=9, angle=90, vjust=.5, hjust=0.7))</code></pre>
+<p><img src="/2021/06/03/a03/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="q9.add-one-element-to-the-plot-from-the-previous-exercise-to-change-the-look-of-the-plot-without-changing-the-underlying-data.-for-example-you-can-change-the-theme-background-color-add-annotations-etc.-state-the-change-youre-making-and-display-the-updated-visualization.-we-encourage-you-to-be-creative" class="section level3">
+<h3>Q9.Add one element to the plot from the previous exercise to change the look of the plot without changing the underlying data. For example, you can change the theme, background color, add annotations, etc. State the change you’re making and display the updated visualization. We encourage you to be creative!</h3>
+</div>
+<div id="the-answer-8" class="section level3">
+<h3>The answer:</h3>
+<ul>
+<li>Title for the plot has been added</li>
+<li>Titles for the 2 axes of the plot have been added</li>
+<li>Black and white theme is used<br />
+</li>
+<li>The background color has been changed</li>
+<li>viridis used to update the color map</li>
+</ul>
+<pre class="r"><code>ggplot(lego_sales_by_theme,aes(x=theme,y=total_price,fill=age_group))+
+  geom_col() +
+  scale_fill_viridis_d() +
+  theme_bw()+
+  theme(axis.text.x=element_text(color = &quot;red&quot;, size=9, angle=90, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = &quot;#BFD5E3&quot;))+
+  labs(
+    x = &quot;Theme&quot;, y = &quot;The revenue in US Dollars &quot;, 
+    title = &quot;The revenue associated with each theme and the contribution \n                        of each age group in this revenue&quot;, 
+         fill = &quot;Age Groups&quot; 
+    )</code></pre>
+<p><img src="/2021/06/03/a03/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
