@@ -28,9 +28,14 @@ selected_var[is.na(selected_var)] <- 0  ## replace any NA with 0
   # creating user interface UI
   ui<- fluidPage(
     titlePanel(h1("Deaths counts in the United States from 01/01/2020 to 06/09/2021")),
+    tags$div(class = "submit",
+             tags$a(href = "https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county", 
+                    "Link to the data set", 
+                    target="_blank")
+    ),
     
-    tags$a(href="https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county", 
-           "The link to the data set is avialable here, https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county",target="_blank"),
+    # tags$a(href="https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county", 
+    #        "The link to the data set is avialable here, https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county"),
     # fluidRow(shinydashboard::box( " To access the dataset source press on the Data button  ", 
     #                              shiny::actionButton(inputId='ab1', label="Data", 
     #                                                  icon = icon("th"), 
