@@ -1,0 +1,25 @@
+---
+title: A04 Shiny App
+author: Nouran
+date: '2021-06-11'
+slug: a04-shiny-app
+categories:
+  - shiny
+  - ggplot2
+  - Basics
+tags: []
+runtime: shiny
+output: html_document
+---
+
+## Provisional count of deaths involving coronavirus disease 2019 (COVID-19) by United States county
+
+The data used in this post is obtained from Data.Gov and it shows the provisional count of deaths involving coronavirus disease 2019 (COVID-19) by United States county.
+
+The dataset is intended for public access and use.
+
+
+```
+<iframe height="800" width="100%" frameborder="no" src="https://nouran.shinyapps.io/Data-Anaytics/"> </iframe>
+```
+

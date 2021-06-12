@@ -1,0 +1,14 @@
+name: Data-Anaytics
+title: Data-Anaytics
+username:
+account: nouran
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4244010
+bundleId: 4692763
+url: https://nouran.shinyapps.io/Data-Anaytics/
+when: 1623167043.96498
+lastSyncTime: 1623167043.96498
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|.Rprofile|config.yaml|index.Rmd|layouts/shortcodes/blogdown/postref.html|netlify.toml|R/build.R|R/build2.R|content|public|static|themes
