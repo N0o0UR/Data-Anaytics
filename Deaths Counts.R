@@ -28,11 +28,14 @@ selected_var[is.na(selected_var)] <- 0  ## replace any NA with 0
   # creating user interface UI
   ui<- fluidPage(
     titlePanel(h1("Deaths counts in the United States from 01/01/2020 to 06/09/2021")),
-    fluidRow(shinydashboard::box( " To access the dataset source press on the Data button  ", 
-                                 shiny::actionButton(inputId='ab1', label="Data", 
-                                                     icon = icon("th"), 
-                                                     onclick ="window.open('https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county')")
-    )),
+    
+    tags$a(href="https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county", 
+           "The link to the data set is avialable here, https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county"),
+    # fluidRow(shinydashboard::box( " To access the dataset source press on the Data button  ", 
+    #                              shiny::actionButton(inputId='ab1', label="Data", 
+    #                                                  icon = icon("th"), 
+    #                                                  onclick ="window.open('https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county')")
+    # )),
 
     fluidRow(column(12,wellPanel(p("The figure below shows the deaths counts in each state of the united states  where  the orange represents the deaths from all causes and the blue represents the deaths from Covid 19 ")), mainPanel(plotlyOutput(outputId = "plot_1"))),
     fluidRow(column(12,wellPanel(p("To show the deaths counts per each county in a specific state please select the state name ")),
