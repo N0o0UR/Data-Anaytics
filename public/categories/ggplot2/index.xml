@@ -6,7 +6,18 @@
     <description>Recent content in ggplot2 on Nouran -Fundamentals of Analytics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 22 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/ggplot2/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 11 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/ggplot2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A04 Shiny App</title>
+      <link>/2021/06/11/a04-shiny-app/</link>
+      <pubDate>Fri, 11 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/06/11/a04-shiny-app/</guid>
+      <description>Provisional count of deaths involving coronavirus disease 2019 (COVID-19) by United States countyThe data used in this post is obtained from Data.Gov and it shows the provisional count of deaths involving coronavirus disease 2019 (COVID-19) by United States county.
+The dataset is intended for public access and use.
+</description>
+    </item>
+    
     <item>
       <title>Assignment A01: GGPLOT2 </title>
       <link>/2021/05/22/assignment-a01-ggplot2/</link>
