@@ -30,7 +30,7 @@ selected_var[is.na(selected_var)] <- 0  ## replace any NA with 0
     titlePanel(h1("Deaths counts in the United States from 01/01/2020 to 06/09/2021")),
     
     tags$a(href="https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county", 
-           "The link to the data set is avialable here, https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county"),
+           "The link to the data set is avialable here, https://catalog.data.gov/dataset/provisional-covid-19-death-counts-in-the-united-states-by-county",target="_blank"),
     # fluidRow(shinydashboard::box( " To access the dataset source press on the Data button  ", 
     #                              shiny::actionButton(inputId='ab1', label="Data", 
     #                                                  icon = icon("th"), 
