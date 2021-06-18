@@ -6,7 +6,17 @@
     <description>Recent content in ggplot2 on Nouran -Fundamentals of Analytics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/ggplot2/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/ggplot2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A05  Exploratory Data Analysis</title>
+      <link>/2021/06/16/a05-exploratory-data-analysis/</link>
+      <pubDate>Wed, 16 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/06/16/a05-exploratory-data-analysis/</guid>
+      <description>report.html
+</description>
+    </item>
+    
     <item>
       <title>A04 Shiny App</title>
       <link>/2021/06/11/a04-shiny-app/</link>

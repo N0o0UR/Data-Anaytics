@@ -2,16 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2021-06-15T00:00:00+00:00</lastmod>
+    <loc>/2021/06/16/a05-exploratory-data-analysis/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/2021/06/15/fitting-and-interpreting-models/</loc>
-    <lastmod>2021-06-15T00:00:00+00:00</lastmod>
+    <loc>/categories/basics/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/ggplot2/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/</loc>
-    <lastmod>2021-06-15T00:00:00+00:00</lastmod>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/post/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/shiny/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/tideverse/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/2021/06/15/fitting-and-interpreting-models/</loc>
     <lastmod>2021-06-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/categories/tidymodels/</loc>
@@ -20,19 +35,7 @@
     <loc>/2021/06/11/a04-shiny-app/</loc>
     <lastmod>2021-06-11T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/categories/basics/</loc>
-    <lastmod>2021-06-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/ggplot2/</loc>
-    <lastmod>2021-06-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/shiny/</loc>
-    <lastmod>2021-06-11T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/2021/06/03/a03/</loc>
-    <lastmod>2021-06-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/tideverse/</loc>
     <lastmod>2021-06-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2021/06/01/data-i-o/</loc>

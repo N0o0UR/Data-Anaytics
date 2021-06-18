@@ -1,0 +1,22 @@
+---
+title: A05  Exploratory Data Analysis
+author: Nouran
+date: '2021-06-16'
+slug: a05-exploratory-data-analysis
+categories:
+  - shiny
+  - ggplot2
+  - Tideverse
+  - Basics
+tags: []
+runtime: shiny
+output: html_document
+---
+
+
+
+![report.html](./report.html) 
+ 
+
+
+<iframe height="800" width="100%" frameborder="no" > </iframe>
