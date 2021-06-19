@@ -30,8 +30,9 @@ library(shiny)
 
 The data used in this blog was obtained from The **World Bank Data**, to access the source of the data use the link below
 
-[example website](https://data.worldbank.org/topic/health?view=chart){target="_blank"}
-<https://data.worldbank.org/topic/health?view=chart>
+[Link to the data set ](https://data.worldbank.org/topic/health?view=chart){target="_blank"}
+
+
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
 

@@ -14,7 +14,7 @@
       
       <guid>/2021/06/16/a05-exploratory-data-analysis/</guid>
       <description>The datasetThe data used in this blog was obtained from The World Bank Data, to access the source of the data use the link below
-example websitehttps://data.worldbank.org/topic/health?view=chart
+Link to the data set
 Initial Analysis Questions1- what’s the country with the highest population in 2019?
 2- which country has the highest population of elderly in 2019?
 3- which country has the highest birth rate in 2019?
