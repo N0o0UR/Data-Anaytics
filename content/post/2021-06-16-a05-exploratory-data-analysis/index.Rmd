@@ -44,7 +44,17 @@ dataset_canada <- dataset%>%
   spread(key=indicator_name,value=value)%>%
   mutate(year=as.integer(str_replace(year, "x", "")))%>%
   clean_names()
-
+dataset_canada_used<- dataset_canada%>%
+  select(-age_dependency_ratio_percent_of_working_age_population,-age_dependency_ratio_old_percent_of_working_age_population,
+         -age_dependency_ratio_young_percent_of_working_age_population,-birth_rate_crude_per_1_000_people,-death_rate_crude_per_1_000_people , -life_expectancy_at_birth_female_years,- life_expectancy_at_birth_male_years, -life_expectancy_at_birth_total_years,-mortality_rate_infant_per_1_000_live_births, -mortality_rate_infant_female_per_1_000_live_births, -mortality_rate_infant_male_per_1_000_live_births, -mortality_rate_under_5_female_per_1_000_live_births,-mortality_rate_under_5_male_per_1_000_live_births,
+ -number_of_infant_deaths, - number_of_under_five_deaths ,-refugee_population_by_country_or_territory_of_asylum,
+ - survival_to_age_65_female_percent_of_cohort,-survival_to_age_65_male_percent_of_cohort,
+ -mortality_rate_under_5_per_1_000_live_births , -population_ages_0_14_percent_of_total_population,
+ -population_ages_0_14_female  ,-population_ages_0_14_female_percent_of_female_population,
+ -population_ages_0_14_male,-population_ages_0_14_male_percent_of_male_population,
+ -population_ages_0_14_total,-population_female_percent_of_total_population,
+ -population_male_percent_of_total_population
+   )
 ```
 
 ## Initial Analysis Questions
@@ -74,7 +84,7 @@ dataset_canada <- dataset%>%
 ### Part 1: Data profiling report, in this  profile we will analyze our data set by summarizing their main characters and use  statistical graphics and other data visualization methods.
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
-# create_report(dataset_canada)
+ create_report(dataset_canada_used)
 #![](./report.html){width=100%,height="800"}
 ```
 
