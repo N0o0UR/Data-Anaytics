@@ -59,20 +59,20 @@ selected_var[is.na(selected_var)] <- 0  ## replace any NA with 0
   server <- function(input, output,session) {
     
     output$plot_1 <- renderPlotly({
-      p<- group_by_state%>%
+      po<- group_by_state%>%
         ggplot(aes(state,deaths_counts))+
         geom_col(aes(fill = caused_by), position = "stack")+
         theme(axis.text.x=element_text(color = "black", size=9, angle=90))+
         ylim(0, 500000)+
         labs(title="                            Death Counts vs. state\n ", x="State",y="Number of deaths", fill="Reason of death") +
         scale_fill_discrete(labels = c("Not Covid", "Covid"))
-      ggplotly(p)
+      ggplotly(po)
       
     })
     
     
       output$plot <- renderPlotly({
-      p<- selected_var%>%
+      po<- selected_var%>%
         filter(state==input$state)%>%
         gather(key="caused_by",value="deaths_counts",deaths_involving_covid_19:deaths_from_all_causes)%>%
         ggplot(aes(county_name,deaths_counts,fill = caused_by))+
@@ -80,7 +80,7 @@ selected_var[is.na(selected_var)] <- 0  ## replace any NA with 0
         theme(axis.text.x=element_text(color = "black", size=9, angle=90))+
         labs(title=glue("Deaths Counts in {input$state} state per county \n "), x="County",y="Number of deaths", fill="Reason of death") +
         scale_fill_discrete(labels = c("Not Covid", "Covid"))
-      ggplotly(p)
+      ggplotly(po)
       
     })
   }

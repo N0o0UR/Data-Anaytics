@@ -5,10 +5,10 @@ account: nouran
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4287100
-bundleId: 4729441
+bundleId: 4733711
 url: https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/
-when: 1623984871.10313
-lastSyncTime: 1623984871.10313
+when: 1624101182.1653
+lastSyncTime: 1624101182.1653
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: canada.csv|environment.csv|Health.csv|index.Rmd|report.html
+ignoredFiles: canada.csv|environment.csv|index.html|index.Rmd|report.html|index_files

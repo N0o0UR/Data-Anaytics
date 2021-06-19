@@ -15,8 +15,214 @@ output: html_document
 
 
 
-![report.html](./report.html) 
+
+```{r packages, echo = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(DataExplorer)
+library(janitor)
+library(dplyr)
+library(shiny)
+
+```
+
+
+## The dataset
+
+The data used in this blog was obtained from The **World Bank Data**, to access the source of the data use the link below
+<https://data.worldbank.org/topic/health?view=chart>
+
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
+
+dataset <- read_csv("Health.csv") %>% 
+  clean_names()
+# dataset$indicator_name<- gsub("[[:punct:]]", "_", dataset$indicator_name)
+dataset_canada <- dataset%>%
+  filter(country_name=="Canada")%>%
+  drop_na()   %>%
+ select(-country_code,- indicator_code,-country_name)%>%
+  gather(key="year", value="value",x1960:x2019)%>%
+  spread(key=indicator_name,value=value)%>%
+  mutate(year=as.integer(str_replace(year, "x", "")))%>%
+  clean_names()
+
+```
+
+## Initial Analysis Questions
+
+
+1- what's the country with the highest population in 2019?
+
+2- which country has the highest population of elderly in 2019?
+
+3- which country has the highest birth rate in 2019?
+
+4- which country has the highest mortality rate in 2019? 
+
+5- How does the population in Canada change over time?
+
+6- The difference between age distribution in Canada in 2000 and that in 2019?
+
+7- Is the modern technology that is present in all life aspects including healthcare affect the human lifespan ?
+
+8- Is the Adolescent fertility rate (births per 1,000 women ages 15-19) changes over time ?
+
+
+
+
+## Explanatory data analysis
+
+### Part 1: Data profiling report, in this  profile we will analyze our data set by summarizing their main characters and use  statistical graphics and other data visualization methods.
+
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
+# create_report(dataset_canada)
+```
+
+![](./report.html){width=100%}
+
+### part 2: in this part we will analyze the data set by visually explore each indicator in a specific country 
  
+<iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/"> </iframe>
 
 
-<iframe height="800" width="100%" frameborder="no" > </iframe>
+
+## Question 5: How does the population in Canada change over time? 
+
+from Figure (1) shown below , we can see that the population in Canada increases every year so that starting from year 1960 the population was 17909009 and it keeps increasing linearly reaching to population of 30685730 in 2000 and population of 37593384 in 2019.
+
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
+ggplot(dataset_canada,aes(year,population_total))+
+  geom_line()+
+  labs(title="Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population",caption = "Figure (1)")+
+  scale_fill_viridis_d() +
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
+
+ 
+```
+
+
+
+## Question 6: the difference between age distribution in Canada population in 2000 and that in 2019?
+
+```{r}
+age_grp <- dataset_canada%>%
+mutate(zero_to_9=(population_ages_00_04_female_percent_of_female_population*population_female/100)+(population_ages_00_04_male_percent_of_male_population*population_male/100)+(population_ages_05_09_female_percent_of_female_population*population_female/100)+(population_ages_05_09_female_percent_of_female_population*population_female/100))%>%
+  
+mutate(ten_to_19=(population_ages_10_14_female_percent_of_female_population*population_female/100)+(population_ages_10_14_male_percent_of_male_population*population_male/100)+(population_ages_15_19_female_percent_of_female_population*population_female/100)+(population_ages_15_19_female_percent_of_female_population*population_female/100))%>%
+  
+mutate(twenty_to_29=(population_ages_20_24_female_percent_of_female_population*population_female/100)+(population_ages_20_24_male_percent_of_male_population*population_male/100)+(population_ages_25_29_female_percent_of_female_population*population_female/100)+(population_ages_25_29_female_percent_of_female_population*population_female/100))%>%
+  
+mutate(thirt_to_39=(population_ages_30_34_female_percent_of_female_population*population_female/100)+(population_ages_30_34_male_percent_of_male_population*population_male/100)+(population_ages_35_39_female_percent_of_female_population*population_female/100)+(population_ages_35_39_female_percent_of_female_population*population_female/100))%>%
+  
+mutate(fourty_to_49=(population_ages_40_44_female_percent_of_female_population*population_female/100)+(population_ages_40_44_male_percent_of_male_population*population_male/100)+(population_ages_45_49_female_percent_of_female_population*population_female/100)+(population_ages_45_49_female_percent_of_female_population*population_female/100))%>%
+  
+ mutate(fifty_to_59=(population_ages_50_54_female_percent_of_female_population*population_female/100)+(population_ages_50_54_male_percent_of_male_population*population_male/100)+(population_ages_55_59_female_percent_of_female_population*population_female/100)+(population_ages_55_59_female_percent_of_female_population*population_female/100))%>%
+  
+mutate(sixty_to_69=(population_ages_60_64_female_percent_of_female_population*population_female/100)+(population_ages_60_64_male_percent_of_male_population*population_male/100)+(population_ages_65_69_female_percent_of_female_population*population_female/100)+(population_ages_65_69_female_percent_of_female_population*population_female/100))%>%
+  
+mutate(seventy_to_9=(population_ages_70_74_female_percent_of_female_population*population_female/100)+(population_ages_70_74_male_percent_of_male_population*population_male/100)+(population_ages_75_79_female_percent_of_female_population*population_female/100)+(population_ages_75_79_female_percent_of_female_population*population_female/100))%>%
+  
+mutate(plus_eighty=(population_ages_80_and_above_female_percent_of_female_population*population_female/100)+(population_ages_80_and_above_male_percent_of_male_population*population_male/100))%>%
+  select(year,zero_to_9,ten_to_19,twenty_to_29,thirt_to_39,fourty_to_49,fifty_to_59,sixty_to_69,seventy_to_9,plus_eighty)%>%
+gather(key="age_group", value="pop",zero_to_9:plus_eighty)
+
+ggplot(age_grp,aes(year,pop,fill=factor(age_group)))+
+  geom_col()+
+   labs(title="Age distribution among Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
+  
+  
+  
+  
+  
+
+```
+
+
+## Question 7: Is the modern technology that is present in all life aspects including healthcare affect the human lifespan ?
+
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
+abv_eighty<- dataset_canada %>%
+  mutate(abveighty=(population_ages_80_and_above_female_percent_of_female_population*population_female/100)+(population_ages_80_and_above_male_percent_of_male_population*population_male/100))%>%
+  # mutate(abv_eighty_m=)%>%
+  select(year,population_total,abveighty)%>%     
+  gather(key="pop", value="value",population_total:abveighty)
+
+
+ggplot(abv_eighty,aes(year,value, fill=pop))+
+  geom_bar(position="dodge",stat = "identity")+
+  labs(title="population of ages 80 and above  ",subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  scale_fill_discrete(labels = c("80 $ Above ", "Total Population"))
+
+
+
+
+# abv_eighty<- dataset_canada %>%
+#   mutate(abveighty=(population_ages_80_and_above_female_percent_of_female_population*population_female/100)+(population_ages_80_and_above_male_percent_of_male_population*population_male/100))%>%
+#   # mutate(abv_eighty_m=)%>%
+#   select(year,population_total,abveighty)    
+#   # gather(key="pop", value="value",population_total:abveighty)
+# 
+# 
+# ggplot(abv_eighty)+
+#   geom_col(aes(x = year, y = population_total), size = 0.3, color = "grey", fill = "white") +
+#   geom_line(aes(x = year, y = abveighty), size = 0.1, color="red", group = 1)+
+#   labs(title="population of ages 80 and above  ",subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
+#   theme_bw()+
+#   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+#   theme(plot.background = element_rect(fill = "#BFD5E3"))+
+#   theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
+
+```
+
+
+```{r}
+abv_eighty_only <-
+  abv_eighty  %>%
+  filter(pop=="abveighty")
+
+  ggplot(abv_eighty_only,aes(year,value))+
+  geom_line()+
+  labs(title="population of ages 80 and above  ",subtitle = "", x="Year",y="Population",caption = "Figure (3)")+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  scale_fill_discrete(labels = c("80 $ Above ", "Total Population"))
+
+```
+
+
+
+## Question 8: Is the Adolescent fertility rate (births per 1,000 women ages 15-19) changes over time ?
+```{r}
+adl_fert_rate<- dataset_canada %>%
+  select(year,adolescent_fertility_rate_births_per_1_000_women_ages_15_19)
+
+ggplot(adl_fert_rate,aes(year,adolescent_fertility_rate_births_per_1_000_women_ages_15_19))+
+geom_line(aes(color="red"))+
+labs(title="Adolescent fertility rate in Canada from 1960 to 2019  ",subtitle = "", x="Year",y="Births per 1000 women ages 15-19",caption = "Figure (4)")+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = "none")
+
+```
+
+
+## Summary
+
+
+
+
+
