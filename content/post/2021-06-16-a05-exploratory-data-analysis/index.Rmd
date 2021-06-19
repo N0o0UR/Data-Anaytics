@@ -75,9 +75,9 @@ dataset_canada_used<- dataset_canada%>%
 
 6- The difference between age distribution in Canada in 2000 and that in 2019?
 
-7- Is the modern technology that is present in all life aspects including healthcare affect the human lifespan ?
+7- Is the modern technology that is present in all life aspects including healthcare affect the human lifespan in Canada?
 
-8- Is the Adolescent fertility rate (births per 1,000 women ages 15-19) changes over time ?
+8- Is the modern lifestyle in Canada affect the adolescent mind regarding giving birth in this phase of their life? 
 
 
 
@@ -98,15 +98,14 @@ dataset_canada_used<- dataset_canada%>%
 
 
 To access the **Data Profiling Report** in a new window please press the link below
- [example website](file:///C:/Users/noura/Documents/Data-Anaytics/content/post/2021-06-16-a05-exploratory-data-analysis/report.html){target="_blank"}
-[file:///C:/Users/noura/Documents/Data-Anaytics/content/post/2021-06-16-a05-exploratory-data-analysis/report.html]
+ [example website](./report.html){target="_blank"}
 
 
 
 
 
 
-### part 2: in this part we will analyze the data set by visually explore each indicator in a specific country, Also in this part we can find the answers for the first four questions mentioned above. 
+### part 2: in this part we can analyze the data set by visually explore each indicator in each country, Also in this part we can find the answers for the first four questions mentioned above. 
  
 <iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/"> </iframe>
 
@@ -119,7 +118,7 @@ from Figure (1) shown below , we can see that the population in Canada increases
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(dataset_canada,aes(year,population_total))+
   geom_line()+
-  labs(title="Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population",caption = "Figure (1)")+
+  labs(title="Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population")+
   scale_fill_viridis_d() +
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
@@ -157,7 +156,7 @@ gather(key="age_group", value="pop",zero_to_9:plus_eighty)
 
 ggplot(age_grp,aes(year,pop,fill=factor(age_group)))+
   geom_col()+
-   labs(title="Age distribution among Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
+   labs(title="Age distribution among Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population")+
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
   theme(plot.background = element_rect(fill = "#BFD5E3"))+
@@ -171,7 +170,7 @@ ggplot(age_grp,aes(year,pop,fill=factor(age_group)))+
 ```
 
 
-## Question 7: Is the modern technology that is present in all life aspects including healthcare affect the human lifespan ?
+## Question 7: Is the modern technology that is present in all life aspects including healthcare affect the human lifespan in Canada?
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
 abv_eighty<- dataset_canada %>%
@@ -183,7 +182,7 @@ abv_eighty<- dataset_canada %>%
 
 ggplot(abv_eighty,aes(year,value, fill=pop))+
   geom_bar(position="dodge",stat = "identity")+
-  labs(title="population of ages 80 and above  ",subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
+  labs(title="Population of ages 80 and above with respect to the total population from 1960 to 2019  ",subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
   theme(plot.background = element_rect(fill = "#BFD5E3"))+
@@ -192,25 +191,8 @@ ggplot(abv_eighty,aes(year,value, fill=pop))+
 
 
 
-
-# abv_eighty<- dataset_canada %>%
-#   mutate(abveighty=(population_ages_80_and_above_female_percent_of_female_population*population_female/100)+(population_ages_80_and_above_male_percent_of_male_population*population_male/100))%>%
-#   # mutate(abv_eighty_m=)%>%
-#   select(year,population_total,abveighty)    
-#   # gather(key="pop", value="value",population_total:abveighty)
-# 
-# 
-# ggplot(abv_eighty)+
-#   geom_col(aes(x = year, y = population_total), size = 0.3, color = "grey", fill = "white") +
-#   geom_line(aes(x = year, y = abveighty), size = 0.1, color="red", group = 1)+
-#   labs(title="population of ages 80 and above  ",subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
-#   theme_bw()+
-#   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
-#   theme(plot.background = element_rect(fill = "#BFD5E3"))+
-#   theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
-
 ```
-
+we can check also the population of ages 80 and above alone to have a closer look 
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
 abv_eighty_only <-
@@ -219,25 +201,25 @@ abv_eighty_only <-
 
   ggplot(abv_eighty_only,aes(year,value))+
   geom_line()+
-  labs(title="population of ages 80 and above  ",subtitle = "", x="Year",y="Population",caption = "Figure (3)")+
+  labs(title="Population of ages 80 and above  ",subtitle = "", x="Year",y="Population")+
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
   theme(plot.background = element_rect(fill = "#BFD5E3"))+
-  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
-  scale_fill_discrete(labels = c("80 $ Above ", "Total Population"))
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
 
 ```
 
 
 
-## Question 8: Is the Adolescent fertility rate (births per 1,000 women ages 15-19) changes over time ?
+## Question 8: Is the modern lifestyle in Canada affect the adolescent mind regarding giving birth in this phase of their life? 
+
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
 adl_fert_rate<- dataset_canada %>%
   select(year,adolescent_fertility_rate_births_per_1_000_women_ages_15_19)
 
 ggplot(adl_fert_rate,aes(year,adolescent_fertility_rate_births_per_1_000_women_ages_15_19))+
 geom_line(aes(color="red"))+
-labs(title="Adolescent fertility rate in Canada from 1960 to 2019  ",subtitle = "", x="Year",y="Births per 1000 women ages 15-19",caption = "Figure (4)")+
+labs(title="Adolescent fertility rate in Canada from 1960 to 2019  ",subtitle = "", x="Year",y="Births per 1000 women ages 15-19")+
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
   theme(plot.background = element_rect(fill = "#BFD5E3"))+
