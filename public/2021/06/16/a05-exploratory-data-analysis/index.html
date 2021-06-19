@@ -22,11 +22,6 @@
 
 
 
-
-<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
-
-
-
 <link rel="stylesheet" href="/css/fonts.css" media="all">
 <link rel="stylesheet" href="/css/main.css" media="all">
 
@@ -62,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">3 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">A05  Exploratory Data Analysis</h1>
@@ -96,7 +91,8 @@
 <h2>Explanatory data analysis</h2>
 <div id="section-part-1-data-profiling-report-in-this-profile-we-will-analyze-our-data-set-by-summarizing-their-main-characters-and-use-statistical-graphics-and-other-data-visualization-methods." class="section level3">
 <h3>Part 1: Data profiling report, in this profile we will analyze our data set by summarizing their main characters and use statistical graphics and other data visualization methods.</h3>
-<p><embed src="./report.html" style="width:100.0%" /></p>
+<iframe height="800" width="100%" frameborder="no" src="./report.html/">
+</iframe>
 </div>
 <div id="section-part-2-in-this-part-we-will-analyze-the-data-set-by-visually-explore-each-indicator-in-a-specific-country" class="section level3">
 <h3>part 2: in this part we will analyze the data set by visually explore each indicator in a specific country</h3>
@@ -111,66 +107,15 @@
 </div>
 <div id="section-question-6-the-difference-between-age-distribution-in-canada-population-in-2000-and-that-in-2019" class="section level2">
 <h2>Question 6: the difference between age distribution in Canada population in 2000 and that in 2019?</h2>
-<pre class="r"><code>age_grp &lt;- dataset_canada%&gt;%
-mutate(zero_to_9=(population_ages_00_04_female_percent_of_female_population*population_female/100)+(population_ages_00_04_male_percent_of_male_population*population_male/100)+(population_ages_05_09_female_percent_of_female_population*population_female/100)+(population_ages_05_09_female_percent_of_female_population*population_female/100))%&gt;%
-  
-mutate(ten_to_19=(population_ages_10_14_female_percent_of_female_population*population_female/100)+(population_ages_10_14_male_percent_of_male_population*population_male/100)+(population_ages_15_19_female_percent_of_female_population*population_female/100)+(population_ages_15_19_female_percent_of_female_population*population_female/100))%&gt;%
-  
-mutate(twenty_to_29=(population_ages_20_24_female_percent_of_female_population*population_female/100)+(population_ages_20_24_male_percent_of_male_population*population_male/100)+(population_ages_25_29_female_percent_of_female_population*population_female/100)+(population_ages_25_29_female_percent_of_female_population*population_female/100))%&gt;%
-  
-mutate(thirt_to_39=(population_ages_30_34_female_percent_of_female_population*population_female/100)+(population_ages_30_34_male_percent_of_male_population*population_male/100)+(population_ages_35_39_female_percent_of_female_population*population_female/100)+(population_ages_35_39_female_percent_of_female_population*population_female/100))%&gt;%
-  
-mutate(fourty_to_49=(population_ages_40_44_female_percent_of_female_population*population_female/100)+(population_ages_40_44_male_percent_of_male_population*population_male/100)+(population_ages_45_49_female_percent_of_female_population*population_female/100)+(population_ages_45_49_female_percent_of_female_population*population_female/100))%&gt;%
-  
- mutate(fifty_to_59=(population_ages_50_54_female_percent_of_female_population*population_female/100)+(population_ages_50_54_male_percent_of_male_population*population_male/100)+(population_ages_55_59_female_percent_of_female_population*population_female/100)+(population_ages_55_59_female_percent_of_female_population*population_female/100))%&gt;%
-  
-mutate(sixty_to_69=(population_ages_60_64_female_percent_of_female_population*population_female/100)+(population_ages_60_64_male_percent_of_male_population*population_male/100)+(population_ages_65_69_female_percent_of_female_population*population_female/100)+(population_ages_65_69_female_percent_of_female_population*population_female/100))%&gt;%
-  
-mutate(seventy_to_9=(population_ages_70_74_female_percent_of_female_population*population_female/100)+(population_ages_70_74_male_percent_of_male_population*population_male/100)+(population_ages_75_79_female_percent_of_female_population*population_female/100)+(population_ages_75_79_female_percent_of_female_population*population_female/100))%&gt;%
-  
-mutate(plus_eighty=(population_ages_80_and_above_female_percent_of_female_population*population_female/100)+(population_ages_80_and_above_male_percent_of_male_population*population_male/100))%&gt;%
-  select(year,zero_to_9,ten_to_19,twenty_to_29,thirt_to_39,fourty_to_49,fifty_to_59,sixty_to_69,seventy_to_9,plus_eighty)%&gt;%
-gather(key=&quot;age_group&quot;, value=&quot;pop&quot;,zero_to_9:plus_eighty)
-
-ggplot(age_grp,aes(year,pop,fill=factor(age_group)))+
-  geom_col()+
-   labs(title=&quot;Age distribution among Canada population from 1960 to 2019&quot;,subtitle = &quot;&quot;, x=&quot;Year&quot;,y=&quot;Population&quot;,caption = &quot;Figure (2)&quot;)+
-  theme_bw()+
-  theme(axis.text.x=element_text(color = &quot;red&quot;, size=9, vjust=.5, hjust=0.7)) +
-  theme(plot.background = element_rect(fill = &quot;#BFD5E3&quot;))+
-  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))</code></pre>
 <p><img src="/2021/06/16/a05-exploratory-data-analysis/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="section-question-7-is-the-modern-technology-that-is-present-in-all-life-aspects-including-healthcare-affect-the-human-lifespan" class="section level2">
 <h2>Question 7: Is the modern technology that is present in all life aspects including healthcare affect the human lifespan ?</h2>
 <p><img src="/2021/06/16/a05-exploratory-data-analysis/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<pre class="r"><code>abv_eighty_only &lt;-
-  abv_eighty  %&gt;%
-  filter(pop==&quot;abveighty&quot;)
-
-  ggplot(abv_eighty_only,aes(year,value))+
-  geom_line()+
-  labs(title=&quot;population of ages 80 and above  &quot;,subtitle = &quot;&quot;, x=&quot;Year&quot;,y=&quot;Population&quot;,caption = &quot;Figure (3)&quot;)+
-  theme_bw()+
-  theme(axis.text.x=element_text(color = &quot;red&quot;, size=9, vjust=.5, hjust=0.7)) +
-  theme(plot.background = element_rect(fill = &quot;#BFD5E3&quot;))+
-  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
-  scale_fill_discrete(labels = c(&quot;80 $ Above &quot;, &quot;Total Population&quot;))</code></pre>
 <p><img src="/2021/06/16/a05-exploratory-data-analysis/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="section-question-8-is-the-adolescent-fertility-rate-births-per-1000-women-ages-15-19-changes-over-time" class="section level2">
 <h2>Question 8: Is the Adolescent fertility rate (births per 1,000 women ages 15-19) changes over time ?</h2>
-<pre class="r"><code>adl_fert_rate&lt;- dataset_canada %&gt;%
-  select(year,adolescent_fertility_rate_births_per_1_000_women_ages_15_19)
-
-ggplot(adl_fert_rate,aes(year,adolescent_fertility_rate_births_per_1_000_women_ages_15_19))+
-geom_line(aes(color=&quot;red&quot;))+
-labs(title=&quot;Adolescent fertility rate in Canada from 1960 to 2019  &quot;,subtitle = &quot;&quot;, x=&quot;Year&quot;,y=&quot;Births per 1000 women ages 15-19&quot;,caption = &quot;Figure (4)&quot;)+
-  theme_bw()+
-  theme(axis.text.x=element_text(color = &quot;red&quot;, size=9, vjust=.5, hjust=0.7)) +
-  theme(plot.background = element_rect(fill = &quot;#BFD5E3&quot;))+
-  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
-  theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="/2021/06/16/a05-exploratory-data-analysis/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="section-summary" class="section level2">
@@ -199,22 +144,7 @@ labs(title=&quot;Adolescent fertility rate in Canada from 1960 to 2019  &quot;,s
     </div>
     
 
-
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-
-
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
-<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
-
-
-
     
-<script src="/js/math-code.js"></script>
-<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
 
     
   </body>

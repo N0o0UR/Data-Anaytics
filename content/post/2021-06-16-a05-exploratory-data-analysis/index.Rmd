@@ -75,9 +75,12 @@ dataset_canada <- dataset%>%
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
 # create_report(dataset_canada)
+#![](./report.html){width=100%,height="800"}
 ```
 
-![](./report.html){width=100%}
+<iframe height="800" width="100%" frameborder="no"src="./report.html/"> </iframe>
+
+
 
 ### part 2: in this part we will analyze the data set by visually explore each indicator in a specific country 
  
@@ -106,7 +109,7 @@ ggplot(dataset_canada,aes(year,population_total))+
 
 ## Question 6: the difference between age distribution in Canada population in 2000 and that in 2019?
 
-```{r}
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
 age_grp <- dataset_canada%>%
 mutate(zero_to_9=(population_ages_00_04_female_percent_of_female_population*population_female/100)+(population_ages_00_04_male_percent_of_male_population*population_male/100)+(population_ages_05_09_female_percent_of_female_population*population_female/100)+(population_ages_05_09_female_percent_of_female_population*population_female/100))%>%
   
@@ -185,7 +188,7 @@ ggplot(abv_eighty,aes(year,value, fill=pop))+
 ```
 
 
-```{r}
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
 abv_eighty_only <-
   abv_eighty  %>%
   filter(pop=="abveighty")
@@ -204,7 +207,7 @@ abv_eighty_only <-
 
 
 ## Question 8: Is the Adolescent fertility rate (births per 1,000 women ages 15-19) changes over time ?
-```{r}
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
 adl_fert_rate<- dataset_canada %>%
   select(year,adolescent_fertility_rate_births_per_1_000_women_ages_15_19)
 
