@@ -63,13 +63,13 @@ dataset_canada_used<- dataset_canada%>%
 ## Initial Analysis Questions
 
 
-1- what's the country with the highest population in 2019?
+1- which country in North America with the highest population in 2019?
 
-2- which country has the highest population of elderly in 2019?
+2- which country in North America has the highest population of elderly in 2019?
 
-3- which country has the highest birth rate in 2019?
+3- which country in North America has the highest birth rate in 2019?
 
-4- which country has the highest mortality rate in 2019? 
+4- which country in North America has the highest mortality rate in 2019?
 
 5- How does the population in Canada change over time?
 
@@ -84,7 +84,7 @@ dataset_canada_used<- dataset_canada%>%
 
 ## Explanatory data analysis
 
-### Part 1: Data profiling report, in this  profile we will analyze our data set by summarizing their main characters and use  statistical graphics and other data visualization methods.
+### Data profiling report, in this report we can get an overview of the shape and structure of our dataset by summarizing their main characters and use  statistical graphics and other data visualization methods.
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
  #create_report(dataset_canada_used)
@@ -94,18 +94,13 @@ dataset_canada_used<- dataset_canada%>%
 <iframe height="800" width="100%" frameborder="no"src="./report.html/"> </iframe>
 
 
-
-
-
 To access the **Data Profiling Report** in a new window please press the link below
  [Link to open the data profiling report in a new window ](./report.html){target="_blank"}
 
 
 
 
-
-
-### part 2: in this part we can analyze the data set by visually explore each indicator in each country, Also in this part we can find the answers for the first four questions mentioned above. 
+### in this part we can analyze the dataset by visually explore each indicator in each country
 
 
 <iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/"> </iframe>
@@ -115,24 +110,138 @@ To access the **Data Profiling Report** in a new window please press the link be
 To open the **Shiny app** in a new window please press the link below
 [Link to open the Shiny app in a new window](https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/){target="_blank"}
 
+
+## Question 1: what's the country with the highest population in North America in 2019?
+
+
+```{r}
+
+      north_america <-dataset %>%
+          drop_na() %>%
+ select(-country_code,- indicator_code)%>%
+  gather(key="year", value="value",x1960:x2019)%>%
+  mutate(year=as.integer(str_replace(year, "x", "")))%>%
+  spread(key=country_name,value=value)%>% 
+  select(indicator_name, year, "Antigua and Barbuda", "Barbados","Belize","Canada","Costa Rica","Cuba","Dominican Republic",
+         "El Salvador","Grenada","Guatemala","Haiti","Honduras","Jamaica","Mexico","Nicaragua","Panama","Trinidad and Tobago","United States")%>%
+    gather(key="Country_name", value="pop","Antigua and Barbuda":"United States")%>%
+    spread(key=indicator_name,value=pop)%>%
+  filter(year==2019)%>%
+  clean_names()
+
+
+  pop_na<- north_america%>%
+  select(country_name, year, population_total)
+  ggplot(pop_na,aes(x=country_name,population_total))+
+      geom_col()+
+      labs(title=("Total Population in countries of North America in 2019 "),subtitle = "", x="Country",y="Population",caption = "Figure(1)")+
+      theme_bw()+
+      theme(axis.text.x=element_text(color = "red", size=10, angle=90,vjust=.5, hjust=0.7)) +
+      theme(plot.background = element_rect(fill = "#BFD5E3"))+
+      theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
+
+
+```
+From Figure(1), we can see that in 2019 the United States of America has the highest population of 328239523 among the countries of North America, then Mexico that has a population of 127575529 then Canada that has population of 37593384.  
+
+
+## Question 2: which country in North America has the highest population of elderly in 2019?
+
+
+```{r}
+
+  pop_na_elderly<- north_america%>%
+  select(country_name,"population_ages_65_and_above_total","population_total")%>%
+  gather(key="pop", value="value",population_ages_65_and_above_total:population_total)
+
+
+  ggplot(pop_na_elderly,aes(country_name,value, fill=pop))+
+  geom_bar(position="dodge",stat = "identity")+
+  labs(title=("Total population and elderly population in countries of North America in 2019 "),subtitle = "", x="Country",y="Population", caption="Figure(2)", fill="Population")+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=10, angle=90,vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  scale_fill_discrete(labels = c("65 $ Above ", "Total Population"))+
+    scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
+
+```
+
+from Figure(2) we can see that the elderly population among the North America countries follows the same ranking of the total population we did in question 1 , so that in 2019 the United States of America has the highest elderly population of 53206334, then Mexico that has elderly population of 9461844 then Canada that has elderly population of 6634442.
+
+Also from Figure (2), we can see the portion of the elderly population among the whole population in each country.
+
+
+## Question 3: which country in North America has the highest birth rate in 2019?
+
+
+```{r}
+
+  pr<- north_america%>%
+  select(country_name,"fertility_rate_total_births_per_woman")
+
+
+  ggplot(pr,aes(x=country_name,y=fertility_rate_total_births_per_woman))+
+  geom_col()+
+  labs(title=("Fertility rate per woman in countries of North America in 2019 "),subtitle = "", x="Country",y="Fertility Rate / Woman", caption="Figure(3)")+
+      theme_bw()+
+      theme(axis.text.x=element_text(color = "red", size=10, angle=90,vjust=.5, hjust=0.7)) +
+      theme(plot.background = element_rect(fill = "#BFD5E3"))+
+      theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
+
+```
+
+
+To answer this question we will use the indicator of fertility rate that is defined as the total births per woman in the country as we can see in Figure(3), using the fertility rate as an indicator to the birth rate, we can see that Haiti has the highest fertility rate in 2019 among the North America countries of value 2.89. Also we can see that the fertility rate in Canada was 1.47 in 2019. 
+
+
+
+
+## Question 4: which country in North America has the highest mortality rate in 2019?
+
+```{r}
+
+death_r<- north_america%>%
+  select(country_name,"death_rate_crude_per_1_000_people")
+
+
+  ggplot(death_r,aes(x=country_name,y=death_rate_crude_per_1_000_people ))+
+  geom_col()+
+  labs(title=("Deaths rate per 1000 people in countries of North America in 2019 "),subtitle = "", x="Country",y="Deaths Rate / 1000 people", caption="Figure(4)")+
+      theme_bw()+
+      theme(axis.text.x=element_text(color = "red", size=10, angle=90,vjust=.5, hjust=0.7)) +
+      theme(plot.background = element_rect(fill = "#BFD5E3"))+
+      theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
+```
+
+
+To answer this question we will use the indicator of Death Rate Crude Per 1000 People in the country, as we can see in Figure(4), using the Death Rate Crude Per 1000 People as an indicator to the mortality rate, we can see that Grenada has the highest mortality rate in 2019 among the North America countries of value 9.58. Also we can see that in 2019 the death rate in Canada was 7.60 and the lowest death rate was in Honduras of value 4.45.
+
+
+
+
+
 ## Question 5: How does the population in Canada change over time? 
-
-from Figure (1) shown below , we can see that the population in Canada increases every year so that starting from year 1960 the population was 17909009 and it keeps increasing linearly reaching to population of 30685730 in 2000 and population of 37593384 in 2019.
-
 
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
+
+
 ggplot(dataset_canada,aes(year,population_total))+
   geom_line()+
-  labs(title="Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population")+
+  labs(title="Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population", caption="Figure(5)")+
   scale_fill_viridis_d() +
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
   theme(plot.background = element_rect(fill = "#BFD5E3"))+
-    theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
+    theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
 
  
 ```
+
+From Figure (5) shown above , we can see that the population in Canada increases every year so that starting from year 1960 the population was 17909009 and it keeps increasing linearly reaching to population of 30685730 in 2000 and population of 37593384 in 2019.
 
 
 
@@ -162,18 +271,17 @@ gather(key="age_group", value="pop",zero_to_9:plus_eighty)
 
 ggplot(age_grp,aes(year,pop,fill=factor(age_group)))+
   geom_col()+
-   labs(title="Age distribution among Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population")+
+   labs(title="Age distribution among Canada population from 1960 to 2019",subtitle = "", x="Year",y="Population", caption = "Figure(6)", fill= "Age Group")+
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
   theme(plot.background = element_rect(fill = "#BFD5E3"))+
-  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
   
   
-  
-  
-  
-
 ```
+From Figure (6) shown above , we can see that the age distribution in Canada in 1960 that the zero to 9 age group was contributed more in the population than in 2019 and also in 2019 the plus eighty age group has a larger contribution in the population compared to 1960 where the contribution is almost zero and from 1960 to 2019 the contribution of the two age groups forty to forty nine and fifty to fifty nine increases over time.
+
 
 
 ## Question 7: Is the modern technology that is present in all life aspects including healthcare affect the human lifespan in Canada?
@@ -188,17 +296,20 @@ abv_eighty<- dataset_canada %>%
 
 ggplot(abv_eighty,aes(year,value, fill=pop))+
   geom_bar(position="dodge",stat = "identity")+
-  labs(title="Population of ages 80 and above with respect to the total population from 1960 to 2019  ",subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
+  labs(title="Population of ages 80 and above with respect to the total population",subtitle = "", x="Year",y="Population" ,caption="Figure(7)")+
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
   theme(plot.background = element_rect(fill = "#BFD5E3"))+
   theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
-  scale_fill_discrete(labels = c("80 $ Above ", "Total Population"))
+  scale_fill_discrete(labels = c("80 $ Above ", "Total Population"))+
+    scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
 
 
 
 ```
-we can check also the population of ages 80 and above alone to have a closer look 
+
+from Figure(7), we can see that the modern technology present in all life aspects including healthcare affect the human lifespan in Canada, so that human tends to live longer as the population of the age group of eighty and above increases with time and technology.
+ 
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
 abv_eighty_only <-
@@ -207,15 +318,16 @@ abv_eighty_only <-
 
   ggplot(abv_eighty_only,aes(year,value))+
   geom_line()+
-  labs(title="Population of ages 80 and above  ",subtitle = "", x="Year",y="Population")+
+  labs(title="Population of ages 80 and above  ",subtitle = "", x="Year",y="Population",caption="Figure(8)")+
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
   theme(plot.background = element_rect(fill = "#BFD5E3"))+
-  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
 
 ```
 
-
+We can have a closer look by plotting the population of group age 80 and above from 1960 to 2019, as we can see in Figure (8) that there is an increase of this age group in Canada's population since 1960 and since 2000 this increase became a little higher.  
 
 ## Question 8: Is the modern lifestyle in Canada affect the adolescent mind regarding giving birth in this phase of their life? 
 
@@ -225,17 +337,21 @@ adl_fert_rate<- dataset_canada %>%
 
 ggplot(adl_fert_rate,aes(year,adolescent_fertility_rate_births_per_1_000_women_ages_15_19))+
 geom_line(aes(color="red"))+
-labs(title="Adolescent fertility rate in Canada from 1960 to 2019  ",subtitle = "", x="Year",y="Births per 1000 women ages 15-19")+
+labs(title="Adolescent fertility rate in Canada from 1960 to 2019  ",subtitle = "", x="Year",y="Births per 1000 women ages 15-19",caption="Figure(9)")+
   theme_bw()+
   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
   theme(plot.background = element_rect(fill = "#BFD5E3"))+
   theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
-  theme(legend.position = "none")
+  theme(legend.position = "none")+
+    scale_y_continuous(labels = function(x) format(x, scientific = FALSE))
 
 ```
 
+From Figure (9), we can see that the Adolescent fertility rate in Canada has tremendously decreases over time starting at 1960 the adolescent fertility rate was 55.63 reaching to adolescent fertility rate of 7.68 in 2019. it seems that the modern life style in Canada has the effect to decrease the adolescent women fertility rate.
+
 
 ## Summary
+
 
 
 

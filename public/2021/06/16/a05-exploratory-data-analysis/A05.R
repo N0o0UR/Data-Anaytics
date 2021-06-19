@@ -59,28 +59,28 @@ ui <- fluidPage(
       
     )
   )
-,      fluidRow(column(12,wellPanel(p("QuestionS 1, 2, 3, and 4 can be answered through the interactive visualization shown below so that by picking the indicator of interest and the year, we can check the answers of those 4 questions and more:")))),
-sidebarLayout(
-  sidebarPanel(
-    selectInput(
-      inputId = "year",
-      label = "Select Year",
-       choices = years
-      
-      
-    ),
-    selectInput(
-      inputId = "indicator2_name",
-      label = "Select Indicator",
-      choices = indicators
-    )
-  ),
-  mainPanel(
-    plotlyOutput(outputId = "plot_2")
-    
-    
-  )
-)
+# ,      fluidRow(column(12,wellPanel(p("QuestionS 1, 2, 3, and 4 can be answered through the interactive visualization shown below so that by picking the indicator of interest and the year, we can check the answers of those 4 questions and more:")))),
+# sidebarLayout(
+#   sidebarPanel(
+#     selectInput(
+#       inputId = "year",
+#       label = "Select Year",
+#        choices = years
+# 
+# 
+#     ),
+#     selectInput(
+#       inputId = "indicator2_name",
+#       label = "Select Indicator",
+#       choices = indicators
+#     )
+#   ),
+#   mainPanel(
+#     plotlyOutput(outputId = "plot_2")
+# 
+# 
+#   )
+# )
 )
 
 
@@ -104,23 +104,26 @@ server <- function(input, output) {
     ggplotly(p)
     
   })
-  output$plot_2 <- renderPlotly({
-    p2 <- main_dataset %>%
-      select(-country_code,- indicator_code)%>%
-      gather(key="year", value="value",x1960:x2019)%>%
-      mutate(year=as.integer(str_replace(year, "x", "")))%>%
-      filter(indicator_name == input$indicator2_name) %>%
-      filter(year == input$year) %>%
-      ggplot(aes(x=country_name,y=value))+
-      geom_col()+
-      labs(title=glue("{input$indicator_name} from 1960 to 2019 \n "),subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
-      theme_bw()+
-      theme(axis.text.x=element_text(color = "red", size=3, angle=90,vjust=.5, hjust=0.7)) +
-      theme(plot.background = element_rect(fill = "#BFD5E3"))+
-      theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
-    
-    ggplotly(p2)
-  })
+  # output$plot_2 <- renderPlotly({
+  #   
+  # 
+  #   
+  #   p2 <- main_dataset %>%
+  #     select(-country_code,- indicator_code)%>%
+  #     gather(key="year", value="value",x1960:x2019)%>%
+  #     mutate(year=as.integer(str_replace(year, "x", "")))%>%
+  #     filter(indicator_name == input$indicator2_name) %>%
+  #     filter(year == input$year) %>%
+  #     ggplot(aes(x=country_name,y=value))+
+  #     geom_col()+
+  #     labs(title=glue("{input$indicator2_name} from 1960 to 2019 \n "),subtitle = "", x="Year",y="Population",caption = "Figure (2)")+
+  #     theme_bw()+
+  #     theme(axis.text.x=element_text(color = "red", size=3, angle=90,vjust=.5, hjust=0.7)) +
+  #     theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  #     theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))
+  # 
+  #   ggplotly(p2)
+  # })
 }
 
 
