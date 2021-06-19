@@ -98,7 +98,7 @@ dataset_canada_used<- dataset_canada%>%
 
 
 To access the **Data Profiling Report** in a new window please press the link below
- [example website](./report.html){target="_blank"}
+ [Link to open the data profiling report in a new window ](./report.html){target="_blank"}
 
 
 
@@ -106,6 +106,10 @@ To access the **Data Profiling Report** in a new window please press the link be
 
 
 ### part 2: in this part we can analyze the data set by visually explore each indicator in each country, Also in this part we can find the answers for the first four questions mentioned above. 
+
+To open the **Shiny app** in a new window please press the link below
+ [Link to open the Shiny app in a new window ](https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/){target="_blank"}
+
  
 <iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/"> </iframe>
 
@@ -114,6 +118,8 @@ To access the **Data Profiling Report** in a new window please press the link be
 ## Question 5: How does the population in Canada change over time? 
 
 from Figure (1) shown below , we can see that the population in Canada increases every year so that starting from year 1960 the population was 17909009 and it keeps increasing linearly reaching to population of 30685730 in 2000 and population of 37593384 in 2019.
+
+
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(dataset_canada,aes(year,population_total))+
