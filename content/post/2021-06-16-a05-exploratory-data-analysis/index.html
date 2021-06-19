@@ -51,82 +51,22 @@ output: html_document
 </div>
 <div id="section-question-1-whats-the-country-with-the-highest-population-in-north-america-in-2019" class="section level2">
 <h2>Question 1: what’s the country with the highest population in North America in 2019?</h2>
-<pre class="r"><code>      north_america &lt;-dataset %&gt;%
-          drop_na() %&gt;%
- select(-country_code,- indicator_code)%&gt;%
-  gather(key=&quot;year&quot;, value=&quot;value&quot;,x1960:x2019)%&gt;%
-  mutate(year=as.integer(str_replace(year, &quot;x&quot;, &quot;&quot;)))%&gt;%
-  spread(key=country_name,value=value)%&gt;% 
-  select(indicator_name, year, &quot;Antigua and Barbuda&quot;, &quot;Barbados&quot;,&quot;Belize&quot;,&quot;Canada&quot;,&quot;Costa Rica&quot;,&quot;Cuba&quot;,&quot;Dominican Republic&quot;,
-         &quot;El Salvador&quot;,&quot;Grenada&quot;,&quot;Guatemala&quot;,&quot;Haiti&quot;,&quot;Honduras&quot;,&quot;Jamaica&quot;,&quot;Mexico&quot;,&quot;Nicaragua&quot;,&quot;Panama&quot;,&quot;Trinidad and Tobago&quot;,&quot;United States&quot;)%&gt;%
-    gather(key=&quot;Country_name&quot;, value=&quot;pop&quot;,&quot;Antigua and Barbuda&quot;:&quot;United States&quot;)%&gt;%
-    spread(key=indicator_name,value=pop)%&gt;%
-  filter(year==2019)%&gt;%
-  clean_names()
-
-
-  pop_na&lt;- north_america%&gt;%
-  select(country_name, year, population_total)
-  ggplot(pop_na,aes(x=country_name,population_total))+
-      geom_col()+
-      labs(title=(&quot;Total Population in countries of North America in 2019 &quot;),subtitle = &quot;&quot;, x=&quot;Country&quot;,y=&quot;Population&quot;,caption = &quot;Figure(1)&quot;)+
-      theme_bw()+
-      theme(axis.text.x=element_text(color = &quot;red&quot;, size=10, angle=90,vjust=.5, hjust=0.7)) +
-      theme(plot.background = element_rect(fill = &quot;#BFD5E3&quot;))+
-      theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
-    scale_y_continuous(labels = function(x) format(x, scientific = FALSE))</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 From Figure(1), we can see that in 2019 the United States of America has the highest population of 328239523 among the countries of North America, then Mexico that has a population of 127575529 then Canada that has population of 37593384.</p>
 </div>
 <div id="section-question-2-which-country-in-north-america-has-the-highest-population-of-elderly-in-2019" class="section level2">
 <h2>Question 2: which country in North America has the highest population of elderly in 2019?</h2>
-<pre class="r"><code>  pop_na_elderly&lt;- north_america%&gt;%
-  select(country_name,&quot;population_ages_65_and_above_total&quot;,&quot;population_total&quot;)%&gt;%
-  gather(key=&quot;pop&quot;, value=&quot;value&quot;,population_ages_65_and_above_total:population_total)
-
-
-  ggplot(pop_na_elderly,aes(country_name,value, fill=pop))+
-  geom_bar(position=&quot;dodge&quot;,stat = &quot;identity&quot;)+
-  labs(title=(&quot;Total population and elderly population in countries of North America in 2019 &quot;),subtitle = &quot;&quot;, x=&quot;Country&quot;,y=&quot;Population&quot;, caption=&quot;Figure(2)&quot;, fill=&quot;Population&quot;)+
-  theme_bw()+
-  theme(axis.text.x=element_text(color = &quot;red&quot;, size=10, angle=90,vjust=.5, hjust=0.7)) +
-  theme(plot.background = element_rect(fill = &quot;#BFD5E3&quot;))+
-  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
-  scale_fill_discrete(labels = c(&quot;65 $ Above &quot;, &quot;Total Population&quot;))+
-    scale_y_continuous(labels = function(x) format(x, scientific = FALSE))</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>from Figure(2) we can see that the elderly population among the North America countries follows the same ranking of the total population we did in question 1 , so that in 2019 the United States of America has the highest elderly population of 53206334, then Mexico that has elderly population of 9461844 then Canada that has elderly population of 6634442.</p>
 <p>Also from Figure (2), we can see the portion of the elderly population among the whole population in each country.</p>
 </div>
 <div id="section-question-3-which-country-in-north-america-has-the-highest-birth-rate-in-2019" class="section level2">
 <h2>Question 3: which country in North America has the highest birth rate in 2019?</h2>
-<pre class="r"><code>  pr&lt;- north_america%&gt;%
-  select(country_name,&quot;fertility_rate_total_births_per_woman&quot;)
-
-
-  ggplot(pr,aes(x=country_name,y=fertility_rate_total_births_per_woman))+
-  geom_col()+
-  labs(title=(&quot;Fertility rate per woman in countries of North America in 2019 &quot;),subtitle = &quot;&quot;, x=&quot;Country&quot;,y=&quot;Fertility Rate / Woman&quot;, caption=&quot;Figure(3)&quot;)+
-      theme_bw()+
-      theme(axis.text.x=element_text(color = &quot;red&quot;, size=10, angle=90,vjust=.5, hjust=0.7)) +
-      theme(plot.background = element_rect(fill = &quot;#BFD5E3&quot;))+
-      theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>To answer this question we will use the indicator of fertility rate that is defined as the total births per woman in the country as we can see in Figure(3), using the fertility rate as an indicator to the birth rate, we can see that Haiti has the highest fertility rate in 2019 among the North America countries of value 2.89. Also we can see that the fertility rate in Canada was 1.47 in 2019.</p>
 </div>
 <div id="section-question-4-which-country-in-north-america-has-the-highest-mortality-rate-in-2019" class="section level2">
 <h2>Question 4: which country in North America has the highest mortality rate in 2019?</h2>
-<pre class="r"><code>death_r&lt;- north_america%&gt;%
-  select(country_name,&quot;death_rate_crude_per_1_000_people&quot;)
-
-
-  ggplot(death_r,aes(x=country_name,y=death_rate_crude_per_1_000_people ))+
-  geom_col()+
-  labs(title=(&quot;Deaths rate per 1000 people in countries of North America in 2019 &quot;),subtitle = &quot;&quot;, x=&quot;Country&quot;,y=&quot;Deaths Rate / 1000 people&quot;, caption=&quot;Figure(4)&quot;)+
-      theme_bw()+
-      theme(axis.text.x=element_text(color = &quot;red&quot;, size=10, angle=90,vjust=.5, hjust=0.7)) +
-      theme(plot.background = element_rect(fill = &quot;#BFD5E3&quot;))+
-      theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>To answer this question we will use the indicator of Death Rate Crude Per 1000 People in the country, as we can see in Figure(4), using the Death Rate Crude Per 1000 People as an indicator to the mortality rate, we can see that Grenada has the highest mortality rate in 2019 among the North America countries of value 9.58. Also we can see that in 2019 the death rate in Canada was 7.60 and the lowest death rate was in Honduras of value 4.45.</p>
 </div>
@@ -154,4 +94,5 @@ From Figure (6) shown above , we can see that the age distribution in Canada in 
 </div>
 <div id="section-summary" class="section level2">
 <h2>Summary</h2>
+<p>The modern technology has helped to make human live longer life, although in the other side the modern life affected the adolescent fertility rate in Canada.in 2019 United states of America has the highest population in the North America and comparing it Canada the difference is huge. In 2019 among countries of North America the mortality rate was the least in Honduras while the birth rate was the highest in Haiti.</p>
 </div>

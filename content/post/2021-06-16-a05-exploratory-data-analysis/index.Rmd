@@ -114,7 +114,7 @@ To open the **Shiny app** in a new window please press the link below
 ## Question 1: what's the country with the highest population in North America in 2019?
 
 
-```{r}
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
 
       north_america <-dataset %>%
           drop_na() %>%
@@ -149,7 +149,7 @@ From Figure(1), we can see that in 2019 the United States of America has the hig
 ## Question 2: which country in North America has the highest population of elderly in 2019?
 
 
-```{r}
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
 
   pop_na_elderly<- north_america%>%
   select(country_name,"population_ages_65_and_above_total","population_total")%>%
@@ -176,7 +176,7 @@ Also from Figure (2), we can see the portion of the elderly population among the
 ## Question 3: which country in North America has the highest birth rate in 2019?
 
 
-```{r}
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
 
   pr<- north_america%>%
   select(country_name,"fertility_rate_total_births_per_woman")
@@ -200,7 +200,7 @@ To answer this question we will use the indicator of fertility rate that is defi
 
 ## Question 4: which country in North America has the highest mortality rate in 2019?
 
-```{r}
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
 
 death_r<- north_america%>%
   select(country_name,"death_rate_crude_per_1_000_people")
@@ -352,7 +352,7 @@ From Figure (9), we can see that the Adolescent fertility rate in Canada has tre
 
 ## Summary
 
-
+The modern technology has helped to make human live longer life, although in the other side the modern life affected the adolescent fertility rate in Canada.in 2019 United states of America has the highest population in the North America and comparing it Canada the difference is huge. In 2019 among countries of North America the mortality rate  was the least in Honduras while the birth rate was the highest in Haiti. 
 
 
 
