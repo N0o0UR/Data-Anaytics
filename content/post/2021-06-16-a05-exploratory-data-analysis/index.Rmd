@@ -84,15 +84,17 @@ dataset_canada_used<- dataset_canada%>%
 ### Part 1: Data profiling report, in this  profile we will analyze our data set by summarizing their main characters and use  statistical graphics and other data visualization methods.
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
- create_report(dataset_canada_used)
+ #create_report(dataset_canada_used)
 #![](./report.html){width=100%,height="800"}
 ```
 
 <iframe height="800" width="100%" frameborder="no"src="./report.html/"> </iframe>
 
+To access the **Data Profiling Report** in a new window please press the link below 
+<./file:///C:/Users/noura/Documents/Data-Anaytics/content/post/2021-06-16-a05-exploratory-data-analysis/report.html>
 
 
-### part 2: in this part we will analyze the data set by visually explore each indicator in a specific country 
+### part 2: in this part we will analyze the data set by visually explore each indicator in a specific country, Also in this part we can find the answers for the first four questions mentioned above. 
  
 <iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/"> </iframe>
 
