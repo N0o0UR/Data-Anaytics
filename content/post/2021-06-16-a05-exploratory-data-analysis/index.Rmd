@@ -111,9 +111,9 @@ To access the **Data Profiling Report** in a new window please press the link be
 <iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/"> </iframe>
 
 
+
 To open the **Shiny app** in a new window please press the link below
 [Link to open the Shiny app in a new window](https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/){target="_blank"}
-
 
 ## Question 5: How does the population in Canada change over time? 
 
