@@ -29,6 +29,8 @@ library(shiny)
 ## The dataset
 
 The data used in this blog was obtained from The **World Bank Data**, to access the source of the data use the link below
+
+[example website](https://data.worldbank.org/topic/health?view=chart){target="_blank"}
 <https://data.worldbank.org/topic/health?view=chart>
 
 ```{r,echo = FALSE, message=FALSE, warning=FALSE}
@@ -90,9 +92,18 @@ dataset_canada_used<- dataset_canada%>%
 
 <iframe height="800" width="100%" frameborder="no"src="./report.html/"> </iframe>
 
+
+
+
+
 To access the **Data Profiling Report** in a new window please press the link below
  [example website](file:///C:/Users/noura/Documents/Data-Anaytics/content/post/2021-06-16-a05-exploratory-data-analysis/report.html){target="_blank"}
 [file:///C:/Users/noura/Documents/Data-Anaytics/content/post/2021-06-16-a05-exploratory-data-analysis/report.html]
+
+
+
+
+
 
 ### part 2: in this part we will analyze the data set by visually explore each indicator in a specific country, Also in this part we can find the answers for the first four questions mentioned above. 
  
