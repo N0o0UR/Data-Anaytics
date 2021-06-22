@@ -1,0 +1,43 @@
+---
+title: 'Project '
+author: Nouran
+date: '2021-06-21'
+slug: project
+categories:
+  - Basics
+  - ggplot2
+  - shiny
+  - Tideverse
+  - tidymodels
+tags: []
+runtime: shiny
+output: html_document
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="section-the-dataset" class="section level2">
+<h2>The dataset</h2>
+<p>The used data set in this project composed of a record of 7 common different fish species in fish market sales. For each fish participated on this record, a certain measurements were taken, which are the fish species, the weight in Gram g, vertical length in cm, diagonal length in cm, cross length in cm, height in cm and diagonal width in cm.</p>
+<p><img src="fish.png" width="98%" /></p>
+<p>The data was obtained from <strong>Kaggle </strong> website, to access the source of the data use the link below</p>
+<p><a href="https://www.kaggle.com/aungpyaeap/fish-market" target="_blank">Link to the dataset</a></p>
+</div>
+<div id="section-explanatory-data-analysis" class="section level2">
+<h2>Explanatory data analysis</h2>
+<p>In this part we are going to create a data profiling report, in this report we can get an overview of the shape and structure of our dataset by summarizing their main characters and use statistical graphics and other data visualization methods.</p>
+<iframe height="800" width="100%" frameborder="no" src="./report.html/">
+</iframe>
+<p>Based on the data profiling report, specifically in the Univariate Distribution Histogram part , We can see that there are some fishes in our data set with zero weights, we need to remove the rows where the weight equal to zero.</p>
+<p>To access the <strong>Data Profiling Report</strong> in a new window please press the link below
+<a href="./report.html" target="_blank">Link to open the data profiling report in a new window</a></p>
+<p>In this part we can interactively perform further exploration to our data set.</p>
+<iframe height="800" width="100%" frameborder="no" src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/">
+</iframe>
+<p>To open the <strong>Shiny app</strong> in a new window please press the link below
+<a href="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/" target="_blank">Link to open the Shiny app in a new window</a></p>
+<div id="section-fitting-a-linear-model-to-predict-the-fish-species" class="section level3">
+<h3>fitting a linear model to predict the fish species</h3>
+</div>
+</div>

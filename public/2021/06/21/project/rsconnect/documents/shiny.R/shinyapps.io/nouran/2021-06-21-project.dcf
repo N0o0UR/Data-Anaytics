@@ -1,0 +1,14 @@
+name: 2021-06-21-project
+title: 2021-06-21-project
+username:
+account: nouran
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4302265
+bundleId: 4741798
+url: https://nouran.shinyapps.io/2021-06-21-project/
+when: 1624335593.40316
+lastSyncTime: 1624335593.40316
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: fish.png|index.html|index.Rmd|index_files/figure-html/height-width-plot-1.png|index_files/header-attrs/header-attrs.js|report.html

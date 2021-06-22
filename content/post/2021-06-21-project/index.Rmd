@@ -1,0 +1,261 @@
+---
+title: 'Project '
+author: Nouran
+date: '2021-06-21'
+slug: project
+categories:
+  - Basics
+  - ggplot2
+  - shiny
+  - Tideverse
+  - tidymodels
+tags: []
+runtime: shiny
+output: html_document
+---
+
+
+
+```{r packages, echo = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(DataExplorer)
+library(janitor)
+library(dplyr)
+library(shiny)
+library(tidymodels)
+library(ggtext)
+library(knitr)
+library(kableExtra)
+set.seed(1234)
+options(dplyr.print_min = 10, dplyr.print_max = 6)
+
+```
+
+
+## The dataset
+
+The used data set in this project composed of a record of 7 common different fish species in fish market sales. For each fish participated on this record, a certain measurements were taken, which are the fish species, the weight in Gram g, vertical length in cm, diagonal length in cm, cross length in cm, height in cm and diagonal width in cm.
+
+```{r out.width="98%", echo=FALSE}
+knitr::include_graphics("fish.png")
+```
+
+The data was obtained from  **Kaggle ** website, to access the source of the data use the link below
+
+[Link to the dataset ](https://www.kaggle.com/aungpyaeap/fish-market){target="_blank"}
+
+
+
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
+# Read the data  and perform data Transformation:
+
+dataset <- read_csv("Fish.csv") %>% 
+  clean_names()%>%
+  rename(vertical_length = length1, diagonal_length = length2, cross_length = length3)%>%
+  select(species,weight,vertical_length,diagonal_length,cross_length,height,width)
+
+
+```
+
+
+
+## Explanatory data analysis
+
+ In this part we are going to create a data profiling report, in this report we can get an overview of the shape and structure of our dataset by summarizing their main characters and use  statistical graphics and other data visualization methods.
+
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
+ #create_report(dataset)
+```
+
+<iframe height="800" width="100%" frameborder="no"src="./report.html/"> </iframe>
+
+Based on the data profiling report, specifically in the Univariate Distribution Histogram part , We can see that there are some fishes in our data set with zero weights, we need to remove the rows where the weight equal to zero.
+
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
+
+# Removing any fish with 0 gram weight
+
+dataset<-dataset[apply(dataset!=0, 1, all),]
+
+```
+
+
+To access the **Data Profiling Report** in a new window please press the link below
+ [Link to open the data profiling report in a new window ](./report.html){target="_blank"}
+
+
+
+
+In this part we can interactively perform further exploration to our data set.
+
+
+<iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/"> </iframe>
+
+
+
+To open the **Shiny app** in a new window please press the link below
+[Link to open the Shiny app in a new window](https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/){target="_blank"}
+
+
+
+
+# fitting a linear model to predict the fish species
+
+
+
+
+$$\widehat{Cross Length}_{i} = \beta_0 + \beta_1 \times Weight_{i}$$
+
+
+```{r fit-model}
+linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cross_length ~weight, data = dataset)
+```
+
+
+
+## A closer look at model output
+
+```{r ref.label="fit-model", echo=FALSE}
+```
+
+.large[
+$$\widehat{Cross Length}_{i} = 3.6214 + 0.7808 \times Weight_{i}$$
+]
+
+---
+
+## A tidy look at model output
+
+```{r}
+linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cross_length ~ weight, data =dataset) %>%
+  tidy()
+```
+
+.large[
+$$\widehat{Cross Length}_{i} = 3.62 + 0.781 \times Weight_{i}$$
+]
+
+---
+
+## Slope and intercept
+
+.large[
+$$\widehat{Cross Length}_{i} = 3.62 + 0.781 \times Weight_{i}$$
+]
+
+--
+
+- **Slope:** For each additional inch the painting is wider, the height is expected to be higher, on average, by 0.781 inches.
+
+--
+- **Intercept:** Paintings that are 0 inches wide are expected to be 3.62 inches high, on average. (Does this make sense?)
+
+---
+
+## Correlation does not imply causation
+
+Remember this when interpreting model coefficients
+
+```{r echo=FALSE, out.width="90%"}
+knitr::include_graphics("cell_phones.png")
+```
+
+.footnote[
+Source: XKCD, [Cell phones](https://xkcd.com/925/)
+]
+
+---
+
+class: middle
+
+# Parameter estimation
+
+---
+
+## Linear model with a single predictor
+
+- We're interested in $\beta_0$ (population parameter for the intercept) and $\beta_1$ (population parameter for the slope) in the following model:
+
+$$\hat{y}_{i} = \beta_0 + \beta_1~x_{i}$$
+
+--
+- Tough luck, you can't have them...
+
+--
+- So we use sample statistics to estimate them:
+
+$$\hat{y}_{i} = b_0 + b_1~x_{i}$$
+
+---
+
+## Least squares regression
+
+- The regression line minimizes the sum of squared residuals.
+
+--
+- If $e_i = y_i - \hat{y}_i$, then, the regression line minimizes 
+$\sum_{i = 1}^n e_i^2$.
+
+---
+
+```{r height-width-plot, echo=FALSE, warning=FALSE}
+ggplot(data = pp, aes(x = Width_in, y = Height_in)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "#8E2C90") + 
+  labs(
+    title = "Height vs. width of paintings",
+    subtitle = "Paris auctions, 1764 - 1780",
+    x = "Width (inches)",
+    y = "Height (inches)"
+  )
+```
+
+
+
+
+### fitting a linear model to predict the fish species
+
+
+
+```{r vis-res-1, echo=FALSE, out.width="70%"}
+cl_wt_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(cross_length ~ weight, data = dataset)
+
+cl_wt_fit_tidy <- tidy(cl_wt_fit$fit) 
+
+cl_wt_fit_aug  <- augment(cl_wt_fit$fit) %>%
+  mutate(res_cat = ifelse(.resid > 0, TRUE, FALSE))
+
+p <- ggplot(data = cl_wt_fit_aug, 
+            aes(x = weight, y = cross_length)) +
+  geom_point(alpha = 0.2) + 
+  labs(
+    title = "Cross Length vs. Weight",
+    subtitle = "",
+    x = "Weight (gram)",
+    y = "Cross Length (cm)"
+    ) 
+p
+
+```
+
+
+```{r vis-res-2, echo=FALSE, out.width="70%"}
+p <- p + 
+  geom_smooth(method = "lm", color = "#8E2C90", se = FALSE) +
+  geom_point(mapping = aes(y = .fitted), color = "#E48957") 
+p
+```
+
+
+```{r vis-res-3, echo = FALSE, out.width="70%"}
+p<-p + 
+  geom_segment(mapping = aes(xend = weight, yend = .fitted), color = "#E48957", alpha = 0.4) 
+p
+```
+
