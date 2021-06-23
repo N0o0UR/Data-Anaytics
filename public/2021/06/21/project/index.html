@@ -22,6 +22,11 @@
 
 
 
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="/css/fonts.css" media="all">
 <link rel="stylesheet" href="/css/main.css" media="all">
 
@@ -91,9 +96,32 @@
 </iframe>
 <p>To open the <strong>Shiny app</strong> in a new window please press the link below
 <a href="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/" target="_blank">Link to open the Shiny app in a new window</a></p>
-<div id="section-fitting-a-linear-model-to-predict-the-fish-species" class="section level3">
-<h3>fitting a linear model to predict the fish species</h3>
 </div>
+<div id="section-fitting-a-model-to-predict-the-fish-height-based-on-its-cross-length" class="section level1">
+<h1>Fitting a model to predict the fish height based on it’s cross length</h1>
+</div>
+<div id="section-linear-regression-model" class="section level1">
+<h1>Linear Regression Model</h1>
+<ul>
+<li>To create a liner regression model to predict the height of a fish given its cross length, we need to determine the value of <span class="math inline">\(\beta_0\)</span> that is the population parameter for the intercept and the value of <span class="math inline">\(\beta_1\)</span> that is the population parameter for the slope as shown in the following model:</li>
+</ul>
+<p><span class="math display">\[\widehat{Height}_{i} = \beta_0 + \beta_1 \times Cross Length_{i}\]</span></p>
+<pre><code>## parsnip model object
+## 
+## Fit time:  0ms 
+## 
+## Call:
+## stats::lm(formula = height ~ cross_length, data = data)
+## 
+## Coefficients:
+##  (Intercept)  cross_length  
+##       0.8677        0.2596</code></pre>
+<hr />
+<p>Using liner regression model enables us to determine the values of both <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, updating the model with the values we get the following updated model:</p>
+<p>.large[<span class="math display">\[\widehat{Height}_{i} = 0.87 + 0.26 \times Cross Length{i}\]</span>]</p>
+<hr />
+<p><img src="/2021/06/21/project/index_files/figure-html/weight-cross_length-plot-1.png" width="672" /></p>
+<p><img src="/2021/06/21/project/index_files/figure-html/vis-res-1-1.png" width="70%" /></p>
 </div>
 
     </div>
@@ -118,7 +146,22 @@
     </div>
     
 
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
     
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>

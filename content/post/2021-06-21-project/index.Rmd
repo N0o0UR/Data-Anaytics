@@ -99,163 +99,97 @@ To open the **Shiny app** in a new window please press the link below
 
 
 
-# fitting a linear model to predict the fish species
+# Fitting a model to predict the fish height based on it's cross length
 
 
+## Linear Regression Model
+
+- To create a liner regression model to predict the height of a fish given its cross length, we need to determine the value of  $\beta_0$ that is the population parameter for the intercept and the value of $\beta_1$ that is the population parameter for the slope as shown in the following model:
 
 
-$$\widehat{Cross Length}_{i} = \beta_0 + \beta_1 \times Weight_{i}$$
+ $$\widehat{Height}_{i} = \beta_0 + \beta_1 \times Cross Length_{i}$$ 
 
 
-```{r fit-model}
+```{r fit-model,echo = FALSE, message=FALSE, warning=FALSE}
 linear_reg() %>%
   set_engine("lm") %>%
-  fit(cross_length ~weight, data = dataset)
+  fit(height~cross_length, data = dataset)
+```
+
+---
+
+Using liner regression model enables us to determine the values of both $\beta_0$  and $\beta_1$, updating the model with the values we get the following updated model:  
+
+
+ $$\widehat{Height}_{i} = 0.87 + 0.26 \times Cross Length{i}$$ 
+
+
+
+---
+
+```{r height-cross_length-plot, echo=FALSE, warning=FALSE,message=FALSE,out.width="100%"}
+ggplot(data = dataset, aes(x = cross_length,y = height )) +
+  geom_point() +
+  labs(
+    title = "Height vs.Cross Length",
+    subtitle = "The data",
+    y= "Height (cm)",
+    x = "Cross Length (cm)"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+
 ```
 
 
 
-## A closer look at model output
-
-```{r ref.label="fit-model", echo=FALSE}
-```
-
-.large[
-$$\widehat{Cross Length}_{i} = 3.6214 + 0.7808 \times Weight_{i}$$
-]
-
----
-
-## A tidy look at model output
-
-```{r}
-linear_reg() %>%
-  set_engine("lm") %>%
-  fit(cross_length ~ weight, data =dataset) %>%
-  tidy()
-```
-
-.large[
-$$\widehat{Cross Length}_{i} = 3.62 + 0.781 \times Weight_{i}$$
-]
-
----
-
-## Slope and intercept
-
-.large[
-$$\widehat{Cross Length}_{i} = 3.62 + 0.781 \times Weight_{i}$$
-]
-
---
-
-- **Slope:** For each additional inch the painting is wider, the height is expected to be higher, on average, by 0.781 inches.
-
---
-- **Intercept:** Paintings that are 0 inches wide are expected to be 3.62 inches high, on average. (Does this make sense?)
-
----
-
-## Correlation does not imply causation
-
-Remember this when interpreting model coefficients
-
-```{r echo=FALSE, out.width="90%"}
-knitr::include_graphics("cell_phones.png")
-```
-
-.footnote[
-Source: XKCD, [Cell phones](https://xkcd.com/925/)
-]
-
----
-
-class: middle
-
-# Parameter estimation
-
----
-
-## Linear model with a single predictor
-
-- We're interested in $\beta_0$ (population parameter for the intercept) and $\beta_1$ (population parameter for the slope) in the following model:
-
-$$\hat{y}_{i} = \beta_0 + \beta_1~x_{i}$$
-
---
-- Tough luck, you can't have them...
-
---
-- So we use sample statistics to estimate them:
-
-$$\hat{y}_{i} = b_0 + b_1~x_{i}$$
-
----
-
-## Least squares regression
-
-- The regression line minimizes the sum of squared residuals.
-
---
-- If $e_i = y_i - \hat{y}_i$, then, the regression line minimizes 
-$\sum_{i = 1}^n e_i^2$.
-
----
-
-```{r height-width-plot, echo=FALSE, warning=FALSE}
-ggplot(data = pp, aes(x = Width_in, y = Height_in)) +
+```{r heightcross_length-plot, echo=FALSE, warning=FALSE,message=FALSE}
+ggplot(data = dataset, aes(x = cross_length,y = height )) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "#8E2C90") + 
-  labs(
-    title = "Height vs. width of paintings",
-    subtitle = "Paris auctions, 1764 - 1780",
-    x = "Width (inches)",
-    y = "Height (inches)"
-  )
+  labs(title = "Height vs.Cross Length",subtitle = " Data + Least squares line ",y= "Height (cm)",x = "Cross Length (cm)")+
+   theme_bw()+
+   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+   theme(plot.background = element_rect(fill = "#BFD5E3"))+
+   theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+   theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+   theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
 ```
 
 
 
 
-### fitting a linear model to predict the fish species
 
-
-
-```{r vis-res-1, echo=FALSE, out.width="70%"}
-cl_wt_fit <- linear_reg() %>%
+```{r vis-res-1, echo=FALSE,warning=FALSE,message=FALSE}
+ht_cl_fit <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(cross_length ~ weight, data = dataset)
+  fit(height ~ cross_length, data = dataset)
 
-cl_wt_fit_tidy <- tidy(cl_wt_fit$fit) 
+ht_cl_fit_tidy <- tidy(ht_cl_fit$fit) 
 
-cl_wt_fit_aug  <- augment(cl_wt_fit$fit) %>%
+ht_cl_fit_aug  <- augment(ht_cl_fit$fit) %>%
   mutate(res_cat = ifelse(.resid > 0, TRUE, FALSE))
 
-p <- ggplot(data = cl_wt_fit_aug, 
-            aes(x = weight, y = cross_length)) +
-  geom_point(alpha = 0.2) + 
-  labs(
-    title = "Cross Length vs. Weight",
-    subtitle = "",
-    x = "Weight (gram)",
-    y = "Cross Length (cm)"
-    ) 
-p
-
+ggplot(data = ht_cl_fit_aug,aes( x = cross_length, y = height)) +
+geom_point(alpha = 0.2) + 
+labs(title = "Height vs.Cross Length",subtitle = "Data + Least squares line + Residuals",y= "Height (cm)",x = "Cross Length (cm)")+
+geom_smooth(method = "lm", color = "#8E2C90", se = FALSE) +
+geom_point(mapping = aes(y = .fitted), color = "#E48957") +
+geom_segment(mapping = aes(xend = cross_length, yend = .fitted), color = "#E48957", alpha = 0.4) +
+   theme_bw()+
+   theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+   theme(plot.background = element_rect(fill = "#BFD5E3"))+
+   theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+   theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+   theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
 ```
 
 
-```{r vis-res-2, echo=FALSE, out.width="70%"}
-p <- p + 
-  geom_smooth(method = "lm", color = "#8E2C90", se = FALSE) +
-  geom_point(mapping = aes(y = .fitted), color = "#E48957") 
-p
-```
-
-
-```{r vis-res-3, echo = FALSE, out.width="70%"}
-p<-p + 
-  geom_segment(mapping = aes(xend = weight, yend = .fitted), color = "#E48957", alpha = 0.4) 
-p
-```
 
