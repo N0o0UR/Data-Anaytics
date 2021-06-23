@@ -150,7 +150,7 @@ theme_bw()+
 
 
 
-```{r heightcross_length-plot, echo=FALSE, warning=FALSE,message=FALSE}
+```{r heightcross_length-plot, echo=FALSE, warning=FALSE,message=FALSE,out.width="100%"}
 ggplot(data = dataset, aes(x = cross_length,y = height )) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "#8E2C90") + 
@@ -167,7 +167,7 @@ ggplot(data = dataset, aes(x = cross_length,y = height )) +
 
 
 
-```{r vis-res-1, echo=FALSE,warning=FALSE,message=FALSE}
+```{r vis-res-1, echo=FALSE,warning=FALSE,message=FALSE,out.width="100%"}
 ht_cl_fit <- linear_reg() %>%
   set_engine("lm") %>%
   fit(height ~ cross_length, data = dataset)
