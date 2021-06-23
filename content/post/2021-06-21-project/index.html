@@ -33,10 +33,10 @@ output: html_document
 <p>To access the <strong>Data Profiling Report</strong> in a new window please press the link below
 <a href="./report.html" target="_blank">Link to open the data profiling report in a new window</a></p>
 <p>In this part we can interactively perform further exploration to our data set.</p>
-<iframe height="800" width="100%" frameborder="no" src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/">
+<iframe height="800" width="100%" frameborder="no" src="https://nouran.shinyapps.io/2021-06-21-project/">
 </iframe>
 <p>To open the <strong>Shiny app</strong> in a new window please press the link below
-<a href="https://https://nouran.shinyapps.io/2021-06-21-project//" target="_blank">Link to open the Shiny app in a new window</a></p>
+<a href="https://nouran.shinyapps.io/2021-06-21-project/" target="_blank">Link to open the Shiny app in a new window</a></p>
 </div>
 <div id="section-fitting-a-model-to-predict-the-fish-height-based-on-its-cross-length" class="section level1">
 <h1>Fitting a model to predict the fish height based on it’s cross length</h1>
@@ -46,16 +46,6 @@ output: html_document
 <li>To create a liner regression model to predict the height of a fish given its cross length, we need to determine the value of <span class="math inline">\(\beta_0\)</span> that is the population parameter for the intercept and the value of <span class="math inline">\(\beta_1\)</span> that is the population parameter for the slope as shown in the following model:</li>
 </ul>
 <p><span class="math display">\[\widehat{Height}_{i} = \beta_0 + \beta_1 \times Cross Length_{i}\]</span></p>
-<pre><code>## parsnip model object
-## 
-## Fit time:  21ms 
-## 
-## Call:
-## stats::lm(formula = height ~ cross_length, data = data)
-## 
-## Coefficients:
-##  (Intercept)  cross_length  
-##       0.8677        0.2596</code></pre>
 <hr />
 <p>Using liner regression model enables us to determine the values of both <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, updating the model with the values we get the following updated model:</p>
 <p><span class="math display">\[\widehat{Height}_{i} = 0.87 + 0.26 \times Cross Length{i}\]</span></p>

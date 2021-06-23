@@ -89,12 +89,12 @@ To access the **Data Profiling Report** in a new window please press the link be
 In this part we can interactively perform further exploration to our data set.
 
 
-<iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-16-a05-exploratory-data-analysis/"> </iframe>
+<iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-21-project/"> </iframe>
 
 
 
 To open the **Shiny app** in a new window please press the link below
-[Link to open the Shiny app in a new window](https://https://nouran.shinyapps.io/2021-06-21-project//){target="_blank"}
+[Link to open the Shiny app in a new window](https://nouran.shinyapps.io/2021-06-21-project/){target="_blank"}
 
 
 
@@ -110,7 +110,7 @@ To open the **Shiny app** in a new window please press the link below
  $$\widehat{Height}_{i} = \beta_0 + \beta_1 \times Cross Length_{i}$$ 
 
 
-```{r fit-model,echo = FALSE, message=FALSE, warning=FALSE}
+```{r fit-model,echo = FALSE, message=FALSE, warning=FALSE,results=FALSE}
 linear_reg() %>%
   set_engine("lm") %>%
   fit(height~cross_length, data = dataset)
@@ -127,7 +127,7 @@ Using liner regression model enables us to determine the values of both $\beta_0
 
 ---
 
-```{r height-cross_length-plot, echo=FALSE, warning=FALSE,message=FALSE,out.width="100%",comments=FALSE}
+```{r height-cross_length-plot, echo=FALSE, warning=FALSE,message=FALSE,out.width="100%"}
 ggplot(data = dataset, aes(x = cross_length,y = height )) +
   geom_point() +
   labs(
