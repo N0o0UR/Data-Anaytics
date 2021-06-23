@@ -89,7 +89,7 @@ To access the **Data Profiling Report** in a new window please press the link be
 In this part we can interactively perform further exploration to our data set.
 
 
-<iframe height="800" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-21-project/"> </iframe>
+<iframe height="1000" width="100%" frameborder="no"src="https://nouran.shinyapps.io/2021-06-21-project/"> </iframe>
 
 
 
@@ -102,7 +102,7 @@ To open the **Shiny app** in a new window please press the link below
 # Fitting a model to predict the fish height based on it's cross length
 
 
-## Linear Regression Model
+### Linear Regression Model
 
 - To create a liner regression model to predict the height of a fish given its cross length, we need to determine the value of  $\beta_0$ that is the population parameter for the intercept and the value of $\beta_1$ that is the population parameter for the slope as shown in the following model:
 
@@ -121,7 +121,7 @@ linear_reg() %>%
 Using liner regression model enables us to determine the values of both $\beta_0$  and $\beta_1$, updating the model with the values we get the following updated model:  
 
 
- $$\widehat{Height}_{i} = 0.87 + 0.26 \times Cross Length{i}$$ 
+ $$\widehat{Height}_{i} = 0.87 + 0.26 \times Cross Length_{i}$$ 
 
 
 
@@ -154,7 +154,7 @@ theme_bw()+
 ggplot(data = dataset, aes(x = cross_length,y = height )) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "#8E2C90") + 
-  labs(title = "Height vs.Cross Length",subtitle = " Data + Least squares line ",y= "Height (cm)",x = "Cross Length (cm)")+
+  labs(title = "Height vs.Cross Length",subtitle = " The data + Least squares line ",y= "Height (cm)",x = "Cross Length (cm)")+
    theme_bw()+
    theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
    theme(plot.background = element_rect(fill = "#BFD5E3"))+
@@ -179,7 +179,7 @@ ht_cl_fit_aug  <- augment(ht_cl_fit$fit) %>%
 
 ggplot(data = ht_cl_fit_aug,aes( x = cross_length, y = height)) +
 geom_point(alpha = 0.2) + 
-labs(title = "Height vs.Cross Length",subtitle = "Data + Least squares line + Residuals",y= "Height (cm)",x = "Cross Length (cm)")+
+labs(title = "Height vs.Cross Length",subtitle = "The data + Least squares line + Residuals",y= "Height (cm)",x = "Cross Length (cm)")+
 geom_smooth(method = "lm", color = "#8E2C90", se = FALSE) +
 geom_point(mapping = aes(y = .fitted), color = "#E48957") +
 geom_segment(mapping = aes(xend = cross_length, yend = .fitted), color = "#E48957", alpha = 0.4) +
