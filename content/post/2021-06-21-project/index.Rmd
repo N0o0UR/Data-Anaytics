@@ -117,13 +117,15 @@ linear_reg() %>%
 
 ---
 
-Using liner regression model enables us to determine the values of both $\beta_0$  and $\beta_1$, updating the model with the values we get the following updated model:  
+After determing the values of both $\beta_0$  and $\beta_1$, the updated linear regression model with the values of $\beta_0$  and $\beta_1$  is shown as follow:  
 
 
  $$\widehat{Height}_{i} = 0.87 + 0.26 \times Cross Length_{i}$$ 
 
+From the above model we can see that :
 
-
+- Slope: For each additional cm the fish is longer, the height is expected to be higher, on average, by 0.26 cm.
+- Intercept: fish that is 8.8 cm tall (minimum cross length value among the dataset) is expected to be 3.2 cm high, on average.
 ---
 
 ```{r height-cross_length-plot, echo=FALSE, warning=FALSE,message=FALSE,out.width="100%"}
