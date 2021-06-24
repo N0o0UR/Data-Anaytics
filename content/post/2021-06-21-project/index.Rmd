@@ -2,7 +2,7 @@
 title: 'Project '
 author: Nouran
 date: '2021-06-21'
-slug: project
+slug: The project
 categories:
   - Basics
   - ggplot2
@@ -13,7 +13,6 @@ tags: []
 runtime: shiny
 output: html_document
 ---
-
 
 
 ```{r packages, echo = FALSE, message=FALSE, warning=FALSE}
