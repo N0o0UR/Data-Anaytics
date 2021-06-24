@@ -117,16 +117,21 @@ linear_reg() %>%
 
 ---
 
-After determing the values of both $\beta_0$  and $\beta_1$, the updated linear regression model with the values of $\beta_0$  and $\beta_1$  is shown as follow:  
+After determining the values of both $\beta_0$  and $\beta_1$, the updated linear regression model with the values of $\beta_0$  and $\beta_1$  is shown as follow:  
 
 
  $$\widehat{Height}_{i} = 0.87 + 0.26 \times Cross Length_{i}$$ 
+
+
+---
+
 
 From the above model we can see that :
 
 - Slope: For each additional cm the fish is longer, the height is expected to be higher, on average, by 0.26 cm.
 - Intercept: fish that is 8.8 cm tall (minimum cross length value among the dataset) is expected to be 3.2 cm high, on average.
----
+
+### The data is shown in the following plot:
 
 ```{r height-cross_length-plot, echo=FALSE, warning=FALSE,message=FALSE,out.width="100%"}
 ggplot(data = dataset, aes(x = cross_length,y = height )) +
@@ -150,6 +155,8 @@ theme_bw()+
 ```
 
 
+### The data and the least square line are shown in the following plot:
+
 
 ```{r heightcross_length-plot, echo=FALSE, warning=FALSE,message=FALSE,out.width="100%"}
 ggplot(data = dataset, aes(x = cross_length,y = height )) +
@@ -166,6 +173,7 @@ ggplot(data = dataset, aes(x = cross_length,y = height )) +
 
 
 
+### The data, the least square line and the residuales are shown in the following plot:
 
 
 ```{r vis-res-1, echo=FALSE,warning=FALSE,message=FALSE,out.width="100%"}
