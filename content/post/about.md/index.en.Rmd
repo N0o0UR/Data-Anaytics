@@ -1,0 +1,600 @@
+---
+title: 'Assignment A01  '
+author: 'Nouran '
+date: '2021-07-10'
+slug: assignment-a01
+categories:
+  - ggplot2
+  - Basics
+tags: []
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-07-10T12:54:21-03:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+library("readxl")
+library("janitor")
+library("tidyverse")
+library("dplyr")
+```
+
+## The diamond ring data 
+
+In this blog we used the diamond ring data. Getting a glimpse into the data we can see that it is composed of 440 rows where each row represents a diamond ring and for each ring the diamond characteristics are provided that are Color, Cut, Carat Weight, Clarity , Polish, Symmetry, and certification in addition to the price.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+data<-read_excel("diamonds.xlsx",col_types = c("guess","guess","guess","guess","guess","guess","guess","numeric","guess"))%>%
+  clean_names()
+ glimpse(data)
+
+```
+
+
+## The Univriate Analysis
+
+we will start our analysis with the metric data which are the price and the carat mass of the diamond ring then we will analyse the non metric data which are the colour, clarity, cut, certification, polish, symmetry, and wholesaler.
+
+
+### The Price
+
+From the following plots and provided summary, we can see that the diamond ring price ranges from minimum value of $160 to maximum value of $3145, the mean of the price is $1717, where in most of the diamond ring purchases (mode) the price was $520 and we can also see that the first quartile is $520, the third quartile is $3012  and the IQR is $2429 with median price of $2169.
+
+The price dispersion can be evaluated through a variance of $1382245 and standard deviation of $1175.689.
+
+The data distribution has no specific shape but we can notice that there is no diamond ring was sold in the price range from $700 to $1700 similarly at price of $2900.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+### The histogram of the price :
+ggplot(data,aes(price))+
+  geom_histogram()+
+  labs(
+    title = "Histogram of the Price",
+    subtitle = " ",
+    x = "Price"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+
+### The boxplot of the price 
+ggplot(data,aes(price))+
+  geom_boxplot()+
+  labs(
+    title = "The five numbers associated with the Price ",
+    subtitle = " ",
+    x = "Price"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+### summary of the price o get the min, max, Q1,Q3, mean and median 
+ summary(data$price)
+
+### The variance and standard deviation of the price 
+var(data$price)
+sd(data$price)
+
+### The mode of the price 
+mode_price<- data %>%
+  count(price)%>%
+  arrange(desc(n))%>%
+  head(1)
+
+
+### The IQR of the price 
+iqr_price=quantile(data$price, 0.75) - quantile(data$price, 0.25)
+
+
+```
+
+
+### The Carat mass
+
+From the following plots and provided summary, we can see that the diamond ring carat mass ranges from minimum value of 0.09 gram to maximum value of 1.58 gram, the mean of the carat mass is 0.6693 gram, where in most of the diamond ring purchases (mode) the carat mass was 0.3 gram and we can also see that the first quartile is 0.3 gram, the third quartile is 1.01 gram and the IQR is 0.71 gram with median carat mass of 0.81 gram.
+
+The carat mass dispersion can be evaluated through a variance of 0.144248 grams and standard deviation of 0.3797999 grams.
+
+The data distribution has no specific shape but we can notice that there is no carat mass was sold in the carat mass range from 0.4 gram to 0.7 gram similarly at carat mass of 1.5 grams.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+### The histogram of the Carat :
+ggplot(data,aes(carat))+
+  geom_histogram()+
+  labs(
+    title = "Histogram of the Carat",
+    subtitle = " ",
+    x = "The Carat Mass"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+
+### The boxplot of the carat 
+ggplot(data,aes(carat))+
+  geom_boxplot()+
+  labs(
+    title = "The five numbers of the Carat Mass ",
+    subtitle = " ",
+    x = "Carat Mass"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+### summary of the carat mass to get the min, max, Q1,Q3, mean and median 
+ summary(data$carat)
+
+### The variance and standard deviation of the carat mass 
+var(data$carat)
+sd(data$carat)
+
+### The mode of the carat mass 
+mode_carat<- data %>%
+  count(carat)%>%
+  arrange(desc(n))%>%
+  head(1)
+
+
+### The IQR of the carat mass
+iqr_carat=quantile(data$carat, 0.75) - quantile(data$carat, 0.25)
+
+
+```
+
+
+
+### The Colour
+
+From the histogram plot of the color, we can see that the most purchased color for the diamond rings is the color I and after that are color J and color H and the least purchased are color L and color D.  
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+ggplot(data,aes(colour))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Color",
+    subtitle = " ",
+    x = "Colour"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+```
+
+
+###  The Clarity
+
+From the histogram plot of the clarity, we can see that the most purchased clarity type for the diamond rings is the clarity Sl1 and after that is clarity Sl2 and the least purchased are WS1 and Ws2.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+ggplot(data,aes(clarity))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Clarity",
+    subtitle = " ",
+    x = "Clarity"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+```
+
+
+### The Cut
+
+From the histogram plot of the diamond ring cut, we can see that the most purchased cut type for the diamond rings is X and after that is cut V then cut I while the least purchased cuts are cut G and cut F.
+
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+ggplot(data,aes(cut))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Cut",
+    subtitle = " ",
+    x = "Cut"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+
+### The Certification
+
+From the histogram plot of the diamond ring certification, we can see that the most purchased certification type for the diamond rings is GIA and after that is EGL then IGI while the least purchased certifications are DOW and AGS.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+ggplot(data,aes(certification))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Certification",
+    subtitle = " ",
+    x = "Certification"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+```
+
+
+
+### The Polish
+
+From the histogram plot of the diamond ring polish, we can see that the most purchased polish type for the diamond rings is V and after that is G then X while the least purchased polish types are V,I and F.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+ggplot(data,aes(polish))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Polish",
+    subtitle = " ",
+    x = "polish"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+```
+
+
+### The Symmetry
+
+From the histogram plot of the diamond ring symmetry, we can see that the most purchased symmetry type for the diamond rings is V and after that is G then X while the least purchased symmetry types are I and F.
+
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+
+ggplot(data,aes(symmetry))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Symmetry",
+    subtitle = " ",
+    x = "Symmetry"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+```
+
+
+### Wholesaler
+
+From the histogram plot of the diamond ring wholesaler, we can see that the most of the purchased diamond rings were purchased from wholesaler number 3 then wholesaler number 2, while the fewer purchases done at the wholesaler number 1.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+ggplot(data,aes(wholesaler))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Wholesaler",
+    subtitle = " ",
+    x = "Wholesaler"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+```
+
+
+## The Bivariate Analysis and regressision models 
+
+
+### The simple regression model for the price Vs. the carat mass
+
+The correlation between the price and the carat mass of the diamond ring is 0.925436 that means that the two variables have a perfect positive relationship so that when the carat mass increases the price increase and vice versa. 
+
+The covariance between the price and the carat mass of the diamond ring is 413.2318 which shows the extent to which the two variables change in tandem.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+cor (data$carat,data$price)
+cov(data$carat,data$price)
+
+```
+
+In the following plot, a simple linear regression model has been fitted that can help in the prediction of the price of the diamond ring based on the carat mass.
+
+The simple linear regression model of the price Vs. the carat mass can be represented by:
+
+ $$\widehat{Y}_{i} = \beta_0 + \beta_1 \times CaratMass_{i}$$ 
+  $$\widehat{Price} =-200.5 + 2864.7 \times Carat Mass$$ 
+
+
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+cor (data$carat,data$price)
+cov(data$carat,data$price)
+
+ggplot(data,aes(carat,price))+
+  geom_point()+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(
+    title = "Fitting Linear Model for the Price Vs. Carat Mass",
+    subtitle = " ",
+    y= " price (log Y axis) ",
+    x = "Carat Mass (log X axis)"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))+
+  scale_y_log10()+
+  scale_x_log10()
+  
+  lm(price ~ carat, data = data)
+
+```
+
+
+
+### The simple regression model for the price Vs. the colour 
+
+The correlation between the price and the color of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the colour of the diamond ring is very weak.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+# Compute the analysis of variance through Anova 
+res.aov_colour <- aov(price ~ colour, data = data)
+# Summary of the analysis
+summary(res.aov_colour)
+```
+
+
+The simple linear regression model of the price Vs. the color can be represented by:
+
+ $$\widehat{Y} = \beta_0 + \beta_1 \times colorE+ \beta_2 \times colorF+ \beta_3 \times colorG+ \beta_4\times colorH+ \beta_5 \times colorI+ \beta_6 \times colorJ+ \beta_7 \times colorK+ \beta_8 \times colorL$$ 
+  $$\widehat{Price} =2316.20 -764.29 \times colorE -982.36 \times colorF -147.73 \times colorG -873.92\times colorH -765.88 \times colorI -535.28 \times colorJ+ 42.06 \times colorK+  52.30\times colorL$$ 
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+lm(price ~ colour, data = data)
+```
+
+
+### The simple regression model for the price Vs. the clarity
+
+The correlation between the price and the clarity of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the clarity of the diamond ring is very weak.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+# Compute the analysis of variance through Anova 
+res.aov_clarity <- aov(price ~ clarity, data = data)
+# Summary of the analysis
+summary(res.aov_clarity)
+```
+
+The simple linear regression model of the price Vs. the clarity can be represented by:
+
+ $$\widehat{Y} = \beta_0 + \beta_1 \times clarityI2 + \beta_2 \times claritySI1+ \beta_3 \times claritySI2+ \beta_4\times claritySI3 + \beta_5 \times clarityVS1+ \beta_6 \times clarityVS2+ \beta_7 \times clarityVVS1 + \beta_8 \times clarityVVS2$$
+ 
+$$\widehat{Price} = 2543.15 -201.22 \times clarityI2 -1495.53  \times claritySI1-568.95 \times claritySI2+ 76.24\times claritySI3 -1405.38 \times clarityVS1-1654.95 \times clarityVS2-1996.15 \times clarityVVS1 -1978.95 \times clarityVVS2$$
+  
+```{r}
+
+lm(price ~ clarity, data = data)
+```
+
+
+
+### The simple regression model for the price Vs. cut
+
+The correlation between the price and the cut of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the cut of the diamond ring is very weak.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+# Compute the analysis of variance through Anova 
+res.aov_cut<- aov(price ~ cut, data = data)
+# Summary of the analysis
+summary(res.aov_cut)
+```
+
+The simple linear regression model of the price Vs. the cut can be represented by:
+
+ $$\widehat{Y} = \beta_0 + \beta_1 \times Cut G+ \beta_2 \times Cut I+ \beta_3 \times Cut V+ \beta_4\times Cut X$$ 
+ 
+  $$\widehat{Price} =2455.2-409.2  \times Cut G -723.5 \times Cut I-1277.1 \times Cut V -797.2\times Cut X $$ 
+  
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+lm(price ~ cut, data = data)
+```
+
+
+
+
+
+### The simple regression model for the price Vs. the certification
+
+The correlation between the price and the certification of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the certification of the diamond ring is very weak.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+# Compute the analysis of variance through Anova 
+res.aov_certification <- aov(price ~ certification, data = data)
+# Summary of the analysis
+summary(res.aov_certification)
+```
+
+The simple linear regression model of the price Vs. the certification can be represented by:
+
+
+ $$\widehat{Y} = \beta_0 + \beta_1 \times certificationDOW  + \beta_2 \times certificationEGL  + \beta_3 \times certificationGIA  + \beta_4\times certificationIGI  $$ 
+ 
+  $$\widehat{Price} = 3033.4 -1002.4 \times certificationDOW  -355.6 \times certificationEGL  -1573.6 \times certificationGIA  -2767.9 \times certificationIGI  $$ 
+  
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+lm(price ~ certification, data = data)
+```
+
+
+### The simple regression model for the price Vs. the polish
+
+The correlation between the price and the polish of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the certification of the diamond ring is very weak.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+
+# Compute the analysis of variance through Anova 
+res.aov_polish <- aov(price ~ polish, data = data)
+# Summary of the analysis
+summary(res.aov_polish)
+```
+
+The simple linear regression model of the price Vs. the polish can be represented by:
+
+
+$$\widehat{Y} = \beta_0 + \beta_1 \times  polishG   + \beta_2 \times  polishI   + \beta_3 \times  polishV   + \beta_4\times  polishV + \beta_5\times  polishX  $$ 
+$$\widehat{Price} =  2318.6 -404.0 \times  polishG   + 728.8 \times  polishI   + 762.4  \times  polishV   -715.5\times  polishV -939.8 \times  polishX  $$ 
+ 
+ 
+```{r}
+
+lm(price ~ polish, data = data)
+```
+
+
+
+### The simple regression model for the price Vs. the symmetry
+
+The correlation between the price and the symmetry of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the symmetry of the diamond ring is very weak.
+
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+# Compute the analysis of variance through Anova 
+res.aov_symmetry <- aov(price ~ symmetry, data = data)
+# Summary of the analysis
+summary(res.aov_symmetry)
+```
+The simple linear regression model of the price Vs. the symmetry can be represented by:
+
+
+$$\widehat{Y} = \beta_0 + \beta_1 \times symmetryG  + \beta_2 \times  symmetryI   + \beta_3 \times  symmetryV   + \beta_4\times  symmetryX$$ 
+
+$$\widehat{Price} = 2432.3 -537.9 \times symmetryG+615.1 \times  symmetryI -966.8 \times  symmetryV  -673.0\times  symmetryX$$ 
+
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+lm(price ~ symmetry, data = data)
+```
+
+
+### The simple regression model for the price Vs. the wholesaler
+
+The correlation between the price and the wholesaler of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the certification of the diamond ring is very weak.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+# Compute the analysis of variance through Anova 
+res.aov_wholesaler <- aov(price ~factor(wholesaler) , data = data)
+# Summary of the analysis
+summary(res.aov_wholesaler)
+```
+The simple linear regression model of the price Vs. the wholesaler can be represented by:
+
+
+$$\widehat{Y} = \beta_0 + \beta_1 \times wholesaler1  + \beta_2 \times  wholesaler2 $$
+$$\widehat{Price} =  3043.2 -381.2 \times wholesaler1  -2575.1 \times  wholesaler2 $$
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+lm(price ~ factor(wholesaler), data = data)
+```
+
+
+### The multiple linear regression:
+
+The multiple linear regression model can be achieved by using the following betas, so that we can predict the price of the diamond ring taking in consideration the all the variables either metric or non metric.
+
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+lm(price ~ carat+ colour+ clarity + cut+ certification + polish + symmetry +factor(wholesaler), data = data)
+```
+
+From the above analysis, we can see that the price of the diamond ring depends mainly on the carat mass and the relationship between these two variables are strong and positive so that as the carat mass increase as the price of the diamond ring increase and vice versa.
+
+To evaluate the professor's ring that he is interested on buying it we can use the multiple regression model mentioned  above that result in estimated price of :
+
+$$\widehat{Price} = 788.88 + 1885.30\times 0.9(carat) -434.39  (colorJ)+560.51  (ClaritySL2)+78.45  (Cut V)+ 12.16(Certification GIA)+ 66.57(Polish G) + 151.49(symmetry V)$$ 
+$$\widehat{Price} = $ 2920.44 $$
+
+The estimated price based on our model is less than the price of the ring with around 180 dollars.

@@ -1,0 +1,610 @@
+---
+title: 'A01 Linear Regression '
+author: Nouran
+date: '2021-07-09'
+slug: a01-linear-regression
+categories:
+  - Basics
+  - ggplot2
+  - shiny
+  - Tideverse
+  - tidymodels
+tags: []
+---
+
+```{r}
+library("readxl")
+library("DataExplorer")
+library("janitor")
+library("tidyr")
+```
+
+## The diamond ring data 
+
+In this blog we used the diamond ring data. Getting a glimpse into the data we can see that it is composed of 440 rows where each row represents a diamond ring and for each ring the diamond characteristics are provided that are Color, Cut, Carat Weight, Clarity , Polish, Symmetry, and certification in addition to the price.
+
+```{r,warning=FALSE}
+data<-read_excel("diamonds.xlsx",col_types = c("guess","guess","guess","guess","guess","guess","guess","numeric","guess"))%>%
+  clean_names()
+ glimpse(data)
+
+```
+
+
+## The Univriate Analysis
+
+we will start our analysis with the metric data which are the price and the carat mass of the daimond ring
+
+
+### The Price
+```{r}
+
+### The histogram of the price :
+ggplot(data,aes(price))+
+  geom_histogram()+
+  labs(
+    title = "Histogram of the Price",
+    subtitle = " ",
+    x = "Price"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+
+### The boxplot of the price 
+ggplot(data,aes(price))+
+  geom_boxplot()+
+  labs(
+    title = "The Price ",
+    subtitle = " ",
+    x = "Price"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+### summary of the price o get the min, max, Q1,Q3, mean and median 
+ summary(data$price)
+
+### The variance and standard deviation of the price 
+var(data$price)
+sd(data$price)
+
+### The mode of the price 
+mode_price<- data %>%
+  count(price)%>%
+  arrange(desc(n))%>%
+  head(1)
+
+
+### The IQR of the price 
+iqr_price=quantile(data$price, 0.75) - quantile(data$price, 0.25)
+
+
+```
+
+
+### The Carat mass
+
+```{r}
+
+### The histogram of the Carat :
+ggplot(data,aes(carat))+
+  geom_histogram()+
+  labs(
+    title = "Histogram of the Carat",
+    subtitle = " ",
+    x = "The Carat Mass"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+
+### The boxplot of the carat 
+ggplot(data,aes(carat))+
+  geom_boxplot()+
+  labs(
+    title = "The Carat Mass ",
+    subtitle = " ",
+    x = "Carat Mass"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+### summary of the carat mass to get the min, max, Q1,Q3, mean and median 
+ summary(data$carat)
+
+### The variance and standard deviation of the carat mass 
+var(data$carat)
+sd(data$carat)
+
+### The mode of the carat mass 
+mode_carat<- data %>%
+  count(carat)%>%
+  arrange(desc(n))%>%
+  head(1)
+
+
+### The IQR of the carat mass
+iqr_carat=quantile(data$carat, 0.75) - quantile(data$carat, 0.25)
+
+
+```
+
+
+
+### The Colour
+
+```{r}
+
+ggplot(data,aes(colour))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Colour",
+    subtitle = " ",
+    x = "Colour"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+```
+
+
+###  The Clarity
+```{r}
+
+ggplot(data,aes(clarity))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Clarity",
+    subtitle = " ",
+    x = "Clarity"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+```
+
+
+### The Cut
+```{r}
+
+ggplot(data,aes(cut))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Cut",
+    subtitle = " ",
+    x = "Cut"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+
+### The Certification
+```{r}
+
+ggplot(data,aes(certification))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Certification",
+    subtitle = " ",
+    x = "Certification"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+```
+
+
+
+### The Polish
+```{r}
+
+
+ggplot(data,aes(polish))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Polish",
+    subtitle = " ",
+    x = "polish"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+```
+
+
+### The Symmetry
+
+```{r}
+
+
+ggplot(data,aes(symmetry))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Symmetry",
+    subtitle = " ",
+    x = "Symmetry"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+```
+
+
+### Wholesaler
+
+```{r}
+
+ggplot(data,aes(wholesaler))+
+  geom_bar()+
+  labs(
+    title = "Histogram of the Wholesaler",
+    subtitle = " ",
+    x = "Wholesaler"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+```
+
+
+## The Bivariate Analysis
+
+
+### The price and the carat mass 
+
+```{r}
+
+ggplot(data,aes(carat,price))+
+  geom_boxplot()+
+  labs(
+    title = "Price Vs. Carat",
+    subtitle = " ",
+    y= " price ",
+    x = "Carat"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+cor (data$carat,data$price)
+cov(data$carat,data$price)
+```
+
+### The price and the colour 
+
+```{r}
+ggplot(data,aes(colour,price))+
+  geom_boxplot()+
+  labs(
+    title = "Price Vs. Colour",
+    subtitle = " ",
+    y= " price ",
+    x = "Colour"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+# Compute the analysis of variance through Anova 
+res.aov_colour <- aov(price ~ colour, data = data)
+# Summary of the analysis
+summary(res.aov_colour)
+```
+
+
+### The price and the clarity 
+
+```{r}
+ggplot(data,aes(clarity,price))+
+  geom_boxplot()+
+  labs(
+    title = "Price Vs. Clarity",
+    subtitle = " ",
+    y= " price ",
+    x = "Clarity"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+# Compute the analysis of variance through Anova 
+res.aov_clarity <- aov(price ~ clarity, data = data)
+# Summary of the analysis
+summary(res.aov_clarity)
+```
+### The price and the cut 
+
+```{r}
+
+ggplot(data,aes(cut,price))+
+  geom_boxplot()+
+  labs(
+    title = "Price Vs. Cut",
+    subtitle = " ",
+    y= " price ",
+    x = "Cut"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+# Compute the analysis of variance through Anova 
+res.aov_cut<- aov(price ~ cut, data = data)
+# Summary of the analysis
+summary(res.aov_cut)
+```
+
+
+### The price and the certification 
+
+```{r}
+
+ggplot(data,aes(certification,price))+
+  geom_boxplot()+
+  labs(
+    title = "Price Vs. Certification",
+    subtitle = " ",
+    y= " price ",
+    x = "Certification"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+# Compute the analysis of variance through Anova 
+res.aov_certification <- aov(price ~ certification, data = data)
+# Summary of the analysis
+summary(res.aov_certification)
+```
+
+### The price and the polish 
+
+```{r}
+
+ggplot(data,aes(polish,price))+
+  geom_boxplot()+
+  labs(
+    title = "Price Vs. Polish",
+    subtitle = " ",
+    y= " price",
+    x = "Polish"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+
+# Compute the analysis of variance through Anova 
+res.aov_polish <- aov(price ~ polish, data = data)
+# Summary of the analysis
+summary(res.aov_polish)
+```
+
+### The price and the symmetry 
+
+```{r}
+
+ggplot(data,aes(symmetry,price))+
+  geom_boxplot()+
+  labs(
+    title = "Price Vs. Symmetry",
+    subtitle = " ",
+    y= " price ",
+    x = "Symmetry"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+# Compute the analysis of variance through Anova 
+res.aov_symmetry <- aov(price ~ symmetry, data = data)
+# Summary of the analysis
+summary(res.aov_symmetry)
+```
+
+### The price and the wholesaler
+
+```{r}
+
+ggplot(data,aes(wholesaler,price))+
+  geom_point()+
+  labs(
+    title = "Price Vs. Wholesaler",
+    subtitle = " ",
+    y= " price ",
+    x = "Wholesaler"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+# Compute the analysis of variance through Anova 
+res.aov_wholesaler <- aov(price ~ wholesaler, data = data)
+# Summary of the analysis
+summary(res.aov_wholesaler)
+```
+
+
+## The Regression Model 
+
+
+
+
+### The simple regression model for the price Vs. the carat mass
+
+```{r}
+ggplot(data,aes(carat,price))+
+  geom_point()+
+  geom_smooth(method="lm", se=FALSE)+
+  labs(
+    title = "Fitting Linear Model for the Price Vs. Carat Mass",
+    subtitle = " ",
+    y= " price ",
+    x = "Carat Mass"
+  )+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+  
+  lm(price ~ carat, data = data)
+
+```
+
+### The simple regression model for the price Vs. the colour 
+
+
+```{r}
+
+lm(price ~ colour, data = data)
+```
+
+
+###  The simple regression model for the price Vs. clarity
+```{r}
+
+lm(price ~ clarity, data = data)
+```
+
+
+### The simple regression model for the price Vs. cut
+```{r}
+
+lm(price ~ cut, data = data)
+```
+
+
+### The simple regression model for the price Vs. the certification
+```{r}
+
+lm(price ~ certification, data = data)
+```
+
+
+
+### The simple regression model for the price Vs. the polish
+```{r}
+
+lm(price ~ polish, data = data)
+```
+
+
+
+### The simple regression model for the price Vs. the symmetry
+```{r}
+
+lm(price ~ symmetry, data = data)
+```
+
+
+### The simple regression model for the price Vs. the wholsaler
+```{r}
+
+lm(price ~ factor(wholesaler), data = data)
+```
+### The multiple linear regression:
+
+```{r}
+
+lm(price ~ carat+ colour+ clarity + cut+ certification + polish + symmetry +factor(wholesaler), data = data)
+```
