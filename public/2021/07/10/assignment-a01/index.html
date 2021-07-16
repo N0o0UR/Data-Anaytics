@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<title>Assignment A01   - Nouran -Fundamentals of Analytics</title>
+<meta property="og:title" content="Assignment A01   - Nouran -Fundamentals of Analytics">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/N0o0UR">GitHub</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/nouran-mostafa/">linkedin</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">12 min read</span>
+    
+
+    <h1 class="article-title">Assignment A01  </h1>
+
+    
+    <span class="article-date">2021-07-10</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/07/10/assignment-a01/index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="the-diamond-ring-data" class="section level2">
+<h2>The diamond ring data</h2>
+<p>In this blog we used the diamond ring data. Getting a glimpse into the data we can see that it is composed of 440 rows where each row represents a diamond ring and for each ring the diamond characteristics are provided that are Color, Cut, Carat Weight, Clarity , Polish, Symmetry, and certification in addition to the price.</p>
+<pre><code>## Rows: 440
+## Columns: 9
+## $ carat         &lt;dbl&gt; 0.92, 0.92, 0.82, 0.81, 0.90, 0.87, 0.80, 0.84, 0.80, 0.~
+## $ colour        &lt;chr&gt; &quot;I&quot;, &quot;I&quot;, &quot;F&quot;, &quot;G&quot;, &quot;J&quot;, &quot;F&quot;, &quot;D&quot;, &quot;F&quot;, &quot;D&quot;, &quot;D&quot;, &quot;G&quot;, &quot;~
+## $ clarity       &lt;chr&gt; &quot;SI2&quot;, &quot;SI2&quot;, &quot;SI2&quot;, &quot;SI1&quot;, &quot;VS2&quot;, &quot;SI2&quot;, &quot;SI2&quot;, &quot;SI1&quot;, ~
+## $ cut           &lt;chr&gt; &quot;G&quot;, &quot;V&quot;, &quot;I&quot;, &quot;I&quot;, &quot;V&quot;, &quot;I&quot;, &quot;I&quot;, &quot;G&quot;, &quot;V&quot;, &quot;V&quot;, &quot;I&quot;, &quot;~
+## $ certification &lt;chr&gt; &quot;AGS&quot;, &quot;AGS&quot;, &quot;GIA&quot;, &quot;GIA&quot;, &quot;GIA&quot;, &quot;AGS&quot;, &quot;GIA&quot;, &quot;GIA&quot;, ~
+## $ polish        &lt;chr&gt; &quot;V&quot;, &quot;G&quot;, &quot;X&quot;, &quot;X&quot;, &quot;V&quot;, &quot;G&quot;, &quot;V&quot;, &quot;V&quot;, &quot;V&quot;, &quot;V&quot;, &quot;V&quot;, &quot;~
+## $ symmetry      &lt;chr&gt; &quot;V&quot;, &quot;G&quot;, &quot;X&quot;, &quot;V&quot;, &quot;V&quot;, &quot;V&quot;, &quot;V&quot;, &quot;V&quot;, &quot;V&quot;, &quot;X&quot;, &quot;V&quot;, &quot;~
+## $ price         &lt;dbl&gt; 3000, 3000, 3004, 3004, 3006, 3007, 3008, 3010, 3012, 30~
+## $ wholesaler    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,~</code></pre>
+</div>
+<div id="the-univriate-analysis" class="section level2">
+<h2>The Univriate Analysis</h2>
+<p>we will start our analysis with the metric data which are the price and the carat mass of the diamond ring then we will analyse the non metric data which are the colour, clarity, cut, certification, polish, symmetry, and wholesaler.</p>
+<div id="the-price" class="section level3">
+<h3>The Price</h3>
+<p>From the following plots and provided summary, we can see that the diamond ring price ranges from minimum value of $160 to maximum value of $3145, the mean of the price is $1717, where in most of the diamond ring purchases (mode) the price was $520 and we can also see that the first quartile is $520, the third quartile is $3012 and the IQR is $2429 with median price of $2169.</p>
+<p>The price dispersion can be evaluated through a variance of $1382245 and standard deviation of $1175.689.</p>
+<p>The data distribution has no specific shape but we can notice that there is no diamond ring was sold in the price range from $700 to $1700 similarly at price of $2900.</p>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     160     520    2169    1717    3012    3145</code></pre>
+<pre><code>## [1] 1382245</code></pre>
+<pre><code>## [1] 1175.689</code></pre>
+</div>
+<div id="the-carat-mass" class="section level3">
+<h3>The Carat mass</h3>
+<p>From the following plots and provided summary, we can see that the diamond ring carat mass ranges from minimum value of 0.09 gram to maximum value of 1.58 gram, the mean of the carat mass is 0.6693 gram, where in most of the diamond ring purchases (mode) the carat mass was 0.3 gram and we can also see that the first quartile is 0.3 gram, the third quartile is 1.01 gram and the IQR is 0.71 gram with median carat mass of 0.81 gram.</p>
+<p>The carat mass dispersion can be evaluated through a variance of 0.144248 grams and standard deviation of 0.3797999 grams.</p>
+<p>The data distribution has no specific shape but we can notice that there is no carat mass was sold in the carat mass range from 0.4 gram to 0.7 gram similarly at carat mass of 1.5 grams.</p>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.0900  0.3000  0.8100  0.6693  1.0100  1.5800</code></pre>
+<pre><code>## [1] 0.144248</code></pre>
+<pre><code>## [1] 0.3797999</code></pre>
+</div>
+<div id="the-colour" class="section level3">
+<h3>The Colour</h3>
+<p>From the histogram plot of the color, we can see that the most purchased color for the diamond rings is the color I and after that are color J and color H and the least purchased are color L and color D.</p>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="the-clarity" class="section level3">
+<h3>The Clarity</h3>
+<p>From the histogram plot of the clarity, we can see that the most purchased clarity type for the diamond rings is the clarity Sl1 and after that is clarity Sl2 and the least purchased are WS1 and Ws2.</p>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="the-cut" class="section level3">
+<h3>The Cut</h3>
+<p>From the histogram plot of the diamond ring cut, we can see that the most purchased cut type for the diamond rings is X and after that is cut V then cut I while the least purchased cuts are cut G and cut F.</p>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="the-certification" class="section level3">
+<h3>The Certification</h3>
+<p>From the histogram plot of the diamond ring certification, we can see that the most purchased certification type for the diamond rings is GIA and after that is EGL then IGI while the least purchased certifications are DOW and AGS.</p>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="the-polish" class="section level3">
+<h3>The Polish</h3>
+<p>From the histogram plot of the diamond ring polish, we can see that the most purchased polish type for the diamond rings is V and after that is G then X while the least purchased polish types are V,I and F.</p>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="the-symmetry" class="section level3">
+<h3>The Symmetry</h3>
+<p>From the histogram plot of the diamond ring symmetry, we can see that the most purchased symmetry type for the diamond rings is V and after that is G then X while the least purchased symmetry types are I and F.</p>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="wholesaler" class="section level3">
+<h3>Wholesaler</h3>
+<p>From the histogram plot of the diamond ring wholesaler, we can see that the most of the purchased diamond rings were purchased from wholesaler number 3 then wholesaler number 2, while the fewer purchases done at the wholesaler number 1.</p>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+</div>
+<div id="the-bivariate-analysis-and-regressision-models" class="section level2">
+<h2>The Bivariate Analysis and regressision models</h2>
+<div id="the-simple-regression-model-for-the-price-vs.-the-carat-mass" class="section level3">
+<h3>The simple regression model for the price Vs. the carat mass</h3>
+<p>The correlation between the price and the carat mass of the diamond ring is 0.925436 that means that the two variables have a perfect positive relationship so that when the carat mass increases the price increase and vice versa.</p>
+<p>The covariance between the price and the carat mass of the diamond ring is 413.2318 which shows the extent to which the two variables change in tandem.</p>
+<pre><code>## [1] 0.925436</code></pre>
+<pre><code>## [1] 413.2318</code></pre>
+<p>In the following plot, a simple linear regression model has been fitted that can help in the prediction of the price of the diamond ring based on the carat mass.</p>
+<p>The simple linear regression model of the price Vs. the carat mass can be represented by:</p>
+<p><span class="math display">\[\widehat{Y}_{i} = \beta_0 + \beta_1 \times CaratMass_{i}\]</span>
+<span class="math display">\[\widehat{Price} =-200.5 + 2864.7 \times Carat Mass\]</span></p>
+<pre><code>## [1] 0.925436</code></pre>
+<pre><code>## [1] 413.2318</code></pre>
+<p><img src="/2021/07/10/assignment-a01/index.en_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ carat, data = data)
+## 
+## Coefficients:
+## (Intercept)        carat  
+##      -200.5       2864.7</code></pre>
+</div>
+<div id="the-simple-regression-model-for-the-price-vs.-the-colour" class="section level3">
+<h3>The simple regression model for the price Vs. the colour</h3>
+<p>The correlation between the price and the color of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the colour of the diamond ring is very weak.</p>
+<pre><code>##              Df    Sum Sq Mean Sq F value   Pr(&gt;F)    
+## colour        8  51620143 6452518   5.009 5.87e-06 ***
+## Residuals   431 555185378 1288133                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The simple linear regression model of the price Vs. the color can be represented by:</p>
+<p><span class="math display">\[\widehat{Y} = \beta_0 + \beta_1 \times colorE+ \beta_2 \times colorF+ \beta_3 \times colorG+ \beta_4\times colorH+ \beta_5 \times colorI+ \beta_6 \times colorJ+ \beta_7 \times colorK+ \beta_8 \times colorL\]</span>
+<span class="math display">\[\widehat{Price} =2316.20 -764.29 \times colorE -982.36 \times colorF -147.73 \times colorG -873.92\times colorH -765.88 \times colorI -535.28 \times colorJ+ 42.06 \times colorK+  52.30\times colorL\]</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ colour, data = data)
+## 
+## Coefficients:
+## (Intercept)      colourE      colourF      colourG      colourH      colourI  
+##     2316.20      -764.29      -982.36      -147.73      -873.92      -765.88  
+##     colourJ      colourK      colourL  
+##     -535.28        42.06        52.30</code></pre>
+</div>
+<div id="the-simple-regression-model-for-the-price-vs.-the-clarity" class="section level3">
+<h3>The simple regression model for the price Vs. the clarity</h3>
+<p>The correlation between the price and the clarity of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the clarity of the diamond ring is very weak.</p>
+<pre><code>##              Df    Sum Sq  Mean Sq F value Pr(&gt;F)    
+## clarity       8 194938677 24367335    25.5 &lt;2e-16 ***
+## Residuals   431 411866844   955608                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The simple linear regression model of the price Vs. the clarity can be represented by:</p>
+<p><span class="math display">\[\widehat{Y} = \beta_0 + \beta_1 \times clarityI2 + \beta_2 \times claritySI1+ \beta_3 \times claritySI2+ \beta_4\times claritySI3 + \beta_5 \times clarityVS1+ \beta_6 \times clarityVS2+ \beta_7 \times clarityVVS1 + \beta_8 \times clarityVVS2\]</span></p>
+<p><span class="math display">\[\widehat{Price} = 2543.15 -201.22 \times clarityI2 -1495.53  \times claritySI1-568.95 \times claritySI2+ 76.24\times claritySI3 -1405.38 \times clarityVS1-1654.95 \times clarityVS2-1996.15 \times clarityVVS1 -1978.95 \times clarityVVS2\]</span></p>
+<pre class="r"><code>lm(price ~ clarity, data = data)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ clarity, data = data)
+## 
+## Coefficients:
+## (Intercept)    clarityI2   claritySI1   claritySI2   claritySI3   clarityVS1  
+##     2543.15      -201.22     -1495.53      -568.95        76.24     -1405.38  
+##  clarityVS2  clarityVVS1  clarityVVS2  
+##    -1654.95     -1996.15     -1978.95</code></pre>
+</div>
+<div id="the-simple-regression-model-for-the-price-vs.-cut" class="section level3">
+<h3>The simple regression model for the price Vs. cut</h3>
+<p>The correlation between the price and the cut of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the cut of the diamond ring is very weak.</p>
+<pre><code>##              Df    Sum Sq  Mean Sq F value   Pr(&gt;F)    
+## cut           4  66164570 16541142   13.31 3.07e-10 ***
+## Residuals   435 540640951  1242853                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The simple linear regression model of the price Vs. the cut can be represented by:</p>
+<p><span class="math display">\[\widehat{Y} = \beta_0 + \beta_1 \times Cut G+ \beta_2 \times Cut I+ \beta_3 \times Cut V+ \beta_4\times Cut X\]</span></p>
+<p><span class="math display">\[\widehat{Price} =2455.2-409.2  \times Cut G -723.5 \times Cut I-1277.1 \times Cut V -797.2\times Cut X \]</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ cut, data = data)
+## 
+## Coefficients:
+## (Intercept)         cutG         cutI         cutV         cutX  
+##      2455.2       -409.2       -723.5      -1277.1       -797.2</code></pre>
+</div>
+<div id="the-simple-regression-model-for-the-price-vs.-the-certification" class="section level3">
+<h3>The simple regression model for the price Vs. the certification</h3>
+<p>The correlation between the price and the certification of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the certification of the diamond ring is very weak.</p>
+<pre><code>##                Df    Sum Sq  Mean Sq F value Pr(&gt;F)    
+## certification   4 238869617 59717404    70.6 &lt;2e-16 ***
+## Residuals     435 367935903   845830                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The simple linear regression model of the price Vs. the certification can be represented by:</p>
+<p><span class="math display">\[\widehat{Y} = \beta_0 + \beta_1 \times certificationDOW  + \beta_2 \times certificationEGL  + \beta_3 \times certificationGIA  + \beta_4\times certificationIGI  \]</span></p>
+<p><span class="math display">\[\widehat{Price} = 3033.4 -1002.4 \times certificationDOW  -355.6 \times certificationEGL  -1573.6 \times certificationGIA  -2767.9 \times certificationIGI  \]</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ certification, data = data)
+## 
+## Coefficients:
+##      (Intercept)  certificationDOW  certificationEGL  certificationGIA  
+##           3033.4           -1002.4            -355.6           -1573.6  
+## certificationIGI  
+##          -2767.9</code></pre>
+</div>
+<div id="the-simple-regression-model-for-the-price-vs.-the-polish" class="section level3">
+<h3>The simple regression model for the price Vs. the polish</h3>
+<p>The correlation between the price and the polish of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the certification of the diamond ring is very weak.</p>
+<pre><code>##              Df    Sum Sq Mean Sq F value   Pr(&gt;F)    
+## polish        5  28574143 5714829   4.289 0.000808 ***
+## Residuals   434 578231378 1332330                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The simple linear regression model of the price Vs. the polish can be represented by:</p>
+<p><span class="math display">\[\widehat{Y} = \beta_0 + \beta_1 \times  polishG   + \beta_2 \times  polishI   + \beta_3 \times  polishV   + \beta_4\times  polishV + \beta_5\times  polishX  \]</span>
+<span class="math display">\[\widehat{Price} =  2318.6 -404.0 \times  polishG   + 728.8 \times  polishI   + 762.4  \times  polishV   -715.5\times  polishV -939.8 \times  polishX  \]</span></p>
+<pre class="r"><code>lm(price ~ polish, data = data)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ polish, data = data)
+## 
+## Coefficients:
+## (Intercept)      polishG      polishI      polishv      polishV      polishX  
+##      2318.6       -404.0        728.8        762.4       -715.5       -939.8</code></pre>
+</div>
+<div id="the-simple-regression-model-for-the-price-vs.-the-symmetry" class="section level3">
+<h3>The simple regression model for the price Vs. the symmetry</h3>
+<p>The correlation between the price and the symmetry of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the symmetry of the diamond ring is very weak.</p>
+<pre><code>##              Df    Sum Sq Mean Sq F value   Pr(&gt;F)    
+## symmetry      4  37655698 9413925   7.195 1.29e-05 ***
+## Residuals   435 569149823 1308390                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The simple linear regression model of the price Vs. the symmetry can be represented by:</p>
+<p><span class="math display">\[\widehat{Y} = \beta_0 + \beta_1 \times symmetryG  + \beta_2 \times  symmetryI   + \beta_3 \times  symmetryV   + \beta_4\times  symmetryX\]</span></p>
+<p><span class="math display">\[\widehat{Price} = 2432.3 -537.9 \times symmetryG+615.1 \times  symmetryI -966.8 \times  symmetryV  -673.0\times  symmetryX\]</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ symmetry, data = data)
+## 
+## Coefficients:
+## (Intercept)    symmetryG    symmetryI    symmetryV    symmetryX  
+##      2432.3       -537.9        615.1       -966.8       -673.0</code></pre>
+</div>
+<div id="the-simple-regression-model-for-the-price-vs.-the-wholesaler" class="section level3">
+<h3>The simple regression model for the price Vs. the wholesaler</h3>
+<p>The correlation between the price and the wholesaler of the diamond ring is shown below, based on the shown P-value we can see that the relationship between the price and the certification of the diamond ring is very weak.</p>
+<pre><code>##                     Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
+## factor(wholesaler)   2 578213494 289106747    4419 &lt;2e-16 ***
+## Residuals          437  28592027     65428                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The simple linear regression model of the price Vs. the wholesaler can be represented by:</p>
+<p><span class="math display">\[\widehat{Y} = \beta_0 + \beta_1 \times wholesaler1  + \beta_2 \times  wholesaler2 \]</span>
+<span class="math display">\[\widehat{Price} =  3043.2 -381.2 \times wholesaler1  -2575.1 \times  wholesaler2 \]</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ factor(wholesaler), data = data)
+## 
+## Coefficients:
+##         (Intercept)  factor(wholesaler)2  factor(wholesaler)3  
+##              3043.2               -381.2              -2575.1</code></pre>
+</div>
+<div id="the-multiple-linear-regression" class="section level3">
+<h3>The multiple linear regression:</h3>
+<p>The multiple linear regression model can be achieved by using the following betas, so that we can predict the price of the diamond ring taking in consideration the all the variables either metric or non metric.</p>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ carat + colour + clarity + cut + certification + 
+##     polish + symmetry + factor(wholesaler), data = data)
+## 
+## Coefficients:
+##         (Intercept)                carat              colourE  
+##              788.88              1885.30              -166.61  
+##             colourF              colourG              colourH  
+##             -247.15              -229.60              -299.84  
+##             colourI              colourJ              colourK  
+##             -337.63              -434.39              -696.43  
+##             colourL            clarityI2           claritySI1  
+##             -895.44              -590.10               652.28  
+##          claritySI2           claritySI3           clarityVS1  
+##              560.51               290.46               743.08  
+##          clarityVS2          clarityVVS1          clarityVVS2  
+##              689.50              1015.21               760.50  
+##                cutG                 cutI                 cutV  
+##               48.82                84.51                78.45  
+##                cutX     certificationDOW     certificationEGL  
+##               93.37              -271.24              -307.29  
+##    certificationGIA     certificationIGI              polishG  
+##               12.16              -118.27                66.57  
+##             polishI              polishv              polishV  
+##              247.70               136.45                78.40  
+##             polishX            symmetryG            symmetryI  
+##               84.85               133.37                   NA  
+##           symmetryV            symmetryX  factor(wholesaler)2  
+##              151.49               137.40               112.07  
+## factor(wholesaler)3  
+##            -1460.67</code></pre>
+<p>From the above analysis, we can see that the price of the diamond ring depends mainly on the carat mass and the relationship between these two variables are strong and positive so that as the carat mass increase as the price of the diamond ring increase and vice versa.</p>
+<p>To evaluate the professor’s ring that he is interested on buying it we can use the multiple regression model mentioned above that result in estimated price of :</p>
+<p><span class="math display">\[\widehat{Price} = 788.88 + 1885.30\times 0.9(carat) -434.39  (colorJ)+560.51  (ClaritySL2)+78.45  (Cut V)+ 12.16(Certification GIA)+ 66.57(Polish G) + 151.49(symmetry V)\]</span>
+<span class="math display">\[\widehat{Price} = $ 2920.44 \]</span></p>
+<p>The estimated price based on our model is less than the price of the ring with around 180 dollars.</p>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

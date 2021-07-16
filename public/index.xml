@@ -6,7 +6,17 @@
     <description>Recent content on Nouran -Fundamentals of Analytics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Assignment A01  </title>
+      <link>/2021/07/10/assignment-a01/</link>
+      <pubDate>Sat, 10 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/07/10/assignment-a01/</guid>
+      <description>The diamond ring dataIn this blog we used the diamond ring data. Getting a glimpse into the data we can see that it is composed of 440 rows where each row represents a diamond ring and for each ring the diamond characteristics are provided that are Color, Cut, Carat Weight, Clarity , Polish, Symmetry, and certification in addition to the price.
+## Rows: 440## Columns: 9## $ carat &amp;lt;dbl&amp;gt; 0.</description>
+    </item>
+    
     <item>
       <title>Project </title>
       <link>/2021/06/21/the-project/</link>

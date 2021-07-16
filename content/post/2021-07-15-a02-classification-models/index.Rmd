@@ -1,0 +1,13 @@
+---
+title: A02 Classification Models
+author: Nouran
+date: '2021-07-15'
+slug: a02-classification-models
+categories:
+  - ggplot2
+  - Tideverse
+  - tidymodels
+  - Basics
+  - logisticregression
+tags: []
+---
