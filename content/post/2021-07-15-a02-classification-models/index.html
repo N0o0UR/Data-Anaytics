@@ -1,0 +1,887 @@
+---
+title: A02 Classification Models
+author: Nouran
+date: '2021-07-15'
+slug: a02-classification-models
+categories:
+  - ggplot2
+  - Tideverse
+  - tidymodels
+  - Basics
+  - logisticregression
+tags: []
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="the-goal" class="section level2">
+<h2>The Goal</h2>
+<p>The goal behind this study is to use the provided data set to identify whether a customer will subscribe to a term deposit or not.</p>
+</div>
+<div id="the-bank-data" class="section level2">
+<h2>The Bank data</h2>
+<p>The data used in this study was obtained from <strong>UCI </strong> website and we specifically used the Bank-full.csv dataset, to access the source of the data use the link below</p>
+<p><a href="https://archive.ics.uci.edu/ml/datasets/Bank+Marketing" target="_blank">Link to the dataset</a>.</p>
+<p>Getting a glimpse into the data we can see that it is composed of 45211 observations and 17 variables.</p>
+<pre><code>## Rows: 45,211
+## Columns: 17
+## $ age       &lt;int&gt; 58, 44, 33, 47, 33, 35, 28, 42, 58, 43, 41, 29, 53, 58, 57, ~
+## $ job       &lt;fct&gt; management, technician, entrepreneur, blue-collar, unknown, ~
+## $ marital   &lt;fct&gt; married, single, married, married, single, married, single, ~
+## $ education &lt;fct&gt; tertiary, secondary, secondary, unknown, unknown, tertiary, ~
+## $ default   &lt;fct&gt; no, no, no, no, no, no, no, yes, no, no, no, no, no, no, no,~
+## $ balance   &lt;int&gt; 2143, 29, 2, 1506, 1, 231, 447, 2, 121, 593, 270, 390, 6, 71~
+## $ housing   &lt;fct&gt; yes, yes, yes, yes, no, yes, yes, yes, yes, yes, yes, yes, y~
+## $ loan      &lt;fct&gt; no, no, yes, no, no, no, yes, no, no, no, no, no, no, no, no~
+## $ contact   &lt;fct&gt; unknown, unknown, unknown, unknown, unknown, unknown, unknow~
+## $ day       &lt;chr&gt; &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, ~
+## $ month     &lt;fct&gt; may, may, may, may, may, may, may, may, may, may, may, may, ~
+## $ duration  &lt;int&gt; 261, 151, 76, 92, 198, 139, 217, 380, 50, 55, 222, 137, 517,~
+## $ campaign  &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+## $ pdays     &lt;int&gt; -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, ~
+## $ previous  &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+## $ poutcome  &lt;fct&gt; unknown, unknown, unknown, unknown, unknown, unknown, unknow~
+## $ y         &lt;fct&gt; no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, ~</code></pre>
+<div id="the-variables-description" class="section level3">
+<h3>The Variables description:</h3>
+<ul>
+<li><p>bank client data:</p>
+<p>1 - age (numeric)
+2 - job : type of job (categorical: “admin.”,“unknown”,“unemployed”,“management”,“housemaid”,“entrepreneur”,“student”,
+“blue-collar”,“self-employed”,“retired”,“technician”,“services”)
+3 - marital : marital status (categorical: “married”,“divorced”,“single”; note: “divorced” means divorced or widowed)
+4 - education (categorical: “unknown”,“secondary”,“primary”,“tertiary”)
+5 - default: has credit in default? (binary: “yes”,“no”)
+6 - balance: average yearly balance, in euros (numeric)
+7 - housing: has housing loan? (binary: “yes”,“no”)
+8 - loan: has personal loan? (binary: “yes”,“no”)
+*related with the last contact of the current campaign:
+9 - contact: contact communication type (categorical: “unknown”,“telephone”,“cellular”)
+10 - day: last contact day of the month (numeric)
+11 - month: last contact month of year (categorical: “jan”, “feb”, “mar”, …, “nov”, “dec”)
+12 - duration: last contact duration, in seconds (numeric)</p></li>
+</ul>
+<p>*other attributes:
+13 - campaign: number of contacts performed during this campaign and for this client (numeric, includes last contact)
+14 - pdays: number of days that passed by after the client was last contacted from a previous campaign (numeric, -1 means client was not previously contacted)
+15 - previous: number of contacts performed before this campaign and for this client (numeric)
+16 - poutcome: outcome of the previous marketing campaign (categorical: “unknown”,“other”,“failure”,“success”)</p>
+<p>Output variable (desired target):
+17 - y - has the client subscribed a term deposit? (binary: “yes”,“no”)</p>
+</div>
+</div>
+<div id="partioning-the-data-set-to-train-and-test-parts" class="section level2">
+<h2>Partioning the data set to train and test parts</h2>
+<pre class="r"><code>## 75% of the sample size
+smp_size &lt;- floor(0.75 * nrow(whole_data))
+
+## set the seed to make your partition reproducible
+set.seed(123)
+train_ind &lt;- sample(seq_len(nrow(whole_data)), size = smp_size)
+
+data &lt;- whole_data[train_ind, ]
+test &lt;- whole_data[-train_ind, ]</code></pre>
+</div>
+<div id="the-univriate-analysis" class="section level2">
+<h2>The Univriate Analysis</h2>
+<p>we will start our analysis with the metric data which are the age, balance, duration, campaign, pdays, and previous then we will analysis the non metric variables which are all the remaining variables.</p>
+<p>For the metric variables the shown plots, provided summary and the simple calculations, we can get valuable information about the each metric variable distribution, like the range, min, max, mean , media, mode, 1st and 3rd quartile, IQR, variance and standard deviation.</p>
+<p>For the non metric data the histogram would be used.</p>
+<div id="the-age" class="section level3">
+<h3>The Age</h3>
+<p>The data distribution of the age is right skewed and the peak occurs at age 32.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   18.00   33.00   39.00   40.91   48.00   95.00</code></pre>
+<pre><code>## [1] 112.7199</code></pre>
+<pre><code>## [1] 10.61696</code></pre>
+<pre><code>##   age    n
+## 1  32 1554</code></pre>
+<pre><code>## 75% 
+##  15</code></pre>
+</div>
+<div id="the-balance" class="section level3">
+<h3>The Balance</h3>
+<p>The data distribution for the balance variable ranges from -8019 to 102127, so it is better to use log x scale in this case.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   -6847      71     448    1353    1427  102127</code></pre>
+<pre><code>## [1] 8945813</code></pre>
+<pre><code>## [1] 2990.955</code></pre>
+<pre><code>##   balance    n
+## 1       0 2641</code></pre>
+<pre><code>##  75% 
+## 1356</code></pre>
+</div>
+<div id="the-duration" class="section level3">
+<h3>The duration</h3>
+<p>The data distribution of the duration variable has a wide range as it ranges from 0 to 4918, so it is better to use log x scale in this case also.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0   103.0   180.0   258.1   318.0  3785.0</code></pre>
+<pre><code>## [1] 65821.23</code></pre>
+<pre><code>## [1] 256.5565</code></pre>
+<pre><code>##   duration   n
+## 1      104 142</code></pre>
+<pre><code>## 75% 
+## 215</code></pre>
+</div>
+<div id="the-campaign" class="section level3">
+<h3>The Campaign</h3>
+<p>The data distribution of the campaign variable has ranges from 1 contact to 63 contacts where the mode is 1 contact that results in the distribution is right skewed.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   1.000   2.000   2.777   3.000  58.000</code></pre>
+<pre><code>## [1] 9.867114</code></pre>
+<pre><code>## [1] 3.141196</code></pre>
+<pre><code>##   campaign     n
+## 1        1 13125</code></pre>
+<pre><code>## 75% 
+##   2</code></pre>
+</div>
+<div id="the-pdays" class="section level3">
+<h3>The Pdays</h3>
+<p>The data distribution of the pdays variable ranges from -1 that means the client never contacted before to 871 days.
+the distribution is left skewed with mode of -1 day.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   -1.00   -1.00   -1.00   40.57   -1.00  871.00</code></pre>
+<pre><code>## [1] 10155.46</code></pre>
+<pre><code>## [1] 100.7743</code></pre>
+<pre><code>##   pdays     n
+## 1    -1 27657</code></pre>
+<pre><code>## 75% 
+##   0</code></pre>
+</div>
+<div id="the-previous" class="section level3">
+<h3>The Previous</h3>
+<p>The data distribution of the previous variable ranges from 0 to 275 contacts,the distribution is right skewed with the most dominant number of contact of 1.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+##   0.0000   0.0000   0.0000   0.5882   0.0000 275.0000</code></pre>
+<pre><code>## [1] 5.91227</code></pre>
+<pre><code>## [1] 2.431516</code></pre>
+<pre><code>##   previous     n
+## 1        0 27657</code></pre>
+<pre><code>## 75% 
+##   0</code></pre>
+</div>
+<div id="the-job" class="section level3">
+<h3>The Job</h3>
+<p>From the histogram plot of the job variable, we can see that the most dominant job titles are Blue collar and Management then Technician.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="the-marital" class="section level3">
+<h3>The Marital</h3>
+<p>From the histogram plot of the Marital variable, we can see that the most dominant marital status is married.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="the-education" class="section level3">
+<h3>The Education</h3>
+<p>From the histogram plot of the education variable, we can see that the most dominant education is the secondary education.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="the-default" class="section level3">
+<h3>The default</h3>
+<p>From the histogram plot of the default variable, we can see that the most of the clients has no credit in default.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="the-housing" class="section level3">
+<h3>The Housing</h3>
+<p>From the histogram plot of the Housing variable, we can see that clients with housing loan are greater than clients with no housing loan.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="the-loan" class="section level3">
+<h3>The Loan</h3>
+<p>From the histogram plot of the loan variable, we can see that most of the clients don’t have loan.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="the-contact" class="section level3">
+<h3>The Contact</h3>
+<p>From the histogram plot of the contact variable, we can see that most communication type was cellular.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="the-month" class="section level3">
+<h3>The Month</h3>
+<p>From the histogram plot of the month variable, we can see that the most dominant month is May.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+</div>
+<div id="the-poutcome" class="section level3">
+<h3>The Poutcome</h3>
+<p>From the histogram plot of the poutcome variable, we can see that the most dominant outcome is “unknown”.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="the-y" class="section level3">
+<h3>The Y</h3>
+<p>From the histogram plot of the Y variable, we can see that the most of the client haven’t subscribed to term deposit.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+</div>
+<div id="the-bivariate-analysis" class="section level2">
+<h2>The Bivariate Analysis</h2>
+<p>In the Bivaraite analysis we will see the relationship between the variable y and all other variables</p>
+<div id="the-relationship-between-variable-y-and-the-age-variable" class="section level3">
+<h3>The relationship between variable Y and the Age variable</h3>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+### The relationship between variable Y and the balance variable
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-duration-variable" class="section level3">
+<h3>The relationship between variable Y and the duration variable</h3>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+### The relationship between variable Y and the Campaign variable
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-pdays-variable" class="section level3">
+<h3>The relationship between variable Y and the pdays variable</h3>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-previous-variable" class="section level3">
+<h3>The relationship between variable Y and the previous variable</h3>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-job-variable" class="section level3">
+<h3>The relationship between variable Y and the Job variable</h3>
+<p>We can see that the Management has the most subscription among other jobs.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-marital-variable" class="section level3">
+<h3>The relationship between variable Y and the marital variable</h3>
+<p>Married people has more subscription that single and divorced.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-education-variable" class="section level3">
+<h3>The relationship between variable Y and the education variable</h3>
+<p>Secondary education has the more subscription than the remaining education types.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-default-variable" class="section level3">
+<h3>The relationship between variable Y and the default variable</h3>
+<p>The clients that have default status are not subscribed to term deposit
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-housing-variable" class="section level3">
+<h3>The relationship between variable Y and the housing variable</h3>
+<p>Clients have not housing loan are subscribed to term deposit more than clients having housing loan.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-loan-variable" class="section level3">
+<h3>The relationship between variable Y and the loan variable</h3>
+<p>Clients haven’t loan are subscribed to term deposit more than clients having loan.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-contact-variable" class="section level3">
+<h3>The relationship between variable Y and the contact variable</h3>
+<p>We can see that cellular connection type results in more subscribtion to a term deposit
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-day-variable" class="section level3">
+<h3>The relationship between variable Y and the day variable</h3>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-month-variable" class="section level3">
+<h3>The relationship between variable Y and the month variable</h3>
+<p>The Contact that happend in May results in more subscription to term deposit than other months.
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+</div>
+<div id="the-relationship-between-variable-y-and-the-poutcome-variable" class="section level3">
+<h3>The relationship between variable Y and the poutcome variable</h3>
+<p>The unknown outcome has the most subscription to term deposit.</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+</div>
+</div>
+<div id="the-simple-logestic-regression-models" class="section level2">
+<h2>The simple logestic regression models</h2>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-age-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable age only</h3>
+<p>From the model we can see that age variable is a significant variable for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ age, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5813  -0.5081  -0.4939  -0.4855   2.1290  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -2.265534   0.066949 -33.840  &lt; 2e-16 ***
+## age          0.006031   0.001564   3.857 0.000115 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24516  on 33906  degrees of freedom
+## AIC: 24520
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-job-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable job only</h3>
+<p>From the model we can see that out of 11 job types blue-collar, entrepreneur, housemaid, retired, services and student are the most significant job types in the prediction of the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ job, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.8267  -0.5484  -0.4823  -0.3898   2.2871  
+## 
+## Coefficients:
+##                  Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      -1.96033    0.04865 -40.294  &lt; 2e-16 ***
+## jobblue-collar   -0.57904    0.06635  -8.727  &lt; 2e-16 ***
+## jobentrepreneur  -0.42491    0.11826  -3.593 0.000327 ***
+## jobhousemaid     -0.37660    0.12482  -3.017 0.002551 ** 
+## jobmanagement     0.14183    0.05950   2.383 0.017152 *  
+## jobretired        0.73374    0.07620   9.629  &lt; 2e-16 ***
+## jobself-employed -0.04850    0.10148  -0.478 0.632730    
+## jobservices      -0.36818    0.07946  -4.633  3.6e-06 ***
+## jobstudent        1.06239    0.09734  10.914  &lt; 2e-16 ***
+## jobtechnician    -0.13271    0.06442  -2.060 0.039389 *  
+## jobunemployed     0.28798    0.10040   2.868 0.004126 ** 
+## jobunknown       -0.15645    0.22601  -0.692 0.488794    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 23973  on 33896  degrees of freedom
+## AIC: 23997
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-marital-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable marital only</h3>
+<p>From the model we can see that all the marital status are considered significant variables for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ marital, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5701  -0.5109  -0.4619  -0.4619   2.1404  
+## 
+## Coefficients:
+##                Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)    -1.97041    0.04882 -40.359  &lt; 2e-16 ***
+## maritalmarried -0.21361    0.05405  -3.952 7.76e-05 ***
+## maritalsingle   0.23561    0.05659   4.163 3.14e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24385  on 33905  degrees of freedom
+## AIC: 24391
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-education-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable education only</h3>
+<p>From the model we can see that secondary, tertiary and unknown education types are significant variables for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ education, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5695  -0.5695  -0.4742  -0.4267   2.2099  
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)        -2.35073    0.04954 -47.450  &lt; 2e-16 ***
+## educationsecondary  0.22198    0.05530   4.014 5.98e-05 ***
+## educationtertiary   0.61370    0.05693  10.781  &lt; 2e-16 ***
+## educationunknown    0.50519    0.09299   5.433 5.54e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24362  on 33904  degrees of freedom
+## AIC: 24370
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-default-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable default only</h3>
+<p>From the model we can see that both default cases are significant for the prediction of the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ default, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5023  -0.5023  -0.5023  -0.5023   2.3732  
+## 
+## Coefficients:
+##             Estimate Std. Error  z value Pr(&gt;|z|)    
+## (Intercept) -2.00667    0.01696 -118.304  &lt; 2e-16 ***
+## defaultyes  -0.74766    0.16816   -4.446 8.74e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24506  on 33906  degrees of freedom
+## AIC: 24510
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-balance-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable balance only</h3>
+<p>From the model we can see that both balance cases are considered significant for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ balance, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.2789  -0.4959  -0.4871  -0.4840   2.1568  
+## 
+## Coefficients:
+##               Estimate Std. Error  z value Pr(&gt;|z|)    
+## (Intercept) -2.085e+00  1.847e-02 -112.895   &lt;2e-16 ***
+## balance      4.509e-05  4.518e-06    9.979   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24437  on 33906  degrees of freedom
+## AIC: 24441
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-housing-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable housing only</h3>
+<p>From the model we can see that wether owning a house loan or not, both cases are considered significant for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ housing, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6025  -0.6025  -0.4042  -0.4042   2.2563  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.61438    0.02188  -73.79   &lt;2e-16 ***
+## housingyes  -0.84930    0.03484  -24.38   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 23913  on 33906  degrees of freedom
+## AIC: 23917
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-loan-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable loan only</h3>
+<p>From the model we can see that both cases of the presence and absence of loan are considered significant for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ loan, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5207  -0.5207  -0.5207  -0.3768   2.3155  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.92995    0.01782 -108.33   &lt;2e-16 ***
+## loanyes     -0.67977    0.05653  -12.03   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24362  on 33906  degrees of freedom
+## AIC: 24366
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-contact-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable contact only</h3>
+<p>From the model we can see that the cellular and unknown contact types are considered significant for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ contact, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5705  -0.5705  -0.5705  -0.2863   2.5357  
+## 
+## Coefficients:
+##                  Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      -1.73311    0.01885 -91.946   &lt;2e-16 ***
+## contacttelephone -0.15788    0.06705  -2.355   0.0185 *  
+## contactunknown   -1.44078    0.05494 -26.224   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 23585  on 33905  degrees of freedom
+## AIC: 23591
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-day-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable day only</h3>
+<p>From the model we can see that day variable is a significant variable for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ day, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.8618  -0.5489  -0.4645  -0.3888   2.3639  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  -0.7992     0.1381  -5.786 7.19e-09 ***
+## day10        -0.5139     0.1844  -2.787  0.00532 ** 
+## day11        -1.1994     0.1664  -7.210 5.61e-13 ***
+## day12        -0.9022     0.1594  -5.661 1.51e-08 ***
+## day13        -0.9307     0.1606  -5.794 6.87e-09 ***
+## day14        -1.2945     0.1633  -7.928 2.23e-15 ***
+## day15        -0.9899     0.1591  -6.222 4.92e-10 ***
+## day16        -1.0057     0.1635  -6.150 7.73e-10 ***
+## day17        -1.4617     0.1647  -8.873  &lt; 2e-16 ***
+## day18        -1.3807     0.1588  -8.693  &lt; 2e-16 ***
+## day19        -1.9000     0.1787 -10.632  &lt; 2e-16 ***
+## day2         -0.9752     0.1665  -5.855 4.77e-09 ***
+## day20        -1.8062     0.1635 -11.044  &lt; 2e-16 ***
+## day21        -1.3730     0.1618  -8.487  &lt; 2e-16 ***
+## day22        -0.8387     0.1727  -4.856 1.20e-06 ***
+## day23        -1.0173     0.1752  -5.806 6.40e-09 ***
+## day24        -1.0206     0.2093  -4.876 1.08e-06 ***
+## day25        -1.0311     0.1809  -5.699 1.20e-08 ***
+## day26        -1.2114     0.1772  -6.836 8.13e-12 ***
+## day27        -1.0265     0.1705  -6.019 1.75e-09 ***
+## day28        -1.6408     0.1697  -9.672  &lt; 2e-16 ***
+## day29        -1.7452     0.1734 -10.062  &lt; 2e-16 ***
+## day3         -0.8357     0.1677  -4.983 6.26e-07 ***
+## day30        -0.7284     0.1581  -4.608 4.06e-06 ***
+## day31        -1.9316     0.2362  -8.177 2.91e-16 ***
+## day4         -0.8272     0.1609  -5.142 2.71e-07 ***
+## day5         -1.2481     0.1614  -7.734 1.04e-14 ***
+## day6         -1.4638     0.1644  -8.905  &lt; 2e-16 ***
+## day7         -1.6730     0.1715  -9.756  &lt; 2e-16 ***
+## day8         -1.2551     0.1622  -7.738 1.01e-14 ***
+## day9         -1.1965     0.1649  -7.256 3.98e-13 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24083  on 33877  degrees of freedom
+## AIC: 24145
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-month-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable month only</h3>
+<p>From the model we can see that all the months are significant for predicting the possibility of subscription to a term deposit except for February.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ month, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.1699  -0.4672  -0.4436  -0.3748   2.3198  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.35179    0.05248 -25.757  &lt; 2e-16 ***
+## monthaug    -0.77239    0.07066 -10.930  &lt; 2e-16 ***
+## monthdec     1.24125    0.16544   7.503 6.24e-14 ***
+## monthfeb    -0.23880    0.07988  -2.990  0.00279 ** 
+## monthjan    -0.84753    0.11504  -7.367 1.74e-13 ***
+## monthjul    -0.91732    0.07079 -12.959  &lt; 2e-16 ***
+## monthjun    -0.80843    0.07373 -10.965  &lt; 2e-16 ***
+## monthmar     1.33409    0.12064  11.058  &lt; 2e-16 ***
+## monthmay    -1.26873    0.06554 -19.357  &lt; 2e-16 ***
+## monthnov    -0.84432    0.08037 -10.506  &lt; 2e-16 ***
+## monthoct     1.07262    0.10098  10.622  &lt; 2e-16 ***
+## monthsep     1.25381    0.11000  11.398  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 22913  on 33896  degrees of freedom
+## AIC: 22937
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-duration-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable duration only</h3>
+<p>From the model we can see that duartion variable is a significant variable for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ duration, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -4.5727  -0.4383  -0.3609  -0.3169   2.5213  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -3.219e+00  3.041e-02 -105.87   &lt;2e-16 ***
+## duration     3.613e-03  6.395e-05   56.49   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 20523  on 33906  degrees of freedom
+## AIC: 20527
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-campaign-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable campaign only</h3>
+<p>From the model we can see that the number of contacts performed during this campaign and for the client variable is a significant variable for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ campaign, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.5430  -0.5430  -0.5127  -0.4565   3.3628  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.716973   0.026529  -64.72   &lt;2e-16 ***
+## campaign    -0.122932   0.009274  -13.26   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24286  on 33906  degrees of freedom
+## AIC: 24290
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-pdays-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable pdays only</h3>
+<p>From the model we can see that number of days that passed by after the client was last contacted from a previous campaign is significant variable for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ pdays, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.2040  -0.4695  -0.4695  -0.4695   2.1260  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -2.1471962  0.0189762 -113.15   &lt;2e-16 ***
+## pdays        0.0025369  0.0001365   18.59   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24221  on 33906  degrees of freedom
+## AIC: 24225
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-previous-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable previous only</h3>
+<p>From the model we can see that the number of contacts performed before this campaign and for this client significant variable for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ previous, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -7.5518  -0.4809  -0.4809  -0.4809   2.1045  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -2.098905   0.017963 -116.85   &lt;2e-16 ***
+## previous     0.111322   0.006967   15.98   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 24275  on 33906  degrees of freedom
+## AIC: 24279
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div id="the-logistic-regression-model-of-y-using-the-predictor-variable-poutcome-only" class="section level3">
+<h3>The logistic regression model of y using the predictor variable poutcome only</h3>
+<p>From the model we can see that outcome of the previous marketing campaign is significant variable for predicting the possibility of subscription to a term deposit.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ poutcome, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.4439  -0.4394  -0.4394  -0.4394   2.1844  
+## 
+## Coefficients:
+##                 Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)     -1.94806    0.04962 -39.258  &lt; 2e-16 ***
+## poutcomeother    0.34468    0.08741   3.943 8.04e-05 ***
+## poutcomesuccess  2.55578    0.07934  32.212  &lt; 2e-16 ***
+## poutcomeunknown -0.34131    0.05381  -6.343 2.25e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 22527  on 33904  degrees of freedom
+## AIC: 22535
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<div id="the-multiple-logistic-regression-model" class="section level2">
+<h2>The multiple Logistic regression Model:</h2>
+<p>From the model we can see that the significance of the some of the variables have been changed to less significant or not even significant at all, we cann see that in the shown mode the significant variables have three stars beside them and the less significant variables have two or one star only while the not significant variables have no stars at all.</p>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ ., family = binomial, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -5.0852  -0.3691  -0.2436  -0.1456   3.2933  
+## 
+## Coefficients:
+##                      Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)        -2.304e+00  2.720e-01  -8.469  &lt; 2e-16 ***
+## age                -1.211e-03  2.563e-03  -0.472 0.636697    
+## jobblue-collar     -2.650e-01  8.448e-02  -3.137 0.001706 ** 
+## jobentrepreneur    -2.381e-01  1.450e-01  -1.642 0.100498    
+## jobhousemaid       -5.144e-01  1.576e-01  -3.263 0.001102 ** 
+## jobmanagement      -1.135e-01  8.532e-02  -1.331 0.183270    
+## jobretired          2.829e-01  1.145e-01   2.472 0.013442 *  
+## jobself-employed   -2.433e-01  1.289e-01  -1.887 0.059228 .  
+## jobservices        -2.076e-01  9.769e-02  -2.125 0.033551 *  
+## jobstudent          3.205e-01  1.281e-01   2.502 0.012336 *  
+## jobtechnician      -1.736e-01  8.012e-02  -2.166 0.030285 *  
+## jobunemployed      -1.602e-01  1.286e-01  -1.245 0.212992    
+## jobunknown         -4.341e-01  2.910e-01  -1.492 0.135709    
+## maritalmarried     -2.019e-01  6.818e-02  -2.961 0.003065 ** 
+## maritalsingle       5.891e-02  7.802e-02   0.755 0.450211    
+## educationsecondary  2.114e-01  7.560e-02   2.796 0.005168 ** 
+## educationtertiary   3.631e-01  8.787e-02   4.132 3.60e-05 ***
+## educationunknown    2.336e-01  1.219e-01   1.917 0.055238 .  
+## defaultyes         -1.291e-01  1.905e-01  -0.678 0.498028    
+## balance             1.795e-05  6.039e-06   2.972 0.002957 ** 
+## housingyes         -6.490e-01  5.115e-02 -12.687  &lt; 2e-16 ***
+## loanyes            -4.321e-01  6.948e-02  -6.220 4.97e-10 ***
+## contacttelephone   -2.149e-01  8.922e-02  -2.408 0.016021 *  
+## contactunknown     -1.711e+00  8.665e-02 -19.743  &lt; 2e-16 ***
+## day10               2.605e-01  2.375e-01   1.097 0.272642    
+## day11              -2.541e-01  2.116e-01  -1.200 0.229957    
+## day12               1.451e-01  2.063e-01   0.703 0.481974    
+## day13               2.497e-01  2.085e-01   1.197 0.231157    
+## day14              -8.085e-02  2.098e-01  -0.385 0.699887    
+## day15               2.320e-02  2.059e-01   0.113 0.910287    
+## day16              -6.925e-02  2.097e-01  -0.330 0.741199    
+## day17              -7.200e-01  2.107e-01  -3.417 0.000634 ***
+## day18              -3.113e-01  2.051e-01  -1.518 0.129039    
+## day19              -8.877e-01  2.303e-01  -3.855 0.000116 ***
+## day2               -3.155e-01  2.127e-01  -1.483 0.138033    
+## day20              -6.166e-01  2.101e-01  -2.935 0.003340 ** 
+## day21              -2.021e-01  2.124e-01  -0.952 0.341316    
+## day22              -9.651e-02  2.223e-01  -0.434 0.664198    
+## day23               3.233e-01  2.288e-01   1.413 0.157706    
+## day24              -1.901e-01  2.624e-01  -0.724 0.468894    
+## day25              -5.974e-02  2.292e-01  -0.261 0.794402    
+## day26               1.647e-01  2.279e-01   0.723 0.469790    
+## day27               5.321e-01  2.205e-01   2.413 0.015805 *  
+## day28              -1.186e-01  2.230e-01  -0.532 0.594785    
+## day29              -3.486e-01  2.244e-01  -1.553 0.120368    
+## day3               -2.349e-01  2.146e-01  -1.095 0.273676    
+## day30               2.731e-01  2.073e-01   1.317 0.187693    
+## day31              -4.008e-01  3.084e-01  -1.300 0.193692    
+## day4               -1.461e-01  2.065e-01  -0.708 0.479104    
+## day5               -3.837e-01  2.069e-01  -1.855 0.063578 .  
+## day6               -3.904e-01  2.110e-01  -1.850 0.064293 .  
+## day7               -6.767e-01  2.180e-01  -3.103 0.001913 ** 
+## day8               -1.466e-01  2.074e-01  -0.707 0.479685    
+## day9               -8.388e-02  2.137e-01  -0.392 0.694708    
+## monthaug           -8.271e-01  9.897e-02  -8.357  &lt; 2e-16 ***
+## monthdec            6.842e-01  2.095e-01   3.265 0.001093 ** 
+## monthfeb           -2.137e-01  1.120e-01  -1.908 0.056345 .  
+## monthjan           -1.284e+00  1.537e-01  -8.354  &lt; 2e-16 ***
+## monthjul           -9.017e-01  9.562e-02  -9.430  &lt; 2e-16 ***
+## monthjun            4.794e-01  1.127e-01   4.255 2.09e-05 ***
+## monthmar            1.375e+00  1.467e-01   9.373  &lt; 2e-16 ***
+## monthmay           -5.297e-01  9.272e-02  -5.713 1.11e-08 ***
+## monthnov           -6.742e-01  1.085e-01  -6.213 5.20e-10 ***
+## monthoct            7.727e-01  1.296e-01   5.961 2.51e-09 ***
+## monthsep            8.835e-01  1.423e-01   6.210 5.31e-10 ***
+## duration            4.315e-03  7.605e-05  56.743  &lt; 2e-16 ***
+## campaign           -7.668e-02  1.149e-02  -6.673 2.51e-11 ***
+## pdays               2.190e-04  3.497e-04   0.626 0.531150    
+## previous            9.059e-03  6.566e-03   1.380 0.167650    
+## poutcomeother       2.173e-01  1.048e-01   2.072 0.038242 *  
+## poutcomesuccess     2.269e+00  9.590e-02  23.666  &lt; 2e-16 ***
+## poutcomeunknown     5.218e-02  1.079e-01   0.484 0.628580    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 24531  on 33907  degrees of freedom
+## Residual deviance: 15898  on 33836  degrees of freedom
+## AIC: 16042
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+</div>
+<div id="testing-our-multiple-logistic-regression-model" class="section level2">
+<h2>testing our multiple Logistic regression Model</h2>
+<p>In this part we will use the test data to pass it to the multiple Logistic regression Model in order to classify whether clients associated with the given information in the test data set will subscribe to a term deposit. Also we will evaluate the performance of the model through using the confusion matrix</p>
+<p>After passing the test data set that represent 25% of the original data set to the developed multiple Logistic regression Model and evaluating the classification output with reference to the original output we got accuracy of 90%.</p>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## 0.0000337 0.0181261 0.0413998 0.1176430 0.1112072 1.0000000</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<pre><code>## # A tibble: 13 x 3
+##    .metric              .estimator .estimate
+##    &lt;chr&gt;                &lt;chr&gt;          &lt;dbl&gt;
+##  1 accuracy             binary        0.902 
+##  2 kap                  binary        0.404 
+##  3 sens                 binary        0.350 
+##  4 spec                 binary        0.974 
+##  5 ppv                  binary        0.640 
+##  6 npv                  binary        0.920 
+##  7 mcc                  binary        0.426 
+##  8 j_index              binary        0.324 
+##  9 bal_accuracy         binary        0.662 
+## 10 detection_prevalence binary        0.0633
+## 11 precision            binary        0.640 
+## 12 recall               binary        0.350 
+## 13 f_meas               binary        0.453</code></pre>
+</div>

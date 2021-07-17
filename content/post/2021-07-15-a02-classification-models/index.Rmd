@@ -12,18 +12,22 @@ categories:
 tags: []
 ---
 
-```{r}
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
 library("DataExplorer")
 library("janitor")
 library("tidyr")
 library("tidyverse")
 library("dplyr")
+library("yardstick")
+library("ggplot2")
+library("caret")
 ```
 
 
-## The goal behind this study
+## The Goal 
 
-The main goal of this study is to use the provided data set to identify whether a customer will subscribe to a term deposit or not. 
+The goal behind this study is to use the provided data set to identify whether a customer will subscribe to a term deposit or not. 
 
 
 ## The Bank data 
@@ -35,6 +39,24 @@ The data used in this study was obtained from **UCI ** website and we specifical
 
 Getting a glimpse into the data we can see that it is composed of 45211 observations and 17 variables.
 
+
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE,results=FALSE}
+
+whole_data<-read.csv2 ("bank-full.csv",stringsAsFactors=T)
+
+whole_data<- whole_data %>%
+mutate(day=as.character(day))
+
+#create_report(data)
+
+```
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+glimpse(whole_data)
+
+```
 ### The Variables description:
 
 
@@ -64,17 +86,21 @@ Getting a glimpse into the data we can see that it is composed of 45211 observat
   Output variable (desired target):
   17 - y - has the client subscribed a term deposit? (binary: "yes","no")
 
-```{r,warning=FALSE}
+## Partioning the data set to train and test parts
 
-data<-read.csv2 ("bank-full.csv")
 
-data %>%
-mutate(day=as.character(day))
+```{r}
+## 75% of the sample size
+smp_size <- floor(0.75 * nrow(whole_data))
 
-#create_report(data)
-glimpse(data)
+## set the seed to make your partition reproducible
+set.seed(123)
+train_ind <- sample(seq_len(nrow(whole_data)), size = smp_size)
 
+data <- whole_data[train_ind, ]
+test <- whole_data[-train_ind, ]
 ```
+
 
 ## The Univriate Analysis
 
@@ -403,7 +429,7 @@ iqr_pdays
 
 ### The Previous
 
-The data distribution of the previous variable ranges from 0 to 275 contacts,the distribution is left skewed with the most dominant number of contact of 1.
+The data distribution of the previous variable ranges from 0 to 275 contacts,the distribution is right skewed with the most dominant number of contact of 1.
 
 
 ```{r,warning=FALSE , message=FALSE,echo=FALSE}
@@ -465,27 +491,8 @@ iqr_previous=quantile(data$previous, 0.75) - quantile(data$previous, 0.25)
 iqr_previous
 
 ```
-### The Job
 
-From the histogram plot of the job variable, we can see that the most dominant job titles are Blue collar and Management then Technician.
 
-```{r,warning=FALSE , message=FALSE,echo=FALSE}
-
-ggplot(data,aes(job))+
-  geom_bar()+
-  labs(
-    title = "Histogram of the Job",
-    subtitle = " ",
-    x = "Job"
-  )+
- theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
-theme_bw()+
-  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle = 90)) +
-  theme(plot.background = element_rect(fill = "#BFD5E3"))+
-  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
-    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
-      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
-```
 ### The Job
 
 From the histogram plot of the job variable, we can see that the most dominant job titles are Blue collar and Management then Technician.
@@ -665,6 +672,30 @@ theme_bw()+
       theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
 ```
 
+### The Poutcome
+
+From the histogram plot of the poutcome variable, we can see that the most dominant outcome is "unknown".
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+ggplot(data,aes(poutcome))+
+  geom_bar()+
+  labs(
+    title = "Histogram of outcome of the previous marketing campaign",
+    subtitle = " ",
+    x = "The Outcome"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle = 90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+```
+
+
+
 ### The Y
 
 From the histogram plot of the Y variable, we can see that the most of the client haven't subscribed to term deposit.
@@ -686,3 +717,536 @@ theme_bw()+
     theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
       theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
 ```
+
+
+## The Bivariate Analysis 
+
+
+
+In the Bivaraite analysis we will see the relationship between the variable y and all other variables 
+
+### The relationship between variable Y and the Age variable 
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(y,age))+
+  geom_boxplot()+
+  labs(
+    title = "The relationship between the age and the term deposit subscription ",
+    subtitle = " ",
+    x = "Subscription Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+### The relationship between variable Y and the balance variable 
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(y,balance))+
+  geom_boxplot()+
+  labs(
+    title = "The relationship between the balance and the term deposit subscription ",
+    subtitle = " ",
+    x = "Subscription Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))+
+  scale_y_log10()
+
+```
+
+
+### The relationship between variable Y and the duration variable 
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(y,duration))+
+  geom_boxplot()+
+  labs(
+    title = "The relationship between the duration and the term deposit subscription ",
+    subtitle = " ",
+    x = "Subscription Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))+
+  scale_y_log10()
+
+```
+### The relationship between variable Y and the Campaign variable 
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(y,campaign))+
+  geom_boxplot()+
+  labs(
+    title = "The relationship between the campaign and the term deposit subscription ",
+    subtitle = " ",
+    x = "Subscription Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))+
+  scale_y_log10()
+
+```
+
+
+### The relationship between variable Y and the pdays variable 
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(y,pdays))+
+  geom_boxplot()+
+  labs(
+    title = "The relationship between the pdays and the term deposit subscription ",
+    subtitle = " ",
+    x = "Subscription Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))+
+  scale_y_log10()
+
+```
+
+### The relationship between variable Y and the previous variable 
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(y,previous))+
+  geom_boxplot()+
+  labs(
+    title = "The relationship between the previous and the term deposit subscription ",
+    subtitle = " ",
+    x = "Subscription Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))+
+  scale_y_log10()
+
+```
+
+### The relationship between variable Y and the Job variable  
+
+We can see that the Management has the most subscription among other jobs. 
+
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(job, fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the job and the term deposit subscription ",
+    subtitle = " ",
+    x = "Jobs"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle=90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+
+
+
+### The relationship between variable Y and the marital variable 
+
+Married people has more subscription that single and divorced.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(marital, fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the marital and the term deposit subscription ",
+    subtitle = " ",
+    x = "Marital Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle=90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+
+
+### The relationship between variable Y and the education variable  
+
+Secondary education has the more subscription than the remaining education types.
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(education, fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the education and the term deposit subscription ",
+    subtitle = " ",
+    x = "Education"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle=90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+
+### The relationship between variable Y and the default variable  
+
+The clients that have default status are not subscribed to term deposit
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(default, fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the default and the term deposit subscription ",
+    subtitle = " ",
+    x = "Default Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle=90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+
+### The relationship between variable Y and the housing variable 
+
+Clients have not housing loan are subscribed to term deposit more than  clients having housing loan.
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(housing, fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the housing and the term deposit subscription ",
+    subtitle = " ",
+    x = "Housing loan Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle=90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+
+### The relationship between variable Y and the loan variable  
+
+Clients haven't loan are subscribed to term deposit more than clients having loan.
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(loan, fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the loan and the term deposit subscription ",
+    subtitle = " ",
+    x = "loan Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle=90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+
+
+### The relationship between variable Y and the contact variable  
+
+We can see that cellular connection type results in more subscribtion to a term deposit
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(contact, fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the contact and the term deposit subscription ",
+    subtitle = " ",
+    x = "Contact Type"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle=90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+### The relationship between variable Y and the day variable 
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(day,fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the day and the term deposit subscription ",
+    subtitle = " ",
+    x = "Subscription Status"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+### The relationship between variable Y and the month variable  
+
+The Contact that happend in May results in more subscription to term deposit than other months.
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(month, fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the month and the term deposit subscription ",
+    subtitle = " ",
+    x = "Month"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle=90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+
+### The relationship between variable Y and the poutcome variable  
+
+The unknown outcome has the most subscription to term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+ggplot(data,aes(poutcome, fill=y))+
+  geom_bar()+
+  labs(
+    title = "The relationship between the poutcome and the term deposit subscription ",
+    subtitle = " ",
+    x = "Outcome"
+  )+
+ theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+theme_bw()+
+  theme(axis.text.x=element_text(color = "red", size=9, vjust=.5, hjust=0.7, angle=90)) +
+  theme(plot.background = element_rect(fill = "#BFD5E3"))+
+  theme(plot.caption  = element_text(hjust = 0.5),plot.title = element_text(hjust = 0.5))+
+    theme(plot.caption  = element_text(hjust = 0.5),plot.subtitle = element_text(hjust = 0.5))+
+      theme(plot.subtitle = element_text(colour = "#E48957", face = "bold", size = rel(1.5)))
+
+```
+
+## The simple logestic regression models 
+
+### The logistic regression model of y using the predictor variable age only
+
+From the model we can see that age variable is a significant variable for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+age_mdl <- glm(y ~ age , data= data, family = "binomial")
+summary(age_mdl)
+```
+
+### The logistic regression model of y using the predictor variable job only
+
+From the model we can see that out of 11 job types blue-collar, entrepreneur, housemaid, retired, services and student are the most significant job types in the prediction of the possibility of subscription to a term deposit. 
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+job_mdl <- glm(y ~ job , data= data, family = "binomial")
+summary(job_mdl)
+```
+
+### The logistic regression model of y using the predictor variable marital only
+
+From the model we can see that all the marital status are considered significant variables for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+marital_mdl <- glm(y ~ marital , data= data, family = "binomial")
+summary(marital_mdl)
+```
+
+### The logistic regression model of y using the predictor variable education only
+
+From the model we can see that secondary, tertiary and unknown education types are significant variables for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+education_mdl <- glm(y ~ education , data= data, family = "binomial")
+summary(education_mdl)
+```
+
+### The logistic regression model of y using the predictor variable default only
+
+From the model we can see that both default cases are significant for the prediction of the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+default_mdl <- glm(y ~ default , data= data, family = "binomial")
+summary(default_mdl)
+```
+
+### The logistic regression model of y using the predictor variable balance only
+
+From the model we can see that both balance cases are considered significant for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+balance_mdl <- glm(y ~ balance , data= data, family = "binomial")
+summary(balance_mdl)
+```
+
+### The logistic regression model of y using the predictor variable housing only
+
+From the model we can see that wether owning a house loan or not, both cases are considered significant for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+housing_mdl <- glm(y ~ housing , data= data, family = "binomial")
+summary(housing_mdl)
+```
+### The logistic regression model of y using the predictor variable loan only
+
+From the model we can see that both cases of the presence and absence of loan are considered significant for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+loan_mdl <- glm(y ~ loan , data= data, family = "binomial")
+summary(loan_mdl)
+```
+
+### The logistic regression model of y using the predictor variable contact only
+
+From the model we can see that the cellular and unknown contact types are considered significant for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+contact_mdl <- glm(y ~ contact , data= data, family = "binomial")
+summary(contact_mdl)
+```
+
+### The logistic regression model of y using the predictor variable day only
+
+From the model we can see that day variable is a significant variable for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+day_mdl <- glm(y ~ day , data= data, family = "binomial")
+summary(day_mdl)
+```
+
+### The logistic regression model of y using the predictor variable month only
+
+From the model we can see that all the months are significant for predicting the possibility of subscription to a term deposit except for February.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+month_mdl <- glm(y ~ month , data= data, family = "binomial")
+summary(month_mdl)
+```
+
+
+### The logistic regression model of y using the predictor variable duration only
+
+From the model we can see that duartion variable is a significant variable for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+duration_mdl <- glm(y ~ duration , data= data, family = "binomial")
+summary(duration_mdl)
+```
+
+### The logistic regression model of y using the predictor variable campaign only
+
+From the model we can see that the number of contacts performed during this campaign and for the client variable is a significant variable for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+campaign_mdl <- glm(y ~ campaign , data= data, family = "binomial")
+summary(campaign_mdl)
+```
+
+### The logistic regression model of y using the predictor variable pdays only
+
+From the model we can see that number of days that passed by after the client was last contacted from a previous campaign is significant variable for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+pdays_mdl <- glm(y ~ pdays , data= data, family = "binomial")
+summary(pdays_mdl)
+```
+
+### The logistic regression model of y using the predictor variable previous only
+
+From the model we can see that the number of contacts performed before this campaign and for this client significant variable for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+previous_mdl <- glm(y ~ previous , data= data, family = "binomial")
+summary(previous_mdl)
+```
+
+### The logistic regression model of y using the predictor variable poutcome only
+
+From the model we can see that outcome of the previous marketing campaign is significant variable for predicting the possibility of subscription to a term deposit.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+poutcome_mdl <- glm(y ~ poutcome , data= data, family = "binomial")
+summary(poutcome_mdl)
+```
+
+## The multiple Logistic regression Model:
+
+From the model we can see that the significance of the some of the variables have been changed to less significant or not even significant at all, we cann see that in the shown mode the significant variables have three stars beside them and the less significant variables have two or one star only while the not significant variables have no stars at all.
+
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+full_mdl <- glm(y ~ . , data= data, family = binomial)
+summary(full_mdl)
+```
+
+## testing our multiple Logistic regression Model
+
+In this part we will use the test data to pass it to the multiple Logistic regression Model in order to classify whether clients associated with the given information in the test data set will subscribe to a term deposit. Also we will evaluate the performance of the model through using the confusion matrix
+
+After passing the test data set that represent 25% of the original data set to the developed multiple Logistic regression Model and evaluating the classification output with reference to the original output we got accuracy of 90%.
+
+```{r,warning=FALSE , message=FALSE,echo=FALSE}
+
+explanatory_data<- test %>%
+  select(-y)
+
+p<- predict(full_mdl, explanatory_data,type = "response")
+summary(p)
+
+predicted_response<-ifelse(p>0.5,"yes","no")
+
+outcomes<- table(predicted_response,test$y)
+
+confusion <- conf_mat(outcomes)
+
+autoplot(confusion)
+
+summary(confusion, event_level = "second")
+
+```
+
+

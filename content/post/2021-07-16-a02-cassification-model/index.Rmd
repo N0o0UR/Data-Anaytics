@@ -1,8 +1,0 @@
----
-title: A02 Cassification Model
-author: Nouran
-date: '2021-07-16'
-slug: a02-cassification-model
-categories: []
-tags: []
----
