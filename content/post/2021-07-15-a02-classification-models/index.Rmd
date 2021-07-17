@@ -1223,7 +1223,7 @@ full_mdl <- glm(y ~ . , data= data, family = binomial)
 summary(full_mdl)
 ```
 
-## testing our multiple Logistic regression Model
+## Testing our multiple Logistic regression Model
 
 In this part we will use the test data to pass it to the multiple Logistic regression Model in order to classify whether clients associated with the given information in the test data set will subscribe to a term deposit. Also we will evaluate the performance of the model through using the confusion matrix
 
